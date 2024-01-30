@@ -1,5 +1,5 @@
 <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>SIJAMET</span></strong>. All Rights Reserved
+      &copy; DCKTRP Manajemen Aset <strong><span>{{date('Y')}}</span></strong>.
     </div>
   </footer>

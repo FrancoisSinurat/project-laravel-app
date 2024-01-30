@@ -67,9 +67,7 @@ h6 {
 @media (max-width: 1199px) {
   #main {
     padding: 20px;
-  }
-  table {
-    zoom: 90%;
+    min-height: 650px;
   }
 }
 
