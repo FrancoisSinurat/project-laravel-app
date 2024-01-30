@@ -15,11 +15,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect('/admin/home');
+    return redirect('/admin/dashboard');
+});
+
+Route::get('/admin', function () {
+    return redirect('/admin/dashboard');
 });
 
 Auth::routes(['register' => false]);
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.'], function () {
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+    Route::resource('asset-category', App\Http\Controllers\AssetCategoryController::class);
+    Route::resource('item-category', App\Http\Controllers\ItemCategoryController::class);
+    Route::resource('item', App\Http\Controllers\ItemController::class);
 });

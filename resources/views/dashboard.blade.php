@@ -201,7 +201,7 @@
                         </div>
                     </div><!-- End Reports -->
 
-                    <!-- Recent Sales -->
+                    {{-- <!-- Recent Sales -->
                     <div class="col-12">
                         <div class="card recent-sales overflow-auto">
 
@@ -274,9 +274,9 @@
                             </div>
 
                         </div>
-                    </div><!-- End Recent Sales -->
+                    </div><!-- End Recent Sales --> --}}
 
-                    <!-- Top Selling -->
+                    {{-- <!-- Top Selling -->
                     <div class="col-12">
                         <div class="card top-selling overflow-auto">
 
@@ -358,7 +358,7 @@
                             </div>
 
                         </div>
-                    </div><!-- End Top Selling -->
+                    </div><!-- End Top Selling --> --}}
 
                 </div>
             </div><!-- End Left side columns -->
@@ -366,7 +366,7 @@
             <!-- Right side columns -->
             <div class="col-lg-4">
 
-                <!-- Recent Activity -->
+                {{-- <!-- Recent Activity -->
                 <div class="card">
                     <div class="filter">
                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
@@ -438,7 +438,7 @@
                         </div>
 
                     </div>
-                </div><!-- End Recent Activity -->
+                </div><!-- End Recent Activity --> --}}
 
                 <!-- Budget Report -->
                 <div class="card">
@@ -514,7 +514,7 @@
                     </div>
                 </div><!-- End Budget Report -->
 
-                <!-- Website Traffic -->
+                {{-- <!-- Website Traffic -->
                 <div class="card">
                     <div class="filter">
                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
@@ -590,9 +590,9 @@
                         </script>
 
                     </div>
-                </div><!-- End Website Traffic -->
+                </div><!-- End Website Traffic --> --}}
 
-                <!-- News & Updates Traffic -->
+                {{-- <!-- News & Updates Traffic -->
                 <div class="card">
                     <div class="filter">
                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
@@ -645,7 +645,7 @@
                         </div><!-- End sidebar recent posts-->
 
                     </div>
-                </div><!-- End News & Updates -->
+                </div><!-- End News & Updates --> --}}
 
             </div><!-- End Right side columns -->
 
