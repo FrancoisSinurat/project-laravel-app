@@ -73,7 +73,7 @@
                 </li>
                 <li>
                     <a href="#">
-                        <i class="bi bi-chevron-double-right"></i><span>Furniture </span>
+                        <i class="bi bi-chevron-double-right"></i><span>Furnitur </span>
                     </a>
                 </li>
                 <li>
