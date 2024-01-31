@@ -1,5 +1,4 @@
 function reloadTable (dataTable) {
-    console.log(`reload`, dataTable);
     if (dataTable) dataTable.ajax.reload();
 }
 
@@ -21,6 +20,7 @@ function errorEvent() {
 }
 
 const GET_DATA = (options) => {
+    console.log('GET_DATA', options);
     $.ajax({
         url: options.url + '/' + options.id,
         type: 'GET',
@@ -37,6 +37,7 @@ const GET_DATA = (options) => {
 }
 
 const POST_DATA = (options) => {
+    console.log('POST_DATA', options);
     $.ajax({
         url: options.url,
         type: 'POST',
@@ -54,7 +55,7 @@ const POST_DATA = (options) => {
 }
 
 const PATCH_DATA = (options) => {
-    console.log('PATCH_DATA');
+    console.log('PATCH_DATA', options);
     $.ajax({
         url: options.url + '/' + options.id,
         type: 'PATCH',
@@ -63,7 +64,6 @@ const PATCH_DATA = (options) => {
         },
         data: options.data,
         success: (data) => {
-            console.log(options);
             if (modal) successEvent(options.modal, options.dataTable);
         },
         error: (err) => {
@@ -73,6 +73,7 @@ const PATCH_DATA = (options) => {
 }
 
 const DELETE_DATA = (options) => {
+    console.log('DELETE_DATA', options);
     Swal.fire({
         title: "Anda yakin ingin menghapus data?",
         html: `data <span class="fw-bold">${options.dataTitle} </span>akan dihapus`,
@@ -92,15 +93,16 @@ const DELETE_DATA = (options) => {
                     _method: 'delete'
                 },
                 success: () => {
+                    SUCCESS_ALERT('Berhasil menghapus data');
                     reloadTable(options.dataTable);
                 },
                 error: (err) => {
                     console.log(err);
                 }
             });
-            SUCCESS_ALERT('Berhasil menghapus data');
+            options.id = null;
         } else if (result.isDenied) {
-
+            options.id = null;
         }
     });
 }

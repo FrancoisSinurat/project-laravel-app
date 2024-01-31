@@ -45,7 +45,7 @@
                                     class="btn btn-sm btn-primary mb-2">Tambah Data</a>
                             </div>
                         </div>
-                        <table id="item-category-table" class="table table-striped table-hover table-bordered"
+                        <table id="item-category-table" class="table table-hover"
                             width="100%">
                             <thead>
                                 <tr>
