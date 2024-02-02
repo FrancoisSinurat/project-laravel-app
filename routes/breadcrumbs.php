@@ -19,6 +19,12 @@ Breadcrumbs::for('admin.item-category.index', function (BreadcrumbTrail $trail) 
     $trail->push('Jenis Barang', route('admin.item-category.index'));
 });
 
+// Dashboard > Bidang Category
+Breadcrumbs::for('admin.bidang-category.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Bahan', route('admin.bidang-category.index'));
+});
+
 // // Home > Item Category > [Category]
 // Breadcrumbs::for('category', function (BreadcrumbTrail $trail, $category) {
 //     $trail->parent('blog');
