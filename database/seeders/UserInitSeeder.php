@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -21,6 +23,11 @@ class UserInitSeeder extends Seeder
             'user_status' => 1
         ];
 
-        User::updateOrCreate(['user_email' => $user['user_email']],$user);
+        $user = User::updateOrCreate(['user_email' => $user['user_email']],$user);
+        $roleName = 'Super Admin';
+        $role = Role::updateOrCreate(['name' => $roleName], ['name' => $roleName]);
+        $permissions = Permission::pluck('id','id')->all();
+        $role->syncPermissions($permissions);
+        $user->assignRole([$role->id]);
     }
 }

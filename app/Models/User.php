@@ -6,10 +6,11 @@ use App\Trait\UuidTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasFactory, SoftDeletes, UuidTrait;
+    use HasFactory, SoftDeletes, UuidTrait, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +19,7 @@ class User extends Authenticatable
      */
     protected $primaryKey = 'user_id';
 
-    protected $fillable = ['user_name', 'user_email', 'user_status', 'user_password'];
+    protected $fillable = ['user_name', 'user_email', 'user_status', 'user_password', 'user_address', 'user_phone'];
 
     /**
      * The attributes that should be hidden for serialization.

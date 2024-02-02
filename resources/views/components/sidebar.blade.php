@@ -90,12 +90,12 @@
             </a>
             <ul id="user-data-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="#">
-                        <i class="bi bi-chevron-double-right"></i><span>Daftar Pengguna</span>
+                    <a href="{{route('admin.user.index')}}">
+                        <i class="bi bi-chevron-double-right"></i><span>Pengguna</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{{route('admin.role.index')}}">
                         <i class="bi bi-chevron-double-right"></i><span>Hak Akses</span>
                     </a>
                 </li>

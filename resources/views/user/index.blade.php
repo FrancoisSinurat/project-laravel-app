@@ -1,28 +1,72 @@
 <x-layout>
-    @section('title', 'Jenis Barang')
+    @section('title', 'User')
     <section class="section">
-        <x-modal id="item-type-modal">
-            <x-slot name="title">Form @yield('title')</x-slot>
+        <x-modal id="user-modal" size="modal-xl">
+            <x-slot name="title">Form User</x-slot>
             <x-slot name="body">
-                <form id="item-type-form" class="form needs-validation" novalidate>
-                    <div class="mb-3">
-                        <input name="item_category_id" type="hidden" id="item_category_id">
-                        <label for="type-asset" class="col-form-label">Pilih Jenis Aset:</label>
-                        <select class="form-control" name="asset_category_id" id="type-asset">
-                            <option value="" disabled>Pilih Jenis Aset</option>
-                            @foreach ($assetCategory as $v)
-                                <option value="{{ $v->asset_category_id }}">{{ $v->asset_category_name }}</option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback">
-                            Wajib diisi.
+                <form id="user-form" class="form needs-validation" novalidate>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <input name="user_id" type="hidden" id="user_id">
+                                <label for="user-fullname" class="col-form-label mandatory">Nama</label>
+                                <input type="text" name="user_fullname" class="form-control" id="user-fullname" required>
+                                <div class="invalid-feedback">
+                                    Wajib diisi.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="user-name" class="col-form-label mandatory">NIP</label>
+                                <input type="text" name="user_name" class="form-control" id="user-name" required>
+                                <div class="invalid-feedback">
+                                    Wajib diisi.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="user-email" class="col-form-label mandatory">Email</label>
+                                <input type="email" name="user_email" class="form-control" id="user-email" required>
+                                <div class="invalid-feedback">
+                                    Email wajib diisi.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="user-phone" class="col-form-label">No.Telepon</label>
+                                <input type="text" name="user_phone" class="form-control" id="user-phone">
+                            </div>
+                            <div class="mb-3">
+                                <label for="user-address" class="col-form-label">Alamat</label>
+                                <textarea name="user_address" class="form-control" id="user-address" rows="3"></textarea>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="type-name" class="col-form-label">Nama Jenis Barang:</label>
-                        <input type="text" name="item_category_name" class="form-control" id="type-name" required>
-                        <div class="invalid-feedback">
-                            Wajib diisi.
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <input name="user_password" type="hidden" id="user_password">
+                                <label for="user-password" class="col-form-label mandatory">Password</label>
+                                <input type="password" name="user_password" class="form-control" id="user-password" required>
+                                <div class="invalid-feedback">
+                                    Wajib diisi.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <input name="user_confirm_password" type="hidden" id="user_confirm_password">
+                                <label for="user-confirm-password" class="col-form-label mandatory">Konfirmasi Password</label>
+                                <input type="password" name="user_confirm_password" class="form-control" id="user-confirm-password" required>
+                                <div class="invalid-feedback">
+                                    Wajib diisi.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="type-role" class="col-form-label mandatory">Pilih Hak Akses</label>
+                                <select class="form-control" name="asset_category_id" id="type-role">
+                                    <option value="" disabled>Pilih Role</option>
+                                    @foreach ($role as $v)
+                                        <option value="{{ $v->id }}">{{ $v->name }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="invalid-feedback">
+                                    Wajib diisi.
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="d-flex justify-content-end">
@@ -42,17 +86,17 @@
                         <div class="card-title d-flex justify-content-between">
                             <div>@yield('title')</div>
                             <div>
-                                <a data-bs-toggle="modal" data-bs-target="#item-type-modal" href="javascript:void(0)"
+                                <a data-bs-toggle="modal" data-bs-target="#user-modal" href="javascript:void(0)"
                                     class="btn btn-sm btn-primary mb-2">Tambah Data</a>
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table id="item-category-table" class="table table-hover" width="100%">
+                            <table id="user-table" class="table table-hover" width="100%">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Jenis Aset</th>
-                                        <th>Nama Kategori</th>
+                                        <th>Username</th>
+                                        <th>Email</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -68,8 +112,8 @@
     <script src="{{ asset('assets/js/ajax.js') }}"></script>
     @push('scripts')
         <script type="text/javascript">
-            let modal = 'item-type-modal';
-            let urlPost = "{{ route('admin.item-category.store') }}";
+            let modal = 'user-modal';
+            let urlPost = "{{ route('admin.user.store') }}";
             var dataTableList;
             let options = {
                 modal: modal,
@@ -88,29 +132,29 @@
             }
 
             $(document).ready(function() {
-                dataTableList = $('#item-category-table').DataTable({
+                dataTableList = $('#user-table').DataTable({
                     processing: true,
                     serverSide: true,
                     order: [[0, 'desc']],
                     ajax: '{{ url()->current() }}',
                     columns: [{
-                            data: 'item_category_id',
-                            name: 'item_category_id',
+                            data: 'user_id',
+                            name: 'user_id',
                             render: function(data, type, row, meta) {
                                 return meta.row + meta.settings._iDisplayStart + 1;
                             }
                         },
                         {
-                            data: 'asset_category.asset_category_name',
-                            name: 'asset_category.asset_category_name',
+                            data: 'user_name',
+                            name: 'user_name',
                         },
                         {
-                            data: 'item_category_name',
-                            name: 'item_category_name'
+                            data: 'user_email',
+                            name: 'user_email'
                         },
                         {
                             name: 'action',
-                            data: 'item_category_id',
+                            data: 'user_id',
                             orderable: false,
                             searchable: false,
                             render: function(data) {
@@ -146,7 +190,7 @@
                     DELETE_DATA(options);
                 }
 
-                let forms = $('#item-type-form');
+                let forms = $('#user-form');
                 Array.prototype.filter.call(forms, function(form) {
                     form.addEventListener('submit', function(event) {
                         if (form.checkValidity() === false) {
@@ -154,7 +198,7 @@
                             event.stopPropagation();
                             form.classList.add('was-validated');
                         } else {
-                            let formData = $('#item-type-form').serialize();
+                            let formData = $('#user-form').serialize();
                             event.preventDefault();
                             event.stopPropagation();
                             options.disabledButton();
@@ -168,18 +212,18 @@
 
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    forms.find('input[name="item_category_name"]').val(rowData.item_category_name);
-                    forms.find('input[name="item_category_id"]').val(rowData.item_category_id);
-                    $("#type-asset").val(rowData.asset_category.asset_category_id).change();
+                    forms.find('input[name="user_name"]').val(rowData.user_name);
+                    forms.find('input[name="user_email"]').val(rowData.user_email);
+                    $("#type-role").val(rowData.asset_category.asset_category_id).change();
                     $('#'+options.modal).modal('show');
                     $('#'+options.modal).find('#save').text('Ubah');
-                    options.id = rowData.item_category_id;
+                    options.id = rowData.user_id;
                 })
 
                 $(document).on('click','.btn-delete',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    options.dataTitle = rowData.item_category_name;
-                    deleteData(rowData.item_category_id);
+                    options.dataTitle = rowData.user_name;
+                    deleteData(rowData.user_id);
                 })
 
                 $(window).on('hide.bs.modal', function() {

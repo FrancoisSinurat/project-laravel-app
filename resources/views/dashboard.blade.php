@@ -1,4 +1,5 @@
 <x-layout>
+    @section('title', 'Dashboard')
     <section class="section dashboard">
         <div class="row">
 

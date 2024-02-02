@@ -2,30 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AssetCategory;
-use App\Models\ItemCategory;
+use App\Models\Permission;
+use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
-
-class ItemCategoryController extends Controller
+class RoleController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
         if($request->ajax()) {
-            $item = ItemCategory::query()->with('asset_category');
+            $item = Role::query()->with('permissions');
             return DataTables::of($item)->make();
         }
-        $assetCategory = AssetCategory::get();
-        return view('item-category.index', compact('assetCategory'));
+        $permission = Permission::get();
+        $populatePermission = [];
+        foreach ($permission as $key => $val) {
+            $permissionArr = explode('-', $val->name);
+            array_pop($permissionArr);
+            $permissionName = implode(' ', $permissionArr);
+            $populatePermission[$permissionName][] = ['id'=>$permission[$key]->id, 'name' => $permission[$key]->name];
+        }
+        return view('role.index', compact('populatePermission'));
     }
 
     /**
@@ -42,22 +45,21 @@ class ItemCategoryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'item_category_name' => 'required|unique:item_categories,item_category_name,NULL,NULL,deleted_at,NULL',
-            'asset_category_id' => 'required',
-        ],
-        [
-            'item_category_name.unique' => 'Nama Jenis barang sudah ada'
+            'name' => 'required|min:1|unique:roles'
         ]);
         try {
-            ItemCategory::create($request->all());
+            DB::beginTransaction();
+            $role = Role::create(['name' => ucwords(strtolower($request->name))]);
+            $role->syncPermissions($request->permission);
+            DB::commit();
             return response()->json([
                 'status' => true,
             ], 200);
         } catch (\Throwable $th) {
+            DB::rollBack();
             Log::error($th->getMessage());
             return response()->json([
-                'status' => false,
-                'data' => $th,
+                'status' => true,
             ], 500);
         }
     }
@@ -67,6 +69,7 @@ class ItemCategoryController extends Controller
      */
     public function show(string $id)
     {
+
     }
 
     /**
@@ -82,19 +85,22 @@ class ItemCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $this->validate($request, [
+            'name' => 'required',
+        ]);
         try {
-            $this->validate($request, [
-                'asset_category_id' => 'required',
-                'item_category_name' => 'required',
-            ]);
-            ItemCategory::where('item_category_id', $id)->update($request->all());
+            DB::beginTransaction();
+                Role::where('id', $id)->update(['name' => ucwords(strtolower($request->name))]);
+                Role::find($id)->syncPermissions($request->permission);
+            DB::commit();
             return response()->json([
                 'status' => true,
             ], 200);
         } catch (\Throwable $th) {
+            DB::rollBack();
             Log::error($th->getMessage());
             return response()->json([
-                'status' => false,
+                'status' => true,
             ], 500);
         }
     }
@@ -110,14 +116,18 @@ class ItemCategoryController extends Controller
                     'status' => false,
                 ], 500);
             }
-            ItemCategory::where('item_category_id', $id)->delete();
+            DB::beginTransaction();
+                Role::find($id)->syncPermissions([]);
+                Role::find($id)->delete();
+            DB::commit();
             return response()->json([
                 'status' => true,
             ], 200);
         } catch (\Throwable $th) {
+            DB::rollBack();
             Log::error($th->getMessage());
             return response()->json([
-                'status' => false,
+                'status' => true,
             ], 500);
         }
     }

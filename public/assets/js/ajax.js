@@ -50,6 +50,10 @@ const POST_DATA = (options) => {
         },
         error: (err) => {
             console.log(err);
+            const resErr = err?.responseJSON;
+            console.log(resErr);
+            if (resErr.message) ERROR_ALERT(resErr.message);
+            options.enabledButton();
         }
     });
 }
