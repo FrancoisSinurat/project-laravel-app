@@ -2,7 +2,7 @@
     @section('title', 'Login')
     <style>
         main {
-            background: url("{{asset('assets/img/bg.png')}}");
+            background: url("{{asset('assets/img/bg1.jpg')}}");
             background-size: contain;
             background-position: right;
             background-repeat: no-repeat;
