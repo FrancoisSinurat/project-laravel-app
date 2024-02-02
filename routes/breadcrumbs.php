@@ -19,6 +19,18 @@ Breadcrumbs::for('admin.item-category.index', function (BreadcrumbTrail $trail) 
     $trail->push('Jenis Barang', route('admin.item-category.index'));
 });
 
+// Dashboard > Satuan Category
+Breadcrumbs::for('admin.satuan-category.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Satuan', route('admin.satuan-category.index'));
+});
+
+// Dashboard > Bahan Category
+Breadcrumbs::for('admin.bahan-category.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Bahan', route('admin.bahan-category.index'));
+});
+
 // // Home > Item Category > [Category]
 // Breadcrumbs::for('category', function (BreadcrumbTrail $trail, $category) {
 //     $trail->parent('blog');

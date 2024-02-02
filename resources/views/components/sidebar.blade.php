@@ -53,6 +53,16 @@
                         <i class="bi bi-chevron-double-right"></i><span>Jenis Aset</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{route('admin.satuan-category.index')}}">
+                        <i class="bi bi-chevron-double-right"></i><span>Satuan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('admin.bahan-category.index')}}">
+                        <i class="bi bi-chevron-double-right"></i><span>Bahan</span>
+                    </a>
+                </li>
             </ul>
         </li>
 
