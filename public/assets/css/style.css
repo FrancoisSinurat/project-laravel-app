@@ -67,9 +67,14 @@ h6 {
 @media (max-width: 1199px) {
   #main {
     padding: 20px;
-    min-height: 650px;
   }
 }
+
+@media (min-width: 1000px) {
+    #main {
+      min-height: 650px;
+    }
+  }
 
 /*--------------------------------------------------------------
 # Page Title

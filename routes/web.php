@@ -29,5 +29,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.'], fu
     Route::resource('asset-category', App\Http\Controllers\AssetCategoryController::class);
     Route::resource('item-category', App\Http\Controllers\ItemCategoryController::class);
     Route::resource('item', App\Http\Controllers\ItemController::class);
+<<<<<<< HEAD
     Route::resource('bidang-category', App\Http\Controllers\BidangCategoryController::class);
+=======
+    Route::resource('satuan-category', App\Http\Controllers\SatuanCategoryController::class);
+    Route::resource('bahan-category', App\Http\Controllers\BahanCategoryController::class);
+>>>>>>> f1212646ed25f5c37e5d9c7bd17f296dc33664c6
 });

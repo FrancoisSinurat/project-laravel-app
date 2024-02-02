@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use App\Trait\UuidTrait;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ItemCategory extends Authenticatable
+class ItemCategory extends Model
 {
     use SoftDeletes, UuidTrait;
 

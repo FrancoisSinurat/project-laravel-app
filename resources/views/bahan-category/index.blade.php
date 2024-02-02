@@ -1,25 +1,12 @@
 <x-layout>
     <section class="section">
-        <x-modal id="item-type-modal">
-            <x-slot name="title">Form Jenis Barang</x-slot>
+        <x-modal id="bahan-type-modal">
+            <x-slot name="title">Form Bahan</x-slot>
             <x-slot name="body">
-                <form id="item-type-form" class="form needs-validation" novalidate>
+                <form id="bahan-type-form" class="form needs-validation" novalidate>
                     <div class="mb-3">
-                        <input name="item_category_id" type="hidden" id="item_category_id">
-                        <label for="type-asset" class="col-form-label">Pilih Jenis asset:</label>
-                        <select class="form-control" name="asset_category_id" id="type-asset">
-                            <option value="" disabled>Pilih Jenis Aset</option>
-                            @foreach ($assetCategory as $v)
-                                <option value="{{ $v->asset_category_id }}">{{ $v->asset_category_name }}</option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback">
-                            Wajib diisi.
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="type-name" class="col-form-label">Nama Jenis Barang:</label>
-                        <input type="text" name="item_category_name" class="form-control" id="type-name" required>
+                        <label for="type-name" class="col-form-label">Nama Bahan:</label>
+                        <input type="text" name="bahan_category_name" class="form-control" id="type-name" required>
                         <div class="invalid-feedback">
                             Wajib diisi.
                         </div>
@@ -39,19 +26,18 @@
                 <div class="card info-card sales-card">
                     <div class="card-body">
                         <div class="card-title d-flex justify-content-between">
-                            <div>Jenis Barang</div>
+                            <div>Bahan</div>
                             <div>
-                                <a data-bs-toggle="modal" data-bs-target="#item-type-modal" href="javascript:void(0)"
+                                <a data-bs-toggle="modal" data-bs-target="#bahan-type-modal" href="javascript:void(0)"
                                     class="btn btn-sm btn-primary mb-2">Tambah Data</a>
                             </div>
                         </div>
-                        <table id="item-category-table" class="table table-hover"
+                        <table id="bahan-category-table" class="table table-striped table-hover table-bordered"
                             width="100%">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Jenis Aset</th>
-                                    <th>Nama Kategori</th>
+                                    <th>Nama Bahan</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -66,8 +52,8 @@
     <script src="{{ asset('assets/js/ajax.js') }}"></script>
     @push('scripts')
         <script type="text/javascript">
-            let modal = 'item-type-modal';
-            let urlPost = "{{ route('admin.item-category.store') }}";
+            let modal = 'bahan-type-modal';
+            let urlPost = "{{ route('admin.bahan-category.store') }}";
             var dataTableList;
             let options = {
                 modal: modal,
@@ -86,29 +72,25 @@
             }
 
             $(document).ready(function() {
-                dataTableList = $('#item-category-table').DataTable({
+                dataTableList = $('#bahan-category-table').DataTable({
                     processing: true,
                     serverSide: true,
                     order: [[0, 'desc']],
                     ajax: '{{ url()->current() }}',
                     columns: [{
-                            data: 'item_category_id',
-                            name: 'item_category_id',
+                            data: 'bahan_category_id',
+                            name: 'bahan_category_id',
                             render: function(data, type, row, meta) {
                                 return meta.row + meta.settings._iDisplayStart + 1;
                             }
                         },
                         {
-                            data: 'asset_category.asset_category_name',
-                            name: 'asset_category.asset_category_name',
-                        },
-                        {
-                            data: 'item_category_name',
-                            name: 'item_category_name'
+                            data: 'bahan_category_name',
+                            name: 'bahan_category_name',
                         },
                         {
                             name: 'action',
-                            data: 'item_category_id',
+                            data: 'bahan_category_id',
                             orderable: false,
                             searchable: false,
                             render: function(data) {
@@ -141,7 +123,7 @@
                     DELETE_DATA(options);
                 }
 
-                let forms = $('#item-type-form');
+                let forms = $('#bahan-type-form');
                 Array.prototype.filter.call(forms, function(form) {
                     form.addEventListener('submit', function(event) {
                         if (form.checkValidity() === false) {
@@ -149,7 +131,7 @@
                             event.stopPropagation();
                             form.classList.add('was-validated');
                         } else {
-                            let formData = $('#item-type-form').serialize();
+                            let formData = $('#bahan-type-form').serialize();
                             event.preventDefault();
                             event.stopPropagation();
                             options.disabledButton();
@@ -163,18 +145,17 @@
 
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    forms.find('input[name="item_category_name"]').val(rowData.item_category_name);
-                    forms.find('input[name="item_category_id"]').val(rowData.item_category_id);
-                    $("#type-asset").val(rowData.asset_category.asset_category_id).change();
+                    forms.find('input[name="bahan_category_name"]').val(rowData.bahan_category_name);
+                    forms.find('input[name="bahan_category_id"]').val(rowData.bahan_category_id);
                     $('#'+options.modal).modal('show');
                     $('#'+options.modal).find('#save').text('Ubah');
-                    options.id = rowData.item_category_id;
+                    options.id = rowData.bahan_category_id;
                 })
 
                 $(document).on('click','.btn-delete',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    options.dataTitle = rowData.item_category_name;
-                    deleteData(rowData.item_category_id);
+                    options.dataTitle = rowData.bahan_category_name;
+                    deleteData(rowData.bahan_category_id);
                 })
 
                 $(window).on('hide.bs.modal', function() {
