@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AssetCategory;
+use App\Models\AsalolehCategory;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-class AssetCategoryController extends Controller
+class AsalolehCategoryController extends Controller
 {
     public function __construct()
     {
@@ -18,10 +18,10 @@ class AssetCategoryController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()) {
-            $asset = AssetCategory::query();
-            return DataTables::of($asset)->make(); 
+            $asaloleh = AsalolehCategory::query();
+            return DataTables::of($asaloleh)->make(); 
         }
-        return view('asset-category.index');
+        return view('asaloleh-category.index');
     }
 
     /**
@@ -38,9 +38,9 @@ class AssetCategoryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'asset_category_name' => 'required',
+            'asaloleh_category_name' => 'required',
         ]);
-        AssetCategory::create($request->all());
+        AsalolehCategory::create($request->all());
         return response()->json([
             'status' => true,
         ], 200);
@@ -68,9 +68,9 @@ class AssetCategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validate($request, [
-            'asset_category_name' => 'required',
+            'asaloleh_category_name' => 'required',
         ]);
-        AssetCategory::where('asset_category_id', $id)->update($request->all());
+        AsalolehCategory::where('asaloleh_category_id', $id)->update($request->all());
         return response()->json([
             'status' => true,
         ], 200);
@@ -81,7 +81,7 @@ class AssetCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        AssetCategory::where('asset_category_id', $id)->delete();
+        AsalolehCategory::where('asaloleh_category_id', $id)->delete();
         return response()->json([
             'status' => true,
         ], 200);

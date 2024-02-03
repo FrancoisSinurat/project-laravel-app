@@ -35,5 +35,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.'], fu
 
     Route::resource('satuan-category', App\Http\Controllers\SatuanCategoryController::class);
     Route::resource('bahan-category', App\Http\Controllers\BahanCategoryController::class);
+    Route::resource('asset-category', App\Http\Controllers\AssetCategoryController::class);
 
 });
