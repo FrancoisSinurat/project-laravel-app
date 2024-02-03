@@ -1,7 +1,8 @@
 <x-layout>
+    @section('title', 'Satuan')
     <section class="section">
         <x-modal id="satuan-type-modal">
-            <x-slot name="title">Form Satuan</x-slot>
+            <x-slot name="title">Form @yield('Satuan')</x-slot>
             <x-slot name="body">
                 <form id="satuan-type-form" class="form needs-validation" novalidate>
                     <div class="mb-3">

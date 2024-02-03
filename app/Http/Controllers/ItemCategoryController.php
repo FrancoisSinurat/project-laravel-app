@@ -43,13 +43,17 @@ class ItemCategoryController extends Controller
     {
         $this->validate($request, [
             'item_category_name' => 'required|unique:item_categories,item_category_name,NULL,NULL,deleted_at,NULL',
+            'item_category_code' => 'required|unique:item_categories,item_category_code,NULL,NULL,deleted_at,NULL',
             'asset_category_id' => 'required',
         ],
         [
-            'item_category_name.unique' => 'Nama Jenis barang sudah ada'
+            'item_category_name.unique' => 'Nama Jenis barang sudah ada',
+            'item_category_code.unique' => 'Kode Jenis barang sudah ada'
         ]);
         try {
-            ItemCategory::create($request->all());
+            $input = $request->all();
+            $input['item_category_code'] = strtoupper($input['item_category_code']);
+            ItemCategory::create($input);
             return response()->json([
                 'status' => true,
             ], 200);
@@ -82,12 +86,19 @@ class ItemCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $this->validate($request, [
+            'item_category_name' => "required|unique:item_categories,item_category_name,$id,item_category_id,deleted_at,NULL",
+            'item_category_code' => "required|unique:item_categories,item_category_code,$id,item_category_id,deleted_at,NULL",
+            'asset_category_id' => 'required',
+        ],
+        [
+            'item_category_name.unique' => 'Nama Jenis barang sudah ada',
+            'item_category_code.unique' => 'Kode Jenis barang sudah ada'
+        ]);
+        $input = $request->all();
+        $input['item_category_code'] = strtoupper($input['item_category_code']);
         try {
-            $this->validate($request, [
-                'asset_category_id' => 'required',
-                'item_category_name' => 'required',
-            ]);
-            ItemCategory::where('item_category_id', $id)->update($request->all());
+            ItemCategory::where('item_category_id', $id)->update($input);
             return response()->json([
                 'status' => true,
             ], 200);

@@ -26,12 +26,12 @@
                 <li class="nav-heading">Master Barang</li>
                 <li>
                     <a href="{{route('admin.item-category.index')}}">
-                        <i class="bi bi-chevron-double-right"></i><span>Jenis Barang</span>
+                        <i class="bi bi-chevron-double-right"></i><span>Kategori</span>
                     </a>
                 </li>
                 <li>
                     <a href="#">
-                        <i class="bi bi-chevron-double-right"></i><span>Barang</span>
+                        <i class="bi bi-chevron-double-right"></i><span>Jenis Barang</span>
                     </a>
                 </li>
                 <li>

@@ -1,4 +1,4 @@
-const SUCCESS_ALERT = (text=null) => Swal.fire({
+const SUCCESS_ALERT = (text = null) => Swal.fire({
     title: "Berhasil",
     text: text ? text : "Berhasil menyimpan data",
     icon: "success",

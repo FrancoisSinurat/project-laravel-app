@@ -1,5 +1,5 @@
 <x-layout>
-    @section('title', 'Jenis Barang')
+    @section('title', 'Kategori')
     <section class="section">
         <x-modal id="item-type-modal">
             <x-slot name="title">Form @yield('title')</x-slot>
@@ -7,8 +7,8 @@
                 <form id="item-type-form" class="form needs-validation" novalidate>
                     <div class="mb-3">
                         <input name="item_category_id" type="hidden" id="item_category_id">
-                        <label for="type-asset" class="col-form-label">Pilih Jenis Aset:</label>
-                        <select class="form-control" name="asset_category_id" id="type-asset">
+                        <label for="asset_category_id" class="col-form-label mandatory">Pilih Jenis Aset</label>
+                        <select class="form-control" name="asset_category_id" id="asset_category_id">
                             <option value="" disabled>Pilih Jenis Aset</option>
                             @foreach ($assetCategory as $v)
                                 <option value="{{ $v->asset_category_id }}">{{ $v->asset_category_name }}</option>
@@ -19,9 +19,16 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="type-name" class="col-form-label">Nama Jenis Barang:</label>
-                        <input type="text" name="item_category_name" class="form-control" id="type-name" required>
-                        <div class="invalid-feedback">
+                        <label for="item_category_name" class="col-form-label mandatory">Nama @yield('title')</label>
+                        <input type="text" name="item_category_name" class="form-control" id="item_category_name" aria-describedby="item_category_name_feedback" required>
+                        <div id="item_category_name_feedback" class="invalid-feedback">
+                            Wajib diisi.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="item_category_code" class="col-form-label mandatory">Kode @yield('title')</label>
+                        <input type="text" name="item_category_code" class="form-control text-uppercase" id="item_category_code" aria-describedby="item_category_code_feedback" required>
+                        <div id="item_category_code_feedback" class="invalid-feedback">
                             Wajib diisi.
                         </div>
                     </div>
@@ -52,7 +59,8 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Jenis Aset</th>
-                                        <th>Nama Kategori</th>
+                                        <th>Kategori</th>
+                                        <th>Kode Kategori</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -70,12 +78,14 @@
         <script type="text/javascript">
             let modal = 'item-type-modal';
             let urlPost = "{{ route('admin.item-category.store') }}";
-            var dataTableList;
+            let forms = $('#item-type-form');
+            let dataTableList;
             let options = {
                 modal: modal,
                 id: null,
                 url: urlPost,
                 data: null,
+                form: forms,
                 dataTable: null,
                 disabledButton: () => {
                     $('#save').addClass('disabled');
@@ -86,7 +96,6 @@
                     $('.loading').addClass('d-none');
                 }
             }
-
             $(document).ready(function() {
                 dataTableList = $('#item-category-table').DataTable({
                     processing: true,
@@ -107,6 +116,10 @@
                         {
                             data: 'item_category_name',
                             name: 'item_category_name'
+                        },
+                        {
+                            data: 'item_category_code',
+                            name: 'item_category_code'
                         },
                         {
                             name: 'action',
@@ -146,7 +159,6 @@
                     DELETE_DATA(options);
                 }
 
-                let forms = $('#item-type-form');
                 Array.prototype.filter.call(forms, function(form) {
                     form.addEventListener('submit', function(event) {
                         if (form.checkValidity() === false) {
@@ -169,8 +181,9 @@
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
                     forms.find('input[name="item_category_name"]').val(rowData.item_category_name);
+                    forms.find('input[name="item_category_code"]').val(rowData.item_category_code);
                     forms.find('input[name="item_category_id"]').val(rowData.item_category_id);
-                    $("#type-asset").val(rowData.asset_category.asset_category_id).change();
+                    $("#asset_category_id").val(rowData.asset_category.asset_category_id).change();
                     $('#'+options.modal).modal('show');
                     $('#'+options.modal).find('#save').text('Ubah');
                     options.id = rowData.item_category_id;
@@ -184,9 +197,10 @@
 
                 $(window).on('hide.bs.modal', function() {
                     $('#'+options.modal).find('#save').text('Simpan');
-                    forms.trigger('reset');
                     forms.removeClass('was-validated');
+                    forms.trigger('reset');
                     options.id = null;
+                    console.log('close form');
                 });
             });
         </script>

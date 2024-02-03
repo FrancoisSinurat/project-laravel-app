@@ -16,7 +16,7 @@ Breadcrumbs::for('admin.dashboard', function (BreadcrumbTrail $trail) {
 // Dashboard > Item Category
 Breadcrumbs::for('admin.item-category.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.dashboard');
-    $trail->push('Jenis Barang', route('admin.item-category.index'));
+    $trail->push('Kategori', route('admin.item-category.index'));
 });
 
 // Dashboard > User

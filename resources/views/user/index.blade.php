@@ -2,7 +2,7 @@
     @section('title', 'User')
     <section class="section">
         <x-modal id="user-modal" size="modal-xl">
-            <x-slot name="title">Form User</x-slot>
+            <x-slot name="title">Form @yield('title')</x-slot>
             <x-slot name="body">
                 <form id="user-form" class="form needs-validation" novalidate>
                     <div class="row">
@@ -16,11 +16,8 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="user-name" class="col-form-label mandatory">NIP</label>
-                                <input type="text" name="user_name" class="form-control" id="user-name" required>
-                                <div class="invalid-feedback">
-                                    Wajib diisi.
-                                </div>
+                                <label for="user-nrk" class="col-form-label">NRK</label>
+                                <input type="text" name="user_nrk" class="form-control" id="user-nrk">
                             </div>
                             <div class="mb-3">
                                 <label for="user-email" class="col-form-label mandatory">Email</label>
@@ -128,7 +125,8 @@
                 enabledButton: () => {
                     $('#save').removeClass('disabled');
                     $('.loading').addClass('d-none');
-                }
+                },
+                validation: null,
             }
 
             $(document).ready(function() {
@@ -190,6 +188,10 @@
                     DELETE_DATA(options);
                 }
 
+                options.validation = (err) => {
+                    console.log(`error`, err);
+                }
+
                 let forms = $('#user-form');
                 Array.prototype.filter.call(forms, function(form) {
                     form.addEventListener('submit', function(event) {
@@ -214,7 +216,11 @@
                     let rowData = dataTableList.row($(this).parents('tr')).data()
                     forms.find('input[name="user_name"]').val(rowData.user_name);
                     forms.find('input[name="user_email"]').val(rowData.user_email);
-                    $("#type-role").val(rowData.asset_category.asset_category_id).change();
+                    if (rowData.user_nrk) forms.find('input[name="user_nrk"]').val(rowData.user_nrk);
+                    if (rowData.user_address) forms.find('input[name="user_address"]').val(rowData.user_address);
+                    if (rowData.user_phone) forms.find('input[name="user_phone"]').val(rowData.user_phone);
+                    if (rowData.user_fullname) forms.find('input[name="user_fullname"]').val(rowData.user_fullname);
+                    $("#type-role").val(rowData.role.id).change();
                     $('#'+options.modal).modal('show');
                     $('#'+options.modal).find('#save').text('Ubah');
                     options.id = rowData.user_id;
