@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AssetCategory;
+use App\Models\BidangCategory;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-class AssetCategoryController extends Controller
+class BidangCategoryController extends Controller
 {
     public function __construct()
     {
@@ -18,10 +18,10 @@ class AssetCategoryController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()) {
-            $asset = AssetCategory::query();
-            return DataTables::of($asset)->make(); 
+            $bidang = BidangCategory::query();
+            return DataTables::of($bidang)->make(); 
         }
-        return view('asset-category.index');
+        return view('bidang-category.index');
     }
 
     /**
@@ -38,9 +38,10 @@ class AssetCategoryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'asset_category_name' => 'required',
+            'bidang_category_name' => 'required',
+            'bidang_category_singkatan' => 'required',
         ]);
-        AssetCategory::create($request->all());
+        BidangCategory::create($request->all());
         return response()->json([
             'status' => true,
         ], 200);
@@ -68,9 +69,10 @@ class AssetCategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validate($request, [
-            'asset_category_name' => 'required',
+            'bidang_category_name' => 'required',
+            'bidang_category_singkatan' => 'required',
         ]);
-        AssetCategory::where('asset_category_id', $id)->update($request->all());
+        BidangCategory::where('bidang_category_id', $id)->update($request->all());
         return response()->json([
             'status' => true,
         ], 200);
@@ -81,7 +83,7 @@ class AssetCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        AssetCategory::where('asset_category_id', $id)->delete();
+        BidangCategory::where('bidang_category_id', $id)->delete();
         return response()->json([
             'status' => true,
         ], 200);

@@ -1,12 +1,12 @@
 <x-layout>
     <section class="section">
-        <x-modal id="asset-type-modal">
-            <x-slot name="title">Form Jenis Asset</x-slot>
+        <x-modal id="asaloleh-type-modal">
+            <x-slot name="title">Form Asal Perolehan</x-slot>
             <x-slot name="body">
-                <form id="asset-type-form" class="form needs-validation" novalidate>
+                <form id="asaloleh-type-form" class="form needs-validation" novalidate>
                     <div class="mb-3">
-                        <label for="type-name" class="col-form-label">Jenis Asset:</label>
-                        <input type="text" name="asset_category_name" class="form-control" id="type-name" required>
+                        <label for="type-name" class="col-form-label">Nama Perolehan:</label>
+                        <input type="text" name="asaloleh_category_name" class="form-control" id="type-name" required>
                         <div class="invalid-feedback">
                             Wajib diisi.
                         </div>
@@ -26,18 +26,18 @@
                 <div class="card info-card sales-card">
                     <div class="card-body">
                         <div class="card-title d-flex justify-content-between">
-                            <div>Jenis Asset</div>
+                            <div>Asal Perolehan</div>
                             <div>
-                                <a data-bs-toggle="modal" data-bs-target="#asset-type-modal" href="javascript:void(0)"
+                                <a data-bs-toggle="modal" data-bs-target="#asaloleh-type-modal" href="javascript:void(0)"
                                     class="btn btn-sm btn-primary mb-2">Tambah Data</a>
                             </div>
                         </div>
-                        <table id="asset-category-table" class="table table-striped table-hover table-bordered"
+                        <table id="asaloleh-category-table" class="table table-striped table-hover table-bordered"
                             width="100%">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Jenis Asset</th>
+                                    <th>Nama Perolehan</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -52,8 +52,8 @@
     <script src="{{ asset('assets/js/ajax.js') }}"></script>
     @push('scripts')
         <script type="text/javascript">
-            let modal = 'asset-type-modal';
-            let urlPost = "{{ route('admin.asset-category.store') }}";
+            let modal = 'asaloleh-type-modal';
+            let urlPost = "{{ route('admin.asaloleh-category.store') }}";
             var dataTableList;
             let options = {
                 modal: modal,
@@ -72,25 +72,25 @@
             }
 
             $(document).ready(function() {
-                dataTableList = $('#asset-category-table').DataTable({
+                dataTableList = $('#asaloleh-category-table').DataTable({
                     processing: true,
                     serverSide: true,
                     order: [[0, 'desc']],
                     ajax: '{{ url()->current() }}',
                     columns: [{
-                            data: 'asset_category_id',
-                            name: 'asset_category_id',
+                            data: 'asaloleh_category_id',
+                            name: 'asaloleh_category_id',
                             render: function(data, type, row, meta) {
                                 return meta.row + meta.settings._iDisplayStart + 1;
                             }
                         },
                         {
-                            data: 'asset_category_name',
-                            name: 'asset_category_name'
+                            data: 'asaloleh_category_name',
+                            name: 'asaloleh_category_name'
                         },
                         {
                             name: 'action',
-                            data: 'asset_category_id',
+                            data: 'asaloleh_category_id',
                             orderable: false,
                             searchable: false,
                             render: function(data) {
@@ -123,7 +123,7 @@
                     DELETE_DATA(options);
                 }
 
-                let forms = $('#asset-type-form');
+                let forms = $('#asaloleh-type-form');
                 Array.prototype.filter.call(forms, function(form) {
                     form.addEventListener('submit', function(event) {
                         if (form.checkValidity() === false) {
@@ -131,7 +131,7 @@
                             event.stopPropagation();
                             form.classList.add('was-validated');
                         } else {
-                            let formData = $('#asset-type-form').serialize();
+                            let formData = $('#asaloleh-type-form').serialize();
                             event.preventDefault();
                             event.stopPropagation();
                             options.disabledButton();
@@ -145,17 +145,17 @@
 
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    forms.find('input[name="asset_category_name"]').val(rowData.asset_category_name);
-                    forms.find('input[name="asset_category_id"]').val(rowData.asset_category_id);
+                    forms.find('input[name="asaloleh_category_name"]').val(rowData.asaloleh_category_name);
+                    forms.find('input[name="asaloleh_category_id"]').val(rowData.asaloleh_category_id);
                     $('#'+options.modal).modal('show');
                     $('#'+options.modal).find('#save').text('Ubah');
-                    options.id = rowData.asset_category_id;
+                    options.id = rowData.asaloleh_category_id;
                 })
 
                 $(document).on('click','.btn-delete',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    options.dataTitle = rowData.asset_category_name;
-                    deleteData(rowData.asset_category_id);
+                    options.dataTitle = rowData.asaloleh_category_name;
+                    deleteData(rowData.asaloleh_category_id);
                 })
 
                 $(window).on('hide.bs.modal', function() {

@@ -19,6 +19,12 @@ Breadcrumbs::for('admin.item-category.index', function (BreadcrumbTrail $trail) 
     $trail->push('Jenis Barang', route('admin.item-category.index'));
 });
 
+// Dashboard > Bidang Category
+Breadcrumbs::for('admin.bidang-category.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Bahan', route('admin.bidang-category.index'));
+});
+
 // Dashboard > Satuan Category
 Breadcrumbs::for('admin.satuan-category.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.dashboard');
@@ -29,6 +35,18 @@ Breadcrumbs::for('admin.satuan-category.index', function (BreadcrumbTrail $trail
 Breadcrumbs::for('admin.bahan-category.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.dashboard');
     $trail->push('Bahan', route('admin.bahan-category.index'));
+});
+
+// Dashboard > Asaloleh Category
+Breadcrumbs::for('admin.asaloleh-category.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Asal Perolehan', route('admin.asaloleh-category.index'));
+});
+
+// Dashboard > Asaloleh Category
+Breadcrumbs::for('admin.asset-category.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Jenis Asset', route('admin.asset-category.index'));
 });
 
 // // Home > Item Category > [Category]
