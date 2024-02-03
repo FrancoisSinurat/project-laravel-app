@@ -39,17 +39,17 @@
                 </li>
                 <li class="nav-heading">Master Data</li>
                 <li>
-                    <a href="#">
-                        <i class="bi bi-chevron-double-right"></i><span>Asal Oleh </span>
+                    <a href="{{route('admin.asaloleh-category.index')}}">
+                        <i class="bi bi-chevron-double-right"></i><span>Asal Perolehan</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{{route('admin.bidang-category.index')}}">
                         <i class="bi bi-chevron-double-right"></i><span>Bidang</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{{route('admin.asset-category.index')}}">
                         <i class="bi bi-chevron-double-right"></i><span>Jenis Aset</span>
                     </a>
                 </li>
