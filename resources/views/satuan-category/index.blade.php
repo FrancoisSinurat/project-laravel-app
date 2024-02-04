@@ -1,19 +1,20 @@
 <x-layout>
+    @section('title', 'Satuan')
     <section class="section">
         <x-modal id="satuan-type-modal">
-            <x-slot name="title">Form Satuan</x-slot>
+            <x-slot name="title">Form @yield('title')</x-slot>
             <x-slot name="body">
                 <form id="satuan-type-form" class="form needs-validation" novalidate>
                     <div class="mb-3">
-                        <label for="type-name" class="col-form-label">Nama Satuan:</label>
-                        <input type="text" name="satuan_category_name" class="form-control" id="type-name" required>
-                        <div class="invalid-feedback">
+                        <label for="satuan_category_name" class="col-form-label mandatory">Nama Satuan</label>
+                        <input type="text" name="satuan_category_name" class="form-control" id="satuan_category_name" required>
+                        <div id="satuan_category_name_feedback" class="invalid-feedback">
                             Wajib diisi.
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="type-name" class="col-form-label">Keterangan Satuan:</label>
-                        <input type="text" name="satuan_category_description" class="form-control" id="type-name" required>
+                        <label for="satuan_category_description" class="col-form-label">Keterangan Satuan</label>
+                        <input type="text" name="satuan_category_description" class="form-control" id="satuan_category_description">
                         <div class="invalid-feedback">
                             Wajib diisi.
                         </div>
@@ -39,34 +40,38 @@
                                     class="btn btn-sm btn-primary mb-2">Tambah Data</a>
                             </div>
                         </div>
-                        <table id="satuan-category-table" class="table table-striped table-hover table-bordered"
+                        <div class="table-responsive">
+                            <table id="satuan-category-table" class="table table-hover"
                             width="100%">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Nama Satuan</th>
-                                    <th>Keterangan</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Satuan</th>
+                                        <th>Keterangan</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <script src="{{ asset('assets/js/ajax.js') }}"></script>
     @push('scripts')
+        <script src="{{ asset('assets/js/ajax.js') }}"></script>
         <script type="text/javascript">
             let modal = 'satuan-type-modal';
             let urlPost = "{{ route('admin.satuan-category.store') }}";
+            let formMain = 'satuan-type-form';
             var dataTableList;
             let options = {
                 modal: modal,
                 id: null,
                 url: urlPost,
+                formMain: formMain,
                 data: null,
                 dataTable: null,
                 disabledButton: () => {
@@ -106,10 +111,13 @@
                             orderable: false,
                             searchable: false,
                             render: function(data) {
-                                let button = `<div class="btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-success">Edit</button>
-                                    <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-warning">Delete</button>
-                                </div>`;
+                                let button = `
+                                    <div class="d-flex justify-content-end">
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-primary"><i class="bi bi-pencil-fill"></i></button>
+                                            <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-danger"><i class="bi bi-trash-fill"></i></button>
+                                        </div>
+                                    </div>`;
                                 return button;
                             }
                         },
@@ -134,16 +142,14 @@
                     options.dataTable = dataTableList;
                     DELETE_DATA(options);
                 }
-
-                let forms = $('#satuan-type-form');
-                Array.prototype.filter.call(forms, function(form) {
+                Array.prototype.filter.call($(`#${options.formMain}`), function(form) {
                     form.addEventListener('submit', function(event) {
                         if (form.checkValidity() === false) {
                             event.preventDefault();
                             event.stopPropagation();
                             form.classList.add('was-validated');
                         } else {
-                            let formData = $('#satuan-type-form').serialize();
+                            let formData = $(`#${options.formMain}`).serialize();
                             event.preventDefault();
                             event.stopPropagation();
                             options.disabledButton();
@@ -157,11 +163,11 @@
 
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    forms.find('input[name="satuan_category_name"]').val(rowData.satuan_category_name);
-                    forms.find('input[name="satuan_category_id"]').val(rowData.satuan_category_id);
-                    forms.find('input[name="satuan_category_description"]').val(rowData.satuan_category_description);
-                    $('#'+options.modal).modal('show');
-                    $('#'+options.modal).find('#save').text('Ubah');
+                    $(`#${options.formMain}`).find('input[name="satuan_category_name"]').val(rowData.satuan_category_name);
+                    $(`#${options.formMain}`).find('input[name="satuan_category_id"]').val(rowData.satuan_category_id);
+                    $(`#${options.formMain}`).find('input[name="satuan_category_description"]').val(rowData.satuan_category_description);
+                    $(`#${options.modal}`).modal('show');
+                    $(`#${options.modal}`).find('#save').text('Ubah');
                     options.id = rowData.satuan_category_id;
                 })
 
@@ -170,12 +176,6 @@
                     options.dataTitle = rowData.satuan_category_name;
                     deleteData(rowData.satuan_category_id);
                 })
-
-                $(window).on('hide.bs.modal', function() {
-                    $('#'+options.modal).find('#save').text('Simpan');
-                    forms.trigger('reset');
-                    options.id = null;
-                });
             });
         </script>
     @endpush

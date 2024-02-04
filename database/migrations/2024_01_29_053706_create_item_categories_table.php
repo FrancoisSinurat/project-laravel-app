@@ -19,6 +19,7 @@ return new class extends Migration
                 ->on('asset_categories')
                 ->restrictOnDelete();
             $table->string('item_category_name');
+            $table->string('item_category_code');
             $table->timestamps();
             $table->softDeletes();
         });
