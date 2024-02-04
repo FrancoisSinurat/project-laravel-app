@@ -60,16 +60,18 @@
             </div>
         </div>
     </section>
-    <script src="{{ asset('assets/js/ajax.js') }}"></script>
     @push('scripts')
+        <script src="{{ asset('assets/js/ajax.js') }}"></script>
         <script type="text/javascript">
             let modal = 'bidang-type-modal';
             let urlPost = "{{ route('admin.bidang-category.store') }}";
+            let formMain = 'bidang-type-form';
             var dataTableList;
             let options = {
                 modal: modal,
                 id: null,
                 url: urlPost,
+                formMain: formMain,
                 data: null,
                 dataTable: null,
                 disabledButton: () => {
@@ -141,15 +143,14 @@
                     DELETE_DATA(options);
                 }
 
-                let forms = $('#bidang-type-form');
-                Array.prototype.filter.call(forms, function(form) {
+                Array.prototype.filter.call($(`#${options.formMain}`), function(form) {
                     form.addEventListener('submit', function(event) {
                         if (form.checkValidity() === false) {
                             event.preventDefault();
                             event.stopPropagation();
                             form.classList.add('was-validated');
                         } else {
-                            let formData = $('#bidang-type-form').serialize();
+                            let formData = $(`#${options.formMain}`).serialize();
                             event.preventDefault();
                             event.stopPropagation();
                             options.disabledButton();
@@ -163,11 +164,11 @@
 
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    forms.find('input[name="bidang_category_name"]').val(rowData.bidang_category_name);
-                    forms.find('input[name="bidang_category_id"]').val(rowData.bidang_category_id);
-                    forms.find('input[name="bidang_category_singkatan"]').val(rowData.bidang_category_singkatan);
-                    $('#'+options.modal).modal('show');
-                    $('#'+options.modal).find('#save').text('Ubah');
+                    $(`#${options.formMain}`).find('input[name="bidang_category_name"]').val(rowData.bidang_category_name);
+                    $(`#${options.formMain}`).find('input[name="bidang_category_id"]').val(rowData.bidang_category_id);
+                    $(`#${options.formMain}`).find('input[name="bidang_category_singkatan"]').val(rowData.bidang_category_singkatan);
+                    $(`#${options.modal}`).modal('show');
+                    $(`#${options.modal}`).find('#save').text('Ubah');
                     options.id = rowData.bidang_category_id;
                 })
 
@@ -176,13 +177,6 @@
                     options.dataTitle = rowData.bidang_category_name;
                     deleteData(rowData.bidang_category_id);
                 })
-
-                $(window).on('hide.bs.modal', function() {
-                    $('#'+options.modal).find('#save').text('Simpan');
-                    forms.removeClass('was-validated');
-                    forms.trigger('reset');
-                    options.id = null;
-                });
             });
         </script>
     @endpush

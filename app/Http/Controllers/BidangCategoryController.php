@@ -11,6 +11,10 @@ class BidangCategoryController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('permission:bidang-list', ['only' => ['index']]);
+        $this->middleware('permission:bidang-create', ['only' => ['store']]);
+        $this->middleware('permission:bidang-edit', ['only' => ['update']]);
+        $this->middleware('permission:bidang-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.

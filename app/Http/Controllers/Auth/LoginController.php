@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\ItemCategory;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -52,7 +53,10 @@ class LoginController extends Controller
         $fieldType = filter_var($username, FILTER_VALIDATE_EMAIL) ? 'user_email' : 'user_name';
         if (Auth::attempt([$fieldType => $username, 'password' => $password])) {
             $user = Auth::user();
-            $attributes = ['user_id' => $user->user_id, 'user_name' => $user->user_name, 'user_email' => $user->user_email, 'user_status'];
+            $attributes = ['user_id' => $user->user_id, 'user_name' => $user->user_name, 'user_status', 'user_fullname' => $user->user_fullname];
+            $menu = ItemCategory::get();
+            if (count($menu) > 0) Session::put('categories', $menu);
+            if (count($menu) == 0) Session::put('categories', []);
             Session::put('user', $attributes);
             return redirect()->route('admin.dashboard');
         } else {

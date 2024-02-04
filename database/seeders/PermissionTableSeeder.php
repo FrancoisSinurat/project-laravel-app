@@ -26,14 +26,22 @@ class PermissionTableSeeder extends Seeder
             'barang-create',
             'barang-edit',
             'barang-delete',
+            'bahan-list', // bahan
+            'bahan-create',
+            'bahan-edit',
+            'bahan-delete',
+            'bidang-list', // bidang
+            'bidang-create',
+            'bidang-edit',
+            'bidang-delete',
             'jenis-aset-list', // jenis aset
             'jenis-aset-create',
             'jenis-aset-edit',
             'jenis-aset-delete',
-            'jenis-barang-list', // jenis barang
-            'jenis-barang-create',
-            'jenis-barang-edit',
-            'jenis-barang-delete',
+            'kategori-barang-list', // kategori barang
+            'kategori-barang-create',
+            'kategori-barang-edit',
+            'kategori-barang-delete',
             'role-list', // user role
             'role-create',
             'role-edit',
@@ -45,11 +53,7 @@ class PermissionTableSeeder extends Seeder
             'user-list', // user
             'user-create',
             'user-edit',
-            'user-delete',
-            'user-bidang-list', // user bidang
-            'user-bidang-create',
-            'user-bidang-edit',
-            'user-bidang-delete'
+            'user-delete'
          ];
          foreach ($permissions as $permission) {
             Permission::updateOrCreate(['name' => $permission],['name' => $permission]);

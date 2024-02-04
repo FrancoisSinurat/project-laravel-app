@@ -11,6 +11,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 class RoleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:role-list', ['only' => ['index']]);
+        $this->middleware('permission:role-create', ['only' => ['store']]);
+        $this->middleware('permission:role-edit', ['only' => ['update']]);
+        $this->middleware('permission:role-delete', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -45,7 +53,10 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|min:1|unique:roles'
+            'name' => 'required|unique:roles,name',
+        ],
+        [
+            'name.unique' => 'Nama sudah digunakan',
         ]);
         try {
             DB::beginTransaction();
@@ -86,7 +97,10 @@ class RoleController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validate($request, [
-            'name' => 'required',
+            'name' => "required|unique:roles,name,$id,id",
+        ],
+        [
+            'name.unique' => 'Nama sudah digunakan',
         ]);
         try {
             DB::beginTransaction();

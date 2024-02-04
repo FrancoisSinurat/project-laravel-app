@@ -34,7 +34,7 @@ Breadcrumbs::for('admin.role.index', function (BreadcrumbTrail $trail) {
 // Dashboard > Bidang Category
 Breadcrumbs::for('admin.bidang-category.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.dashboard');
-    $trail->push('Bahan', route('admin.bidang-category.index'));
+    $trail->push('Bidang', route('admin.bidang-category.index'));
 });
 
 // Dashboard > Satuan Category

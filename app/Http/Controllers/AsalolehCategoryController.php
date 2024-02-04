@@ -11,6 +11,10 @@ class AsalolehCategoryController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('permission:asal-oleh-list', ['only' => ['index']]);
+        $this->middleware('permission:asal-oleh-create', ['only' => ['store']]);
+        $this->middleware('permission:asal-oleh-edit', ['only' => ['update']]);
+        $this->middleware('permission:asal-oleh-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.

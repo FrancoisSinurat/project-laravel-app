@@ -26,7 +26,7 @@
                                 <input name="id" type="hidden" id="id">
                                 <label for="name" class="col-form-label mandatory">Role</label>
                                 <input type="text" name="name" class="form-control" id="name" required>
-                                <div class="invalid-feedback">
+                                <div id="name_feedback" class="invalid-feedback">
                                     Wajib diisi.
                                 </div>
                             </div>
@@ -89,16 +89,18 @@
             </div>
         </div>
     </section>
-    <script src="{{ asset('assets/js/ajax.js') }}"></script>
     @push('scripts')
+        <script src="{{ asset('assets/js/ajax.js') }}"></script>
         <script type="text/javascript">
             let modal = 'role';
             let urlPost = "{{ route('admin.role.store') }}";
+            let formMain = 'form-role';
             var dataTableList;
             let options = {
                 modal: modal,
                 id: null,
                 url: urlPost,
+                formMain: formMain,
                 data: null,
                 dataTable: null,
                 disabledButton: () => {
@@ -167,15 +169,14 @@
                     DELETE_DATA(options);
                 }
 
-                let forms = $('#form-role');
-                Array.prototype.filter.call(forms, function(form) {
+                Array.prototype.filter.call($(`#${options.formMain}`), function(form) {
                     form.addEventListener('submit', function(event) {
                         if (form.checkValidity() === false) {
                             event.preventDefault();
                             event.stopPropagation();
                             form.classList.add('was-validated');
                         } else {
-                            let formData = $('#form-role').serialize();
+                            let formData = $(`#${options.formMain}`).serialize();
                             event.preventDefault();
                             event.stopPropagation();
                             options.disabledButton();
@@ -189,12 +190,12 @@
 
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    forms.find('input[name="name"]').val(rowData.name);
+                    $(`#${options.formMain}`).find('input[name="name"]').val(rowData.name);
                     rowData.permissions.forEach(v => {
                         $('#'+v.id).prop('checked', true);
                     });
-                    $('#'+options.modal).modal('show');
-                    $('#'+options.modal).find('#save').text('Ubah');
+                    $(`#${options.modal}`).modal('show');
+                    $(`#${options.modal}`).find('#save').text('Ubah');
                     options.id = rowData.id;
                 })
 
@@ -203,13 +204,6 @@
                     options.dataTitle = rowData.name;
                     deleteData(rowData.id);
                 })
-
-                $(window).on('hide.bs.modal', function() {
-                    $('#'+options.modal).find('#save').text('Simpan');
-                    forms.trigger('reset');
-                    forms.removeClass('was-validated');
-                    options.id = null;
-                });
             });
         </script>
     @endpush

@@ -9,20 +9,22 @@
                         <div class="col-md-8">
                             <div class="mb-3">
                                 <input name="user_id" type="hidden" id="user_id">
-                                <label for="user-fullname" class="col-form-label mandatory">Nama</label>
-                                <input type="text" name="user_fullname" class="form-control" id="user-fullname" required>
+                                <label for="user_fullname" class="col-form-label mandatory">Nama</label>
+                                <input type="text" name="user_fullname" class="form-control" id="user_fullname" required>
                                 <div class="invalid-feedback">
                                     Wajib diisi.
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="user-nrk" class="col-form-label">NRK</label>
-                                <input type="text" name="user_nrk" class="form-control" id="user-nrk">
+                                <label for="user_nrk" class="col-form-label">NRK</label>
+                                <input type="text" name="user_nrk" class="form-control" id="user_nrk">
+                                <div id="user_nrk_feedback" class="invalid-feedback">
+                                </div>
                             </div>
                             <div class="mb-3">
-                                <label for="user-email" class="col-form-label mandatory">Email</label>
-                                <input type="email" name="user_email" class="form-control" id="user-email" required>
-                                <div class="invalid-feedback">
+                                <label for="user_email" class="col-form-label mandatory">Email</label>
+                                <input type="email" name="user_email" class="form-control" id="user_email" required>
+                                <div id="user_email_feedback" class="invalid-feedback">
                                     Email wajib diisi.
                                 </div>
                             </div>
@@ -37,24 +39,22 @@
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <input name="user_password" type="hidden" id="user_password">
-                                <label for="user-password" class="col-form-label mandatory">Password</label>
-                                <input type="password" name="user_password" class="form-control" id="user-password" required>
-                                <div class="invalid-feedback">
+                                <label for="user_password" class="col-form-label mandatory">Password</label>
+                                <input type="password" name="user_password" class="form-control" id="user_password" required>
+                                <div id="user_password_feedback" class="invalid-feedback">
                                     Wajib diisi.
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <input name="user_confirm_password" type="hidden" id="user_confirm_password">
-                                <label for="user-confirm-password" class="col-form-label mandatory">Konfirmasi Password</label>
-                                <input type="password" name="user_confirm_password" class="form-control" id="user-confirm-password" required>
-                                <div class="invalid-feedback">
+                                <label for="user_confirm_password" class="col-form-label mandatory">Konfirmasi Password</label>
+                                <input type="password" name="user_confirm_password" class="form-control" id="user_confirm_password" required>
+                                <div id="user_confirm_password_feedback" class="invalid-feedback">
                                     Wajib diisi.
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="type-role" class="col-form-label mandatory">Pilih Hak Akses</label>
-                                <select class="form-control" name="asset_category_id" id="type-role">
+                                <label for="role_id" class="col-form-label mandatory">Pilih Hak Akses</label>
+                                <select class="form-control" name="role_id" id="role_id">
                                     <option value="" disabled>Pilih Role</option>
                                     @foreach ($role as $v)
                                         <option value="{{ $v->id }}">{{ $v->name }}</option>
@@ -92,8 +92,10 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Username</th>
+                                        <th>Nama</th>
+                                        <th>NRK</th>
                                         <th>Email</th>
+                                        <th>Role</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -106,16 +108,18 @@
             </div>
         </div>
     </section>
-    <script src="{{ asset('assets/js/ajax.js') }}"></script>
     @push('scripts')
+        <script src="{{ asset('assets/js/ajax.js') }}"></script>
         <script type="text/javascript">
             let modal = 'user-modal';
             let urlPost = "{{ route('admin.user.store') }}";
+            let formMain = 'user-form';
             var dataTableList;
             let options = {
                 modal: modal,
                 id: null,
                 url: urlPost,
+                formMain: formMain,
                 data: null,
                 dataTable: null,
                 disabledButton: () => {
@@ -143,12 +147,25 @@
                             }
                         },
                         {
-                            data: 'user_name',
-                            name: 'user_name',
+                            data: 'user_fullname',
+                            name: 'user_fullname',
+                        },
+                        {
+                            data: 'user_nrk',
+                            name: 'user_nrk',
                         },
                         {
                             data: 'user_email',
                             name: 'user_email'
+                        },
+                        {
+                            data: 'roles',
+                            name: 'roles',
+                            orderable: false,
+                            searchable: false,
+                            render: function(data, type, row, meta) {
+                                return data[0].name;
+                            }
                         },
                         {
                             name: 'action',
@@ -192,15 +209,14 @@
                     console.log(`error`, err);
                 }
 
-                let forms = $('#user-form');
-                Array.prototype.filter.call(forms, function(form) {
+                Array.prototype.filter.call($(`#${options.formMain}`), function(form) {
                     form.addEventListener('submit', function(event) {
                         if (form.checkValidity() === false) {
                             event.preventDefault();
                             event.stopPropagation();
                             form.classList.add('was-validated');
                         } else {
-                            let formData = $('#user-form').serialize();
+                            let formData = $(`#${options.formMain}`).serialize();
                             event.preventDefault();
                             event.stopPropagation();
                             options.disabledButton();
@@ -214,15 +230,17 @@
 
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    forms.find('input[name="user_name"]').val(rowData.user_name);
-                    forms.find('input[name="user_email"]').val(rowData.user_email);
-                    if (rowData.user_nrk) forms.find('input[name="user_nrk"]').val(rowData.user_nrk);
-                    if (rowData.user_address) forms.find('input[name="user_address"]').val(rowData.user_address);
-                    if (rowData.user_phone) forms.find('input[name="user_phone"]').val(rowData.user_phone);
-                    if (rowData.user_fullname) forms.find('input[name="user_fullname"]').val(rowData.user_fullname);
-                    $("#type-role").val(rowData.role.id).change();
-                    $('#'+options.modal).modal('show');
-                    $('#'+options.modal).find('#save').text('Ubah');
+                    $(`#${options.formMain}`).find('input[name="user_name"]').val(rowData.user_name);
+                    $(`#${options.formMain}`).find('input[name="user_email"]').val(rowData.user_email);
+                    if (rowData.user_nrk) $(`#${options.formMain}`).find('input[name="user_nrk"]').val(rowData.user_nrk);
+                    if (rowData.user_address) $(`#${options.formMain}`).find('input[name="user_address"]').val(rowData.user_address);
+                    if (rowData.user_phone) $(`#${options.formMain}`).find('input[name="user_phone"]').val(rowData.user_phone);
+                    if (rowData.user_fullname) $(`#${options.formMain}`).find('input[name="user_fullname"]').val(rowData.user_fullname);
+                    $(`#${options.formMain}`).find('input[name="user_password"]').prop('required',false);
+                    $(`#${options.formMain}`).find('input[name="user_confirm_password"]').prop('required',false);
+                    $("#role_id").val(rowData.roles[0].id).change();
+                    $(`#${options.modal}`).modal('show');
+                    $(`#${options.modal}`).find('#save').text('Ubah');
                     options.id = rowData.user_id;
                 })
 
@@ -231,13 +249,6 @@
                     options.dataTitle = rowData.user_name;
                     deleteData(rowData.user_id);
                 })
-
-                $(window).on('hide.bs.modal', function() {
-                    $('#'+options.modal).find('#save').text('Simpan');
-                    forms.trigger('reset');
-                    forms.removeClass('was-validated');
-                    options.id = null;
-                });
             });
         </script>
     @endpush

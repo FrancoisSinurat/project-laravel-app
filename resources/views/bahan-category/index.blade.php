@@ -1,13 +1,14 @@
 <x-layout>
+    @section('title', 'Bahan')
     <section class="section">
         <x-modal id="bahan-type-modal">
-            <x-slot name="title">Form Bahan</x-slot>
+            <x-slot name="title">Form @yield('title')</x-slot>
             <x-slot name="body">
                 <form id="bahan-type-form" class="form needs-validation" novalidate>
                     <div class="mb-3">
-                        <label for="type-name" class="col-form-label">Nama Bahan:</label>
-                        <input type="text" name="bahan_category_name" class="form-control" id="type-name" required>
-                        <div class="invalid-feedback">
+                        <label for="bahan_category_name" class="col-form-label">Nama Bahan:</label>
+                        <input type="text" name="bahan_category_name" class="form-control" id="bahan_category_name" required>
+                        <div id="bahan_category_name_feedback" class="invalid-feedback">
                             Wajib diisi.
                         </div>
                     </div>
@@ -32,7 +33,8 @@
                                     class="btn btn-sm btn-primary mb-2">Tambah Data</a>
                             </div>
                         </div>
-                        <table id="bahan-category-table" class="table table-striped table-hover table-bordered"
+                        <div class="table-responsive">
+                            <table id="bahan-category-table" class="table table-hover"
                             width="100%">
                             <thead>
                                 <tr>
@@ -44,21 +46,24 @@
                             <tbody>
                             </tbody>
                         </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <script src="{{ asset('assets/js/ajax.js') }}"></script>
     @push('scripts')
+        <script src="{{ asset('assets/js/ajax.js') }}"></script>
         <script type="text/javascript">
             let modal = 'bahan-type-modal';
             let urlPost = "{{ route('admin.bahan-category.store') }}";
+            let formMain = 'bahan-type-form';
             var dataTableList;
             let options = {
                 modal: modal,
                 id: null,
                 url: urlPost,
+                formMain: formMain,
                 data: null,
                 dataTable: null,
                 disabledButton: () => {
@@ -94,10 +99,13 @@
                             orderable: false,
                             searchable: false,
                             render: function(data) {
-                                let button = `<div class="btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-success">Edit</button>
-                                    <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-warning">Delete</button>
-                                </div>`;
+                                let button = `
+                                    <div class="d-flex justify-content-end">
+                                        <div class="btn-group" role="group">
+                                            <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-primary"><i class="bi bi-pencil-fill"></i></button>
+                                            <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-danger"><i class="bi bi-trash-fill"></i></button>
+                                        </div>
+                                    </div>`;
                                 return button;
                             }
                         },
@@ -122,16 +130,14 @@
                     options.dataTable = dataTableList;
                     DELETE_DATA(options);
                 }
-
-                let forms = $('#bahan-type-form');
-                Array.prototype.filter.call(forms, function(form) {
+                Array.prototype.filter.call($(`#${options.formMain}`), function(form) {
                     form.addEventListener('submit', function(event) {
                         if (form.checkValidity() === false) {
                             event.preventDefault();
                             event.stopPropagation();
                             form.classList.add('was-validated');
                         } else {
-                            let formData = $('#bahan-type-form').serialize();
+                            let formData = $(`#${options.formMain}`).serialize();
                             event.preventDefault();
                             event.stopPropagation();
                             options.disabledButton();
@@ -145,10 +151,10 @@
 
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    forms.find('input[name="bahan_category_name"]').val(rowData.bahan_category_name);
-                    forms.find('input[name="bahan_category_id"]').val(rowData.bahan_category_id);
-                    $('#'+options.modal).modal('show');
-                    $('#'+options.modal).find('#save').text('Ubah');
+                    $(`#${options.formMain}`).find('input[name="bahan_category_name"]').val(rowData.bahan_category_name);
+                    $(`#${options.formMain}`).find('input[name="bahan_category_id"]').val(rowData.bahan_category_id);
+                    $(`#${options.modal}`).modal('show');
+                    $(`#${options.modal}`).find('#save').text('Ubah');
                     options.id = rowData.bahan_category_id;
                 })
 
@@ -157,12 +163,6 @@
                     options.dataTitle = rowData.bahan_category_name;
                     deleteData(rowData.bahan_category_id);
                 })
-
-                $(window).on('hide.bs.modal', function() {
-                    $('#'+options.modal).find('#save').text('Simpan');
-                    forms.trigger('reset');
-                    options.id = null;
-                });
             });
         </script>
     @endpush

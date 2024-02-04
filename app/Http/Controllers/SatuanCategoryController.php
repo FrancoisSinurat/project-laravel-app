@@ -11,6 +11,10 @@ class SatuanCategoryController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('permission:satuan-list', ['only' => ['index']]);
+        $this->middleware('permission:satuan-create', ['only' => ['store']]);
+        $this->middleware('permission:satuan-edit', ['only' => ['update']]);
+        $this->middleware('permission:satuan-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
@@ -19,7 +23,7 @@ class SatuanCategoryController extends Controller
     {
         if($request->ajax()) {
             $satuan = SatuanCategory::query();
-            return DataTables::of($satuan)->make(); 
+            return DataTables::of($satuan)->make();
         }
         return view('satuan-category.index');
     }
@@ -38,8 +42,10 @@ class SatuanCategoryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'satuan_category_name' => 'required',
-            'satuan_category_description' => 'required',
+            'satuan_category_name' => 'required|unique:satuan_categories,satuan_category_name,NULL,NULL,deleted_at,NULL',
+        ],
+        [
+            'satuan_category_name.unique' => 'Nama satuan sudah digunakan',
         ]);
         SatuanCategory::create($request->all());
         return response()->json([
@@ -69,8 +75,10 @@ class SatuanCategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validate($request, [
-            'satuan_category_name' => 'required',
-            'satuan_category_description' => 'required',
+            'satuan_category_name' => "required|unique:satuan_categories,satuan_category_name,$id,satuan_category_id,deleted_at,NULL",
+        ],
+        [
+            'satuan_category_name.unique' => 'Nama satuan sudah digunakan',
         ]);
         SatuanCategory::where('satuan_category_id', $id)->update($request->all());
         return response()->json([

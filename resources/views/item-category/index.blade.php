@@ -70,15 +70,15 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>>
         </div>
     </section>
-    <script src="{{ asset('assets/js/ajax.js') }}"></script>
     @push('scripts')
+        <script src="{{ asset('assets/js/ajax.js') }}"></script>
         <script type="text/javascript">
             let modal = 'item-type-modal';
             let urlPost = "{{ route('admin.item-category.store') }}";
-            let forms = $('#item-type-form');
+            let formMain = 'item-type-form';
             let dataTableList;
             let options = {
                 modal: modal,
@@ -86,6 +86,7 @@
                 url: urlPost,
                 data: null,
                 dataTable: null,
+                formMain: formMain,
                 disabledButton: () => {
                     $('#save').addClass('disabled');
                     $('.loading').removeClass('d-none');
@@ -158,14 +159,14 @@
                     DELETE_DATA(options);
                 }
 
-                Array.prototype.filter.call(forms, function(form) {
+                Array.prototype.filter.call($(`#${options.formMain}`), function(form) {
                     form.addEventListener('submit', function(event) {
                         if (form.checkValidity() === false) {
                             event.preventDefault();
                             event.stopPropagation();
                             form.classList.add('was-validated');
                         } else {
-                            let formData = $('#item-type-form').serialize();
+                            let formData = $(`#${options.formMain}`).serialize();
                             event.preventDefault();
                             event.stopPropagation();
                             options.disabledButton();
@@ -179,12 +180,12 @@
 
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    forms.find('input[name="item_category_name"]').val(rowData.item_category_name);
-                    forms.find('input[name="item_category_code"]').val(rowData.item_category_code);
-                    forms.find('input[name="item_category_id"]').val(rowData.item_category_id);
+                    $(`#${options.formMain}`).find('input[name="item_category_name"]').val(rowData.item_category_name);
+                    $(`#${options.formMain}`).find('input[name="item_category_code"]').val(rowData.item_category_code);
+                    $(`#${options.formMain}`).find('input[name="item_category_id"]').val(rowData.item_category_id);
                     $("#asset_category_id").val(rowData.asset_category.asset_category_id).change();
-                    $('#'+options.modal).modal('show');
-                    $('#'+options.modal).find('#save').text('Ubah');
+                    $(`#${options.modal}`).modal('show');
+                    $(`#${options.modal}`).find('#save').text('Ubah');
                     options.id = rowData.item_category_id;
                 })
 
@@ -193,13 +194,6 @@
                     options.dataTitle = rowData.item_category_name;
                     deleteData(rowData.item_category_id);
                 })
-
-                $(window).on('hide.bs.modal', function() {
-                    $('#'+options.modal).find('#save').text('Simpan');
-                    forms.removeClass('was-validated');
-                    forms.trigger('reset');
-                    options.id = null;
-                });
             });
         </script>
     @endpush

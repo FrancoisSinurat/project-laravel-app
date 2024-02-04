@@ -52,16 +52,18 @@
             </div>
         </div>
     </section>
-    <script src="{{ asset('assets/js/ajax.js') }}"></script>
     @push('scripts')
+        <script src="{{ asset('assets/js/ajax.js') }}"></script>
         <script type="text/javascript">
             let modal = 'asaloleh-type-modal';
+            let formMain = 'asaloleh-type-form';
             let urlPost = "{{ route('admin.asaloleh-category.store') }}";
             var dataTableList;
             let options = {
                 modal: modal,
                 id: null,
                 url: urlPost,
+                formMain: formMain,
                 data: null,
                 dataTable: null,
                 disabledButton: () => {
@@ -129,15 +131,14 @@
                     DELETE_DATA(options);
                 }
 
-                let forms = $('#asaloleh-type-form');
-                Array.prototype.filter.call(forms, function(form) {
+                Array.prototype.filter.call($(`#${options.formMain}`), function(form) {
                     form.addEventListener('submit', function(event) {
                         if (form.checkValidity() === false) {
                             event.preventDefault();
                             event.stopPropagation();
                             form.classList.add('was-validated');
                         } else {
-                            let formData = $('#asaloleh-type-form').serialize();
+                            let formData = $(`#${options.formMain}`).serialize();
                             event.preventDefault();
                             event.stopPropagation();
                             options.disabledButton();
@@ -151,10 +152,10 @@
 
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    forms.find('input[name="asaloleh_category_name"]').val(rowData.asaloleh_category_name);
-                    forms.find('input[name="asaloleh_category_id"]').val(rowData.asaloleh_category_id);
-                    $('#'+options.modal).modal('show');
-                    $('#'+options.modal).find('#save').text('Ubah');
+                    $(`#${options.formMain}`).find('input[name="asaloleh_category_name"]').val(rowData.asaloleh_category_name);
+                    $(`#${options.formMain}`).find('input[name="asaloleh_category_id"]').val(rowData.asaloleh_category_id);
+                    $(`#${options.modal}`).modal('show');
+                    $(`#${options.modal}`).find('#save').text('Ubah');
                     options.id = rowData.asaloleh_category_id;
                 })
 
@@ -163,13 +164,6 @@
                     options.dataTitle = rowData.asaloleh_category_name;
                     deleteData(rowData.asaloleh_category_id);
                 })
-
-                $(window).on('hide.bs.modal', function() {
-                    $('#'+options.modal).find('#save').text('Simpan');
-                    forms.removeClass('was-validated');
-                    forms.trigger('reset');
-                    options.id = null;
-                });
             });
         </script>
     @endpush

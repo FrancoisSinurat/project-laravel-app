@@ -18,6 +18,7 @@ class UserInitSeeder extends Seeder
         $user = [
             'user_id' => (string) Str::uuid(),
             'user_name' => 'Super Admin',
+            'user_fullname' => 'Super Admin',
             'user_email' => 'super@admin.aset',
             'user_password' => bcrypt(123456),
             'user_status' => 1
