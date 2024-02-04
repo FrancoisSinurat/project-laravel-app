@@ -1,3 +1,17 @@
+<style>
+.modal-body{
+    font-size: medium;
+    font-weight: 600;
+    color: #6c757d;
+    text-transform: capitalize;
+}
+.modal-title {
+    font-size:larger;
+    font-weight: 600;
+    color: #6c757d;
+    text-transform: capitalize;
+}
+</style>
 <div class="modal fade {{ $class ?? '' }}" id="{{ $id }}" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="{{ $id }}-title" aria-modal="true">
     <div class="modal-dialog {{ $size ?? '' }}" role="document">
         <div class="modal-content shadow">

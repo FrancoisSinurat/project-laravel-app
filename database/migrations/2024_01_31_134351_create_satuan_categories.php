@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('satuan_categories', function (Blueprint $table) {
             $table->uuid('satuan_category_id')->primary();
             $table->string('satuan_category_name');
-            $table->text('satuan_category_description');
+            $table->text('satuan_category_description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

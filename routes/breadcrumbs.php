@@ -16,13 +16,25 @@ Breadcrumbs::for('admin.dashboard', function (BreadcrumbTrail $trail) {
 // Dashboard > Item Category
 Breadcrumbs::for('admin.item-category.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.dashboard');
-    $trail->push('Jenis Barang', route('admin.item-category.index'));
+    $trail->push('Kategori', route('admin.item-category.index'));
+});
+
+// Dashboard > User
+Breadcrumbs::for('admin.user.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Pengguna', route('admin.user.index'));
+});
+
+// Dashboard > Role
+Breadcrumbs::for('admin.role.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Hak Akses', route('admin.role.index'));
 });
 
 // Dashboard > Bidang Category
 Breadcrumbs::for('admin.bidang-category.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.dashboard');
-    $trail->push('Bahan', route('admin.bidang-category.index'));
+    $trail->push('Bidang', route('admin.bidang-category.index'));
 });
 
 // Dashboard > Satuan Category
