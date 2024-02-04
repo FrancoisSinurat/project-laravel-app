@@ -47,8 +47,8 @@ class ItemCategoryController extends Controller
             'asset_category_id' => 'required',
         ],
         [
-            'item_category_name.unique' => 'Nama Jenis barang sudah ada',
-            'item_category_code.unique' => 'Kode Jenis barang sudah ada'
+            'item_category_name.unique' => 'Nama barang sudah digunakan',
+            'item_category_code.unique' => 'Kode barang sudah digunakan'
         ]);
         try {
             $input = $request->all();
@@ -92,8 +92,8 @@ class ItemCategoryController extends Controller
             'asset_category_id' => 'required',
         ],
         [
-            'item_category_name.unique' => 'Nama Jenis barang sudah ada',
-            'item_category_code.unique' => 'Kode Jenis barang sudah ada'
+            'item_category_name.unique' => 'Nama barang sudah digunakan',
+            'item_category_code.unique' => 'Kode barang sudah digunakan'
         ]);
         $input = $request->all();
         $input['item_category_code'] = strtoupper($input['item_category_code']);

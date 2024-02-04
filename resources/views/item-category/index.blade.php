@@ -20,14 +20,14 @@
                     </div>
                     <div class="mb-3">
                         <label for="item_category_name" class="col-form-label mandatory">Nama @yield('title')</label>
-                        <input type="text" name="item_category_name" class="form-control" id="item_category_name" aria-describedby="item_category_name_feedback" required>
+                        <input type="text" name="item_category_name" class="form-control" id="item_category_name" required>
                         <div id="item_category_name_feedback" class="invalid-feedback">
                             Wajib diisi.
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="item_category_code" class="col-form-label mandatory">Kode @yield('title')</label>
-                        <input type="text" name="item_category_code" class="form-control text-uppercase" id="item_category_code" aria-describedby="item_category_code_feedback" required>
+                        <input type="text" name="item_category_code" class="form-control text-uppercase" id="item_category_code" required>
                         <div id="item_category_code_feedback" class="invalid-feedback">
                             Wajib diisi.
                         </div>
@@ -85,7 +85,6 @@
                 id: null,
                 url: urlPost,
                 data: null,
-                form: forms,
                 dataTable: null,
                 disabledButton: () => {
                     $('#save').addClass('disabled');
@@ -200,7 +199,6 @@
                     forms.removeClass('was-validated');
                     forms.trigger('reset');
                     options.id = null;
-                    console.log('close form');
                 });
             });
         </script>

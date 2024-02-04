@@ -1,13 +1,14 @@
 <x-layout>
+    @section('title', 'Asal Perolehan')
     <section class="section">
         <x-modal id="asaloleh-type-modal">
-            <x-slot name="title">Form Asal Perolehan</x-slot>
+            <x-slot name="title">Form @yield('title')</x-slot>
             <x-slot name="body">
                 <form id="asaloleh-type-form" class="form needs-validation" novalidate>
                     <div class="mb-3">
-                        <label for="type-name" class="col-form-label">Nama Perolehan:</label>
-                        <input type="text" name="asaloleh_category_name" class="form-control" id="type-name" required>
-                        <div class="invalid-feedback">
+                        <label for="asaloleh_category_name" class="col-form-label mandatory">Nama Perolehan</label>
+                        <input type="text" name="asaloleh_category_name" class="form-control" id="asaloleh_category_name" required>
+                        <div id="asaloleh_category_name_feedback" class="invalid-feedback">
                             Wajib diisi.
                         </div>
                     </div>
@@ -32,18 +33,20 @@
                                     class="btn btn-sm btn-primary mb-2">Tambah Data</a>
                             </div>
                         </div>
-                        <table id="asaloleh-category-table" class="table table-striped table-hover table-bordered"
-                            width="100%">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Nama Perolehan</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table id="asaloleh-category-table" class="table table-hover"
+                                width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Perolehan</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -94,10 +97,13 @@
                             orderable: false,
                             searchable: false,
                             render: function(data) {
-                                let button = `<div class="btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-success">Edit</button>
-                                    <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-warning">Delete</button>
-                                </div>`;
+                                let button = `
+                                    <div class="d-flex justify-content-end">
+                                        <div class="btn-group" role="group">
+                                            <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-primary"><i class="bi bi-pencil-fill"></i></button>
+                                            <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-danger"><i class="bi bi-trash-fill"></i></button>
+                                        </div>
+                                    </div>`;
                                 return button;
                             }
                         },
@@ -160,6 +166,7 @@
 
                 $(window).on('hide.bs.modal', function() {
                     $('#'+options.modal).find('#save').text('Simpan');
+                    forms.removeClass('was-validated');
                     forms.trigger('reset');
                     options.id = null;
                 });

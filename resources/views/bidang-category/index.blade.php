@@ -1,20 +1,21 @@
 <x-layout>
+    @section('title', 'Bidang')
     <section class="section">
         <x-modal id="bidang-type-modal">
-            <x-slot name="title">Form Bidang</x-slot>
+            <x-slot name="title">Form @yield('title')</x-slot>
             <x-slot name="body">
                 <form id="bidang-type-form" class="form needs-validation" novalidate>
                     <div class="mb-3">
-                        <label for="type-name" class="col-form-label">Nama Bidang:</label>
-                        <input type="text" name="bidang_category_name" class="form-control" id="type-name" required>
-                        <div class="invalid-feedback">
+                        <label for="bidang_category_name" class="col-form-label mandatory">Nama Bidang</label>
+                        <input type="text" name="bidang_category_name" class="form-control" id="bidang_category_name" required>
+                        <div id="bidang_category_name_feedback" class="invalid-feedback">
                             Wajib diisi.
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="type-name" class="col-form-label">Singkatan:</label>
-                        <input type="text" name="bidang_category_singkatan" class="form-control" id="type-name" required>
-                        <div class="invalid-feedback">
+                        <label for="bidang_category_singkatan" class="col-form-label mandatory">Singkatan</label>
+                        <input type="text" name="bidang_category_singkatan" class="form-control" id="bidang_category_singkatan" required>
+                        <div id="bidang_category_singkatan_feedback" class="invalid-feedback">
                             Wajib diisi.
                         </div>
                     </div>
@@ -39,19 +40,21 @@
                                     class="btn btn-sm btn-primary mb-2">Tambah Data</a>
                             </div>
                         </div>
-                        <table id="bidang-category-table" class="table table-striped table-hover table-bordered"
-                            width="100%">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Nama Bidang</th>
-                                    <th>Singkatan</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                                <table id="bidang-category-table" class="table table-hover"
+                                width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Bidang</th>
+                                        <th>Singkatan</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -106,10 +109,13 @@
                             orderable: false,
                             searchable: false,
                             render: function(data) {
-                                let button = `<div class="btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-success">Edit</button>
-                                    <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-warning">Delete</button>
-                                </div>`;
+                                let button = `
+                                    <div class="d-flex justify-content-end">
+                                        <div class="btn-group" role="group">
+                                            <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-primary"><i class="bi bi-pencil-fill"></i></button>
+                                            <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-danger"><i class="bi bi-trash-fill"></i></button>
+                                        </div>
+                                    </div>`;
                                 return button;
                             }
                         },
@@ -173,6 +179,7 @@
 
                 $(window).on('hide.bs.modal', function() {
                     $('#'+options.modal).find('#save').text('Simpan');
+                    forms.removeClass('was-validated');
                     forms.trigger('reset');
                     options.id = null;
                 });

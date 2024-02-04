@@ -1260,7 +1260,7 @@ h6 {
 } */
 
 .mandatory::after {
-    content: ' *';
+    content: '*';
     color:red;
 }
 
