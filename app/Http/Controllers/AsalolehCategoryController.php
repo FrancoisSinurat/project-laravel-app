@@ -11,6 +11,10 @@ class AsalolehCategoryController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('permission:asal-oleh-list', ['only' => ['index']]);
+        $this->middleware('permission:asal-oleh-create', ['only' => ['store']]);
+        $this->middleware('permission:asal-oleh-edit', ['only' => ['update']]);
+        $this->middleware('permission:asal-oleh-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
@@ -19,7 +23,7 @@ class AsalolehCategoryController extends Controller
     {
         if($request->ajax()) {
             $asaloleh = AsalolehCategory::query();
-            return DataTables::of($asaloleh)->make(); 
+            return DataTables::of($asaloleh)->make();
         }
         return view('asaloleh-category.index');
     }
@@ -38,7 +42,10 @@ class AsalolehCategoryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'asaloleh_category_name' => 'required',
+            'asaloleh_category_name' => 'required|unique:asaloleh_categories,asaloleh_category_name,NULL,NULL,deleted_at,NULL',
+        ],
+        [
+            'asaloleh_category_name.unique' => 'Nama sudah digunakan',
         ]);
         AsalolehCategory::create($request->all());
         return response()->json([
@@ -68,7 +75,10 @@ class AsalolehCategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validate($request, [
-            'asaloleh_category_name' => 'required',
+            'asaloleh_category_name' => "required|unique:asaloleh_categories,asaloleh_category_name,$id,asaloleh_category_id,deleted_at,NULL",
+        ],
+        [
+            'asaloleh_category_name.unique' => 'Nama sudah digunakan',
         ]);
         AsalolehCategory::where('asaloleh_category_id', $id)->update($request->all());
         return response()->json([

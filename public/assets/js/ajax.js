@@ -19,6 +19,33 @@ function errorEvent() {
     options.enabledButton();
 }
 
+function validation(err) {
+    if (err?.errors) {
+        options.error = err.errors;
+        $('form').addClass('was-validated');
+        for (const [key, value] of Object.entries(err.errors)) {
+            $(`#${key}`).val('');
+            $(`#${key}_feedback`).text(value[0]);
+        }
+    }
+}
+
+$(window).on('hide.bs.modal', function() {
+    if (options.modal) $('#'+options.modal).find('#save').text('Simpan');
+    if (options.formMain) {
+        $('#'+options.formMain).removeClass('was-validated');
+        $('#'+options.formMain).trigger('reset');
+    }
+    options.id = null;
+    if (options.error) {
+        for (const [key, value] of Object.entries(options.error)) {
+            $(`#${key}`).val('');
+            $(`#${key}_feedback`).text('Wajib diisi');
+        }
+        options.error = null;
+    }
+});
+
 const GET_DATA = (options) => {
     console.log('GET_DATA', options);
     $.ajax({
@@ -49,7 +76,10 @@ const POST_DATA = (options) => {
             if (modal) successEvent(options.modal, options.dataTable);
         },
         error: (err) => {
-            console.log(err);
+            const resErr = err?.responseJSON;
+            validation(resErr);
+            if (resErr.message) ERROR_ALERT(resErr.message);
+            options.enabledButton();
         }
     });
 }
@@ -68,6 +98,10 @@ const PATCH_DATA = (options) => {
         },
         error: (err) => {
             console.log(err);
+            const resErr = err?.responseJSON;
+            validation(resErr);
+            if (resErr.message) ERROR_ALERT(resErr.message);
+            options.enabledButton();
         }
     });
 }

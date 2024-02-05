@@ -6,7 +6,7 @@ use App\Models\AssetCategory;
 use App\Models\ItemCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use League\Fractal\Resource\Item;
+use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
 
@@ -15,6 +15,10 @@ class ItemCategoryController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('permission:kategori-barang-list', ['only' => ['index']]);
+        $this->middleware('permission:kategori-barang-create', ['only' => ['store']]);
+        $this->middleware('permission:kategori-barang-edit', ['only' => ['update']]);
+        $this->middleware('permission:kategori-barang-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
@@ -42,12 +46,22 @@ class ItemCategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'item_category_name' => 'required|unique:item_categories,item_category_name,NULL,NULL,deleted_at,NULL',
+            'item_category_code' => 'required|unique:item_categories,item_category_code,NULL,NULL,deleted_at,NULL',
+            'asset_category_id' => 'required',
+        ],
+        [
+            'item_category_name.unique' => 'Nama barang sudah digunakan',
+            'item_category_code.unique' => 'Kode barang sudah digunakan'
+        ]);
         try {
-            $this->validate($request, [
-                'asset_category_id' => 'required',
-                'item_category_name' => 'required',
-            ]);
-            ItemCategory::create($request->all());
+            $input = $request->all();
+            $input['item_category_code'] = strtoupper($input['item_category_code']);
+            ItemCategory::create($input);
+            $menu = ItemCategory::get();
+            if (count($menu) > 0) Session::put('categories', $menu);
+            if (count($menu) == 0) Session::put('categories', []);
             return response()->json([
                 'status' => true,
             ], 200);
@@ -55,6 +69,7 @@ class ItemCategoryController extends Controller
             Log::error($th->getMessage());
             return response()->json([
                 'status' => false,
+                'data' => $th,
             ], 500);
         }
     }
@@ -79,12 +94,22 @@ class ItemCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $this->validate($request, [
+            'item_category_name' => "required|unique:item_categories,item_category_name,$id,item_category_id,deleted_at,NULL",
+            'item_category_code' => "required|unique:item_categories,item_category_code,$id,item_category_id,deleted_at,NULL",
+            'asset_category_id' => 'required',
+        ],
+        [
+            'item_category_name.unique' => 'Nama barang sudah digunakan',
+            'item_category_code.unique' => 'Kode barang sudah digunakan'
+        ]);
+        $input = $request->all();
+        $input['item_category_code'] = strtoupper($input['item_category_code']);
         try {
-            $this->validate($request, [
-                'asset_category_id' => 'required',
-                'item_category_name' => 'required',
-            ]);
-            ItemCategory::where('item_category_id', $id)->update($request->all());
+            ItemCategory::where('item_category_id', $id)->update($input);
+            $menu = ItemCategory::get();
+            if (count($menu) > 0) Session::put('categories', $menu);
+            if (count($menu) == 0) Session::put('categories', []);
             return response()->json([
                 'status' => true,
             ], 200);
@@ -108,6 +133,9 @@ class ItemCategoryController extends Controller
                 ], 500);
             }
             ItemCategory::where('item_category_id', $id)->delete();
+            $menu = ItemCategory::get();
+            if (count($menu) > 0) Session::put('categories', $menu);
+            if (count($menu) == 0) Session::put('categories', []);
             return response()->json([
                 'status' => true,
             ], 200);

@@ -11,6 +11,10 @@ class BidangCategoryController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('permission:bidang-list', ['only' => ['index']]);
+        $this->middleware('permission:bidang-create', ['only' => ['store']]);
+        $this->middleware('permission:bidang-edit', ['only' => ['update']]);
+        $this->middleware('permission:bidang-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
@@ -19,7 +23,7 @@ class BidangCategoryController extends Controller
     {
         if($request->ajax()) {
             $bidang = BidangCategory::query();
-            return DataTables::of($bidang)->make(); 
+            return DataTables::of($bidang)->make();
         }
         return view('bidang-category.index');
     }
@@ -38,8 +42,12 @@ class BidangCategoryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'bidang_category_name' => 'required',
-            'bidang_category_singkatan' => 'required',
+            'bidang_category_name' => 'required|unique:bidang_categories,bidang_category_name,NULL,NULL,deleted_at,NULL',
+            'bidang_category_singkatan' => 'required|unique:bidang_categories,bidang_category_singkatan,NULL,NULL,deleted_at,NULL',
+        ],
+        [
+            'bidang_category_name.unique' => 'Nama bidang sudah digunakan',
+            'bidang_category_singkatan.unique' => 'Singkatan bidang sudah digunakan'
         ]);
         BidangCategory::create($request->all());
         return response()->json([
@@ -69,8 +77,12 @@ class BidangCategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validate($request, [
-            'bidang_category_name' => 'required',
-            'bidang_category_singkatan' => 'required',
+            'bidang_category_name' => "required|unique:bidang_categories,bidang_category_name,$id,bidang_category_id,deleted_at,NULL",
+            'bidang_category_singkatan' => "required|unique:bidang_categories,bidang_category_singkatan,$id,bidang_category_id,deleted_at,NULL",
+        ],
+        [
+            'bidang_category_name.unique' => 'Nama bidang sudah digunakan',
+            'bidang_category_singkatan.unique' => 'Singkatan bidang sudah digunakan'
         ]);
         BidangCategory::where('bidang_category_id', $id)->update($request->all());
         return response()->json([

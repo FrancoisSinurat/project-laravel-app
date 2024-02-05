@@ -1,20 +1,21 @@
 <x-layout>
+    @section('title', 'Bidang')
     <section class="section">
         <x-modal id="bidang-type-modal">
-            <x-slot name="title">Form Bidang</x-slot>
+            <x-slot name="title">Form @yield('title')</x-slot>
             <x-slot name="body">
                 <form id="bidang-type-form" class="form needs-validation" novalidate>
                     <div class="mb-3">
-                        <label for="type-name" class="col-form-label">Nama Bidang:</label>
-                        <input type="text" name="bidang_category_name" class="form-control" id="type-name" required>
-                        <div class="invalid-feedback">
+                        <label for="bidang_category_name" class="col-form-label mandatory">Nama Bidang</label>
+                        <input type="text" name="bidang_category_name" class="form-control" id="bidang_category_name" required>
+                        <div id="bidang_category_name_feedback" class="invalid-feedback">
                             Wajib diisi.
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="type-name" class="col-form-label">Singkatan:</label>
-                        <input type="text" name="bidang_category_singkatan" class="form-control" id="type-name" required>
-                        <div class="invalid-feedback">
+                        <label for="bidang_category_singkatan" class="col-form-label mandatory">Singkatan</label>
+                        <input type="text" name="bidang_category_singkatan" class="form-control" id="bidang_category_singkatan" required>
+                        <div id="bidang_category_singkatan_feedback" class="invalid-feedback">
                             Wajib diisi.
                         </div>
                     </div>
@@ -39,34 +40,38 @@
                                     class="btn btn-sm btn-primary mb-2">Tambah Data</a>
                             </div>
                         </div>
-                        <table id="bidang-category-table" class="table table-striped table-hover table-bordered"
-                            width="100%">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Nama Bidang</th>
-                                    <th>Singkatan</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                                <table id="bidang-category-table" class="table table-hover"
+                                width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Bidang</th>
+                                        <th>Singkatan</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <script src="{{ asset('assets/js/ajax.js') }}"></script>
     @push('scripts')
+        <script src="{{ asset('assets/js/ajax.js') }}"></script>
         <script type="text/javascript">
             let modal = 'bidang-type-modal';
             let urlPost = "{{ route('admin.bidang-category.store') }}";
+            let formMain = 'bidang-type-form';
             var dataTableList;
             let options = {
                 modal: modal,
                 id: null,
                 url: urlPost,
+                formMain: formMain,
                 data: null,
                 dataTable: null,
                 disabledButton: () => {
@@ -106,10 +111,13 @@
                             orderable: false,
                             searchable: false,
                             render: function(data) {
-                                let button = `<div class="btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-success">Edit</button>
-                                    <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-warning">Delete</button>
-                                </div>`;
+                                let button = `
+                                    <div class="d-flex justify-content-end">
+                                        <div class="btn-group" role="group">
+                                            <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-primary"><i class="bi bi-pencil-fill"></i></button>
+                                            <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-danger"><i class="bi bi-trash-fill"></i></button>
+                                        </div>
+                                    </div>`;
                                 return button;
                             }
                         },
@@ -135,15 +143,14 @@
                     DELETE_DATA(options);
                 }
 
-                let forms = $('#bidang-type-form');
-                Array.prototype.filter.call(forms, function(form) {
+                Array.prototype.filter.call($(`#${options.formMain}`), function(form) {
                     form.addEventListener('submit', function(event) {
                         if (form.checkValidity() === false) {
                             event.preventDefault();
                             event.stopPropagation();
                             form.classList.add('was-validated');
                         } else {
-                            let formData = $('#bidang-type-form').serialize();
+                            let formData = $(`#${options.formMain}`).serialize();
                             event.preventDefault();
                             event.stopPropagation();
                             options.disabledButton();
@@ -157,11 +164,11 @@
 
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    forms.find('input[name="bidang_category_name"]').val(rowData.bidang_category_name);
-                    forms.find('input[name="bidang_category_id"]').val(rowData.bidang_category_id);
-                    forms.find('input[name="bidang_category_singkatan"]').val(rowData.bidang_category_singkatan);
-                    $('#'+options.modal).modal('show');
-                    $('#'+options.modal).find('#save').text('Ubah');
+                    $(`#${options.formMain}`).find('input[name="bidang_category_name"]').val(rowData.bidang_category_name);
+                    $(`#${options.formMain}`).find('input[name="bidang_category_id"]').val(rowData.bidang_category_id);
+                    $(`#${options.formMain}`).find('input[name="bidang_category_singkatan"]').val(rowData.bidang_category_singkatan);
+                    $(`#${options.modal}`).modal('show');
+                    $(`#${options.modal}`).find('#save').text('Ubah');
                     options.id = rowData.bidang_category_id;
                 })
 
@@ -170,12 +177,6 @@
                     options.dataTitle = rowData.bidang_category_name;
                     deleteData(rowData.bidang_category_id);
                 })
-
-                $(window).on('hide.bs.modal', function() {
-                    $('#'+options.modal).find('#save').text('Simpan');
-                    forms.trigger('reset');
-                    options.id = null;
-                });
             });
         </script>
     @endpush

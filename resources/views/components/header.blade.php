@@ -1,5 +1,4 @@
 <header id="header" class="header fixed-top d-flex align-items-center">
-
     <div class="d-flex align-items-center justify-content-between">
       <a href="{{route('admin.dashboard')}}" class="logo d-flex align-items-center">
         <img src="{{asset('assets/img/logo.png')}}" alt="">
@@ -105,13 +104,12 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             {{-- <img src="assets/img/profile-img.jpg" class="rounded-circle"> --}}
-            <span class="d-none d-md-block dropdown-toggle ps-2">{{ Session::get('user.user_name')}}</span>
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{ Session::get('user.user_fullname')}}</span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>{{ Session::get('user.user_name')}}</h6>
-              <span>{{ Session::get('user.user_email')}}</span>
+                <h6>{{ Session::get('user.user_name')}}</h6>
             </li>
             <li>
               <hr class="dropdown-divider">
