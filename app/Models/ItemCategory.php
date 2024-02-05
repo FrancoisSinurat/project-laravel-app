@@ -18,7 +18,7 @@ class ItemCategory extends Model
      */
     protected $primaryKey = 'item_category_id';
 
-    protected $fillable = ['asset_category_id','item_category_name'];
+    protected $fillable = ['asset_category_id','item_category_name','item_category_code'];
 
     // public function user(): BelongsTo
     // {

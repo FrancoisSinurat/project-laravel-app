@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('satuan_categories', function (Blueprint $table) {
-            $table->uuid('satuan_category_id')->primary();
-            $table->string('satuan_category_name');
-            $table->text('satuan_category_description')->nullable();
+        Schema::create('bidang_categories', function (Blueprint $table) {
+            $table->uuid('bidang_category_id')->primary();
+            $table->string('bidang_category_name');
+            $table->string('bidang_category_singkatan');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('satuan_categories');
+        Schema::dropIfExists('bidang_categories');
     }
 };

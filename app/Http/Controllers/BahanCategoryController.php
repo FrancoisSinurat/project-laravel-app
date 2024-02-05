@@ -11,6 +11,10 @@ class BahanCategoryController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('permission:bahan-list', ['only' => ['index']]);
+        $this->middleware('permission:bahan-create', ['only' => ['store']]);
+        $this->middleware('permission:bahan-edit', ['only' => ['update']]);
+        $this->middleware('permission:bahan-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
@@ -19,7 +23,7 @@ class BahanCategoryController extends Controller
     {
         if($request->ajax()) {
             $bahan = BahanCategory::query();
-            return DataTables::of($bahan)->make(); 
+            return DataTables::of($bahan)->make();
         }
         return view('bahan-category.index');
     }
@@ -38,7 +42,10 @@ class BahanCategoryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'bahan_category_name' => 'required'
+            'bahan_category_name' => 'required|unique:bahan_categories,bahan_category_name,NULL,NULL,deleted_at,NULL',
+        ],
+        [
+            'bahan_category_name.unique' => 'Nama bahan sudah digunakan',
         ]);
         BahanCategory::create($request->all());
         return response()->json([
@@ -68,7 +75,10 @@ class BahanCategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validate($request, [
-            'bahan_category_name' => 'required'
+            'bahan_category_name' => "required|unique:bahan_categories,bahan_category_name,$id,bahan_category_id,deleted_at,NULL",
+        ],
+        [
+            'bahan_category_name.unique' => 'Nama bahan sudah digunakan',
         ]);
         BahanCategory::where('bahan_category_id', $id)->update($request->all());
         return response()->json([

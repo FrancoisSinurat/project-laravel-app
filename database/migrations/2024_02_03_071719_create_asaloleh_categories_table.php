@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('satuan_categories', function (Blueprint $table) {
-            $table->uuid('satuan_category_id')->primary();
-            $table->string('satuan_category_name');
-            $table->text('satuan_category_description')->nullable();
+        Schema::create('asaloleh_categories', function (Blueprint $table) {
+            $table->uuid('asaloleh_category_id')->primary();
+            $table->string('asaloleh_category_name');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('satuan_categories');
+        Schema::dropIfExists('asaloleh_categories');
     }
 };

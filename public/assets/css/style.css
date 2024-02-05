@@ -1255,6 +1255,18 @@ h6 {
   color: #012970;
 }
 
-.dataTable > th  {
+/* .dataTable > thead > tr > th  {
     color: #012970;
+} */
+
+.mandatory::after {
+    content: '*';
+    color:red;
+}
+
+.invalid-feedback {
+    text-transform: none;
+    font-style: italic;
+    color: #dc3545;
+    font-weight: lighter !important;
 }

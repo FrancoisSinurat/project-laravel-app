@@ -1,34 +1,21 @@
 <x-layout>
-    @section('title', 'Kategori')
+    @section('title', 'Bidang')
     <section class="section">
-        <x-modal id="item-type-modal">
+        <x-modal id="bidang-type-modal">
             <x-slot name="title">Form @yield('title')</x-slot>
             <x-slot name="body">
-                <form id="item-type-form" class="form needs-validation" novalidate>
+                <form id="bidang-type-form" class="form needs-validation" novalidate>
                     <div class="mb-3">
-                        <input name="item_category_id" type="hidden" id="item_category_id">
-                        <label for="asset_category_id" class="col-form-label mandatory">Pilih Jenis Aset</label>
-                        <select class="form-control" name="asset_category_id" id="asset_category_id">
-                            <option value="" disabled>Pilih Jenis Aset</option>
-                            @foreach ($assetCategory as $v)
-                                <option value="{{ $v->asset_category_id }}">{{ $v->asset_category_name }}</option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback">
+                        <label for="bidang_category_name" class="col-form-label mandatory">Nama Bidang</label>
+                        <input type="text" name="bidang_category_name" class="form-control" id="bidang_category_name" required>
+                        <div id="bidang_category_name_feedback" class="invalid-feedback">
                             Wajib diisi.
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="item_category_name" class="col-form-label mandatory">Nama @yield('title')</label>
-                        <input type="text" name="item_category_name" class="form-control" id="item_category_name" required>
-                        <div id="item_category_name_feedback" class="invalid-feedback">
-                            Wajib diisi.
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="item_category_code" class="col-form-label mandatory">Kode @yield('title')</label>
-                        <input type="text" name="item_category_code" class="form-control text-uppercase" id="item_category_code" required>
-                        <div id="item_category_code_feedback" class="invalid-feedback">
+                        <label for="bidang_category_singkatan" class="col-form-label mandatory">Singkatan</label>
+                        <input type="text" name="bidang_category_singkatan" class="form-control" id="bidang_category_singkatan" required>
+                        <div id="bidang_category_singkatan_feedback" class="invalid-feedback">
                             Wajib diisi.
                         </div>
                     </div>
@@ -47,20 +34,20 @@
                 <div class="card info-card sales-card">
                     <div class="card-body">
                         <div class="card-title d-flex justify-content-between">
-                            <div>@yield('title')</div>
+                            <div>Bidang</div>
                             <div>
-                                <a data-bs-toggle="modal" data-bs-target="#item-type-modal" href="javascript:void(0)"
+                                <a data-bs-toggle="modal" data-bs-target="#bidang-type-modal" href="javascript:void(0)"
                                     class="btn btn-sm btn-primary mb-2">Tambah Data</a>
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table id="item-category-table" class="table table-hover" width="100%">
+                                <table id="bidang-category-table" class="table table-hover"
+                                width="100%">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Jenis Aset</th>
-                                        <th>Kategori</th>
-                                        <th>Kode Kategori</th>
+                                        <th>Nama Bidang</th>
+                                        <th>Singkatan</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -76,17 +63,17 @@
     @push('scripts')
         <script src="{{ asset('assets/js/ajax.js') }}"></script>
         <script type="text/javascript">
-            let modal = 'item-type-modal';
-            let urlPost = "{{ route('admin.item-category.store') }}";
-            let formMain = 'item-type-form';
-            let dataTableList;
+            let modal = 'bidang-type-modal';
+            let urlPost = "{{ route('admin.bidang-category.store') }}";
+            let formMain = 'bidang-type-form';
+            var dataTableList;
             let options = {
                 modal: modal,
                 id: null,
                 url: urlPost,
+                formMain: formMain,
                 data: null,
                 dataTable: null,
-                formMain: formMain,
                 disabledButton: () => {
                     $('#save').addClass('disabled');
                     $('.loading').removeClass('d-none');
@@ -96,40 +83,37 @@
                     $('.loading').addClass('d-none');
                 }
             }
+
             $(document).ready(function() {
-                dataTableList = $('#item-category-table').DataTable({
+                dataTableList = $('#bidang-category-table').DataTable({
                     processing: true,
                     serverSide: true,
                     order: [[0, 'desc']],
                     ajax: '{{ url()->current() }}',
                     columns: [{
-                            data: 'item_category_id',
-                            name: 'item_category_id',
+                            data: 'bidang_category_id',
+                            name: 'bidang_category_id',
                             render: function(data, type, row, meta) {
                                 return meta.row + meta.settings._iDisplayStart + 1;
                             }
                         },
                         {
-                            data: 'asset_category.asset_category_name',
-                            name: 'asset_category.asset_category_name',
+                            data: 'bidang_category_name',
+                            name: 'bidang_category_name'
                         },
                         {
-                            data: 'item_category_name',
-                            name: 'item_category_name'
-                        },
-                        {
-                            data: 'item_category_code',
-                            name: 'item_category_code'
+                            data: 'bidang_category_singkatan',
+                            name: 'bidang_category_singkatan'
                         },
                         {
                             name: 'action',
-                            data: 'item_category_id',
+                            data: 'bidang_category_id',
                             orderable: false,
                             searchable: false,
                             render: function(data) {
                                 let button = `
                                     <div class="d-flex justify-content-end">
-                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                        <div class="btn-group" role="group">
                                             <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-primary"><i class="bi bi-pencil-fill"></i></button>
                                             <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-danger"><i class="bi bi-trash-fill"></i></button>
                                         </div>
@@ -180,19 +164,18 @@
 
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    $(`#${options.formMain}`).find('input[name="item_category_name"]').val(rowData.item_category_name);
-                    $(`#${options.formMain}`).find('input[name="item_category_code"]').val(rowData.item_category_code);
-                    $(`#${options.formMain}`).find('input[name="item_category_id"]').val(rowData.item_category_id);
-                    $("#asset_category_id").val(rowData.asset_category.asset_category_id).change();
+                    $(`#${options.formMain}`).find('input[name="bidang_category_name"]').val(rowData.bidang_category_name);
+                    $(`#${options.formMain}`).find('input[name="bidang_category_id"]').val(rowData.bidang_category_id);
+                    $(`#${options.formMain}`).find('input[name="bidang_category_singkatan"]').val(rowData.bidang_category_singkatan);
                     $(`#${options.modal}`).modal('show');
                     $(`#${options.modal}`).find('#save').text('Ubah');
-                    options.id = rowData.item_category_id;
+                    options.id = rowData.bidang_category_id;
                 })
 
                 $(document).on('click','.btn-delete',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    options.dataTitle = rowData.item_category_name;
-                    deleteData(rowData.item_category_id);
+                    options.dataTitle = rowData.bidang_category_name;
+                    deleteData(rowData.bidang_category_id);
                 })
             });
         </script>

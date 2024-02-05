@@ -3,10 +3,9 @@
 namespace App\Models;
 
 use App\Trait\UuidTrait;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 
-class AssetCategory extends Authenticatable
+class AssetCategory extends Model
 {
     use UuidTrait;
 

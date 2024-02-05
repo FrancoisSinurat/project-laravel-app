@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AssetCategory;
+use App\Models\AsalolehCategory;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-class AssetCategoryController extends Controller
+class AsalolehCategoryController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('permission:jenis-aset-list', ['only' => ['index']]);
-        $this->middleware('permission:jenis-aset-create', ['only' => ['store']]);
-        $this->middleware('permission:jenis-aset-edit', ['only' => ['update']]);
-        $this->middleware('permission:jenis-aset-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:asal-oleh-list', ['only' => ['index']]);
+        $this->middleware('permission:asal-oleh-create', ['only' => ['store']]);
+        $this->middleware('permission:asal-oleh-edit', ['only' => ['update']]);
+        $this->middleware('permission:asal-oleh-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
@@ -22,10 +22,10 @@ class AssetCategoryController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()) {
-            $asset = AssetCategory::query();
-            return DataTables::of($asset)->make();
+            $asaloleh = AsalolehCategory::query();
+            return DataTables::of($asaloleh)->make();
         }
-        return view('asset-category.index');
+        return view('asaloleh-category.index');
     }
 
     /**
@@ -42,12 +42,12 @@ class AssetCategoryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'asset_category_name' => 'required|unique:asset_categories,asset_category_name',
+            'asaloleh_category_name' => 'required|unique:asaloleh_categories,asaloleh_category_name,NULL,NULL,deleted_at,NULL',
         ],
         [
-            'asset_category_name.unique' => 'Nama sudah digunakan',
+            'asaloleh_category_name.unique' => 'Nama sudah digunakan',
         ]);
-        AssetCategory::create($request->all());
+        AsalolehCategory::create($request->all());
         return response()->json([
             'status' => true,
         ], 200);
@@ -75,12 +75,12 @@ class AssetCategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validate($request, [
-            'asset_category_name' => "required|unique:asset_categories,asset_category_name,$id,asset_category_id",
+            'asaloleh_category_name' => "required|unique:asaloleh_categories,asaloleh_category_name,$id,asaloleh_category_id,deleted_at,NULL",
         ],
         [
-            'asset_category_name.unique' => 'Nama sudah digunakan',
+            'asaloleh_category_name.unique' => 'Nama sudah digunakan',
         ]);
-        AssetCategory::where('asset_category_id', $id)->update($request->all());
+        AsalolehCategory::where('asaloleh_category_id', $id)->update($request->all());
         return response()->json([
             'status' => true,
         ], 200);
@@ -91,7 +91,7 @@ class AssetCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        AssetCategory::where('asset_category_id', $id)->delete();
+        AsalolehCategory::where('asaloleh_category_id', $id)->delete();
         return response()->json([
             'status' => true,
         ], 200);

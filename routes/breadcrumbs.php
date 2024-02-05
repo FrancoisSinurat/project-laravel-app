@@ -16,7 +16,25 @@ Breadcrumbs::for('admin.dashboard', function (BreadcrumbTrail $trail) {
 // Dashboard > Item Category
 Breadcrumbs::for('admin.item-category.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.dashboard');
-    $trail->push('Jenis Barang', route('admin.item-category.index'));
+    $trail->push('Kategori', route('admin.item-category.index'));
+});
+
+// Dashboard > User
+Breadcrumbs::for('admin.user.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Pengguna', route('admin.user.index'));
+});
+
+// Dashboard > Role
+Breadcrumbs::for('admin.role.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Hak Akses', route('admin.role.index'));
+});
+
+// Dashboard > Bidang Category
+Breadcrumbs::for('admin.bidang-category.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Bidang', route('admin.bidang-category.index'));
 });
 
 // Dashboard > Satuan Category
@@ -29,6 +47,18 @@ Breadcrumbs::for('admin.satuan-category.index', function (BreadcrumbTrail $trail
 Breadcrumbs::for('admin.bahan-category.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.dashboard');
     $trail->push('Bahan', route('admin.bahan-category.index'));
+});
+
+// Dashboard > Asaloleh Category
+Breadcrumbs::for('admin.asaloleh-category.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Asal Perolehan', route('admin.asaloleh-category.index'));
+});
+
+// Dashboard > Asaloleh Category
+Breadcrumbs::for('admin.asset-category.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Jenis Asset', route('admin.asset-category.index'));
 });
 
 // // Home > Item Category > [Category]

@@ -6,7 +6,7 @@ use App\Trait\UuidTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SatuanCategory extends Model
+class AsalolehCategory extends Model
 {
     use SoftDeletes, UuidTrait;
 
@@ -15,8 +15,7 @@ class SatuanCategory extends Model
      *
      * @var array<int, string>
      */
-    protected $primaryKey = 'satuan_category_id';
+    protected $primaryKey = 'asaloleh_category_id';
 
-    protected $fillable = ['satuan_category_name','satuan_category_description'];
-
+    protected $fillable = ['asaloleh_category_name'];
 }
