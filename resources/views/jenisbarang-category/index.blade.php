@@ -7,9 +7,9 @@
                 <form id="jenisbarang-type-form" class="form needs-validation" novalidate>
                     <div class="mb-3">
                         <input name="jenisbarang_category_id" type="hidden" id="jenisbarang_category_id">
-                        <label for="item_category_id" class="col-form-label mandatory">Pilih Jenis Aset</label>
+                        <label for="item_category_id" class="col-form-label mandatory">Pilih Kategori Barang</label>
                         <select class="form-control" name="item_category_id" id="item_category_id">
-                            <option value="" disabled>Pilih Jenis Aset</option>
+                            <option value="" disabled>Pilih Kategori</option>
                             @foreach ($itemCategory as $v)
                                 <option value="{{ $v->item_category_id }}">{{ $v->item_category_name }}</option>
                             @endforeach
@@ -58,9 +58,9 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Jenis Aset</th>
-                                        <th>Kategori</th>
-                                        <th>Kode Kategori</th>
+                                        <th>Kategori Barang</th>
+                                        <th>Jenis Barang</th>
+                                        <th>Kode Jenis Barang</th>
                                         <th></th>
                                     </tr>
                                 </thead>
