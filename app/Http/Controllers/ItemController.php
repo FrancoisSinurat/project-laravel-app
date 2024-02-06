@@ -9,6 +9,10 @@ class ItemController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('permission:barang-list', ['only' => ['index']]);
+        $this->middleware('permission:barang-create', ['only' => ['store']]);
+        $this->middleware('permission:barang-edit', ['only' => ['update']]);
+        $this->middleware('permission:barang-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.

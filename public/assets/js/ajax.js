@@ -1,5 +1,4 @@
 function reloadTable (dataTable) {
-    console.log(`reload`, dataTable);
     if (dataTable) dataTable.ajax.reload();
 }
 
@@ -20,7 +19,35 @@ function errorEvent() {
     options.enabledButton();
 }
 
+function validation(err) {
+    if (err?.errors) {
+        options.error = err.errors;
+        $('form').addClass('was-validated');
+        for (const [key, value] of Object.entries(err.errors)) {
+            $(`#${key}`).val('');
+            $(`#${key}_feedback`).text(value[0]);
+        }
+    }
+}
+
+$(window).on('hide.bs.modal', function() {
+    if (options.modal) $('#'+options.modal).find('.btn-name').text('Simpan');
+    if (options.formMain) {
+        $('#'+options.formMain).removeClass('was-validated');
+        $('#'+options.formMain).trigger('reset');
+    }
+    options.id = null;
+    if (options.error) {
+        for (const [key, value] of Object.entries(options.error)) {
+            $(`#${key}`).val('');
+            $(`#${key}_feedback`).text('Wajib diisi');
+        }
+        options.error = null;
+    }
+});
+
 const GET_DATA = (options) => {
+    console.log('GET_DATA', options);
     $.ajax({
         url: options.url + '/' + options.id,
         type: 'GET',
@@ -37,6 +64,7 @@ const GET_DATA = (options) => {
 }
 
 const POST_DATA = (options) => {
+    console.log('POST_DATA', options);
     $.ajax({
         url: options.url,
         type: 'POST',
@@ -48,13 +76,16 @@ const POST_DATA = (options) => {
             if (modal) successEvent(options.modal, options.dataTable);
         },
         error: (err) => {
-            console.log(err);
+            const resErr = err?.responseJSON;
+            validation(resErr);
+            if (resErr.message) ERROR_ALERT(resErr.message);
+            options.enabledButton();
         }
     });
 }
 
 const PATCH_DATA = (options) => {
-    console.log('PATCH_DATA');
+    console.log('PATCH_DATA', options);
     $.ajax({
         url: options.url + '/' + options.id,
         type: 'PATCH',
@@ -63,16 +94,20 @@ const PATCH_DATA = (options) => {
         },
         data: options.data,
         success: (data) => {
-            console.log(options);
             if (modal) successEvent(options.modal, options.dataTable);
         },
         error: (err) => {
             console.log(err);
+            const resErr = err?.responseJSON;
+            validation(resErr);
+            if (resErr.message) ERROR_ALERT(resErr.message);
+            options.enabledButton();
         }
     });
 }
 
 const DELETE_DATA = (options) => {
+    console.log('DELETE_DATA', options);
     Swal.fire({
         title: "Anda yakin ingin menghapus data?",
         html: `data <span class="fw-bold">${options.dataTitle} </span>akan dihapus`,
@@ -80,6 +115,9 @@ const DELETE_DATA = (options) => {
         icon: 'question',
         confirmButtonText: "Hapus",
         confirmButtonColor: "#0d6efd",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
@@ -91,16 +129,20 @@ const DELETE_DATA = (options) => {
                 data: {
                     _method: 'delete'
                 },
+                beforeSend: () => {
+                    LOADING_ALERT('Sedang menghapus data');
+                },
                 success: () => {
+                    SUCCESS_ALERT('Berhasil menghapus data');
                     reloadTable(options.dataTable);
                 },
                 error: (err) => {
                     console.log(err);
                 }
             });
-            SUCCESS_ALERT('Berhasil menghapus data');
+            options.id = null;
         } else if (result.isDenied) {
-
+            options.id = null;
         }
     });
 }

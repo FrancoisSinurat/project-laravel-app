@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('item_categories', function (Blueprint $table) {
             $table->uuid('item_category_id')->primary();
-            $table->uuid('asset_category_id');
-            $table->foreign('asset_category_id')
+            $table->foreignUuid('asset_category_id')
                 ->references('asset_category_id')
-                ->on('asset_categories')
-                ->restrictOnDelete();
+                ->on('asset_categories');
             $table->string('item_category_name');
+            $table->string('item_category_code');
             $table->timestamps();
             $table->softDeletes();
         });

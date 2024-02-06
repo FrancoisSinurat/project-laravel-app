@@ -12,7 +12,7 @@ li.breadcrumb-item {
 }
 </style>
 <div class="pagetitle">
-    <h1>Dashboard</h1>
+    {{-- <h1>@yield('title')</h1> --}}
     <nav>
         {{Breadcrumbs::render()}}
       {{-- <ol class="breadcrumb">

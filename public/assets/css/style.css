@@ -67,9 +67,14 @@ h6 {
 @media (max-width: 1199px) {
   #main {
     padding: 20px;
-    min-height: 650px;
   }
 }
+
+@media (min-width: 1000px) {
+    #main {
+      min-height: 650px;
+    }
+  }
 
 /*--------------------------------------------------------------
 # Page Title
@@ -1250,6 +1255,18 @@ h6 {
   color: #012970;
 }
 
-.dataTable > th  {
+/* .dataTable > thead > tr > th  {
     color: #012970;
+} */
+
+.mandatory::after {
+    content: '*';
+    color:red;
+}
+
+.invalid-feedback {
+    text-transform: none;
+    font-style: italic;
+    color: #dc3545;
+    font-weight: lighter !important;
 }
