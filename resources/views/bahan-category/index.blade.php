@@ -102,6 +102,7 @@
                             searchable: false,
                             render: function(data) {
                                 let button = `
+                                @if(auth()->user()->hasPermissionTo('bahan-edit') ||auth()->user()->hasPermissionTo('bahan-delete'))
                                     <div class="d-flex justify-content-end">
                                         <div class="btn-group" role="group">
                                             @if(auth()->user()->hasPermissionTo('bahan-edit')) 
@@ -111,7 +112,8 @@
                                                 <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-danger"><i class="bi bi-trash-fill"></i></button>
                                             @endif
                                         </div>
-                                    </div>`;
+                                    </div>
+                                @endif`;
                                 return button;
                             }
                         },
