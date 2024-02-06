@@ -58,23 +58,10 @@ class JenisbarangCategoryController extends Controller
             'jenisbarang_category_name.unique' => 'Nama jenis barang sudah digunakan',
             'jenisbarang_category_code.unique' => 'Kode jenis barang sudah digunakan'
         ]);
-        try {
-            $input = $request->all();
-            $input['jenisbarang_category_code'] = strtoupper($input['jenisbarang_category_code']);
-            JenisbarangCategory::create($input);
-            $menu = JenisbarangCategory::get();
-            if (count($menu) > 0) Session::put('categories', $menu);
-            if (count($menu) == 0) Session::put('categories', []);
-            return response()->json([
-                'status' => true,
-            ], 200);
-        } catch (\Throwable $th) {
-            Log::error($th->getMessage());
-            return response()->json([
-                'status' => false,
-                'data' => $th,
-            ], 500);
-        }
+        JenisbarangCategory::create($request->all());
+        return response()->json([
+            'status' => true,
+        ], 200);
     }
 
     /**
@@ -106,22 +93,10 @@ class JenisbarangCategoryController extends Controller
             'jenisbarang_category_name.unique' => 'Nama jenis barang sudah digunakan',
             'jenisbarang_category_code.unique' => 'Kode jenis barang sudah digunakan'
         ]);
-        $input = $request->all();
-        $input['jenisbarang_category_code'] = strtoupper($input['jenisbarang_category_code']);
-        try {
-            JenisbarangCategory::where('jenisbarang_category_id', $id)->update($input);
-            $menu = JenisbarangCategory::get();
-            if (count($menu) > 0) Session::put('categories', $menu);
-            if (count($menu) == 0) Session::put('categories', []);
-            return response()->json([
-                'status' => true,
-            ], 200);
-        } catch (\Throwable $th) {
-            Log::error($th->getMessage());
-            return response()->json([
-                'status' => false,
-            ], 500);
-        }
+        JenisbarangCategory::where('jenisbarang_category_id', $id)->update($request->all());
+        return response()->json([
+            'status' => true,
+        ], 200);
     }
 
     /**
@@ -129,24 +104,10 @@ class JenisbarangCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        try {
-            if ($id == null) {
-                return response()->json([
-                    'status' => false,
-                ], 500);
-            }
-            JenisbarangCategory::where('jenisbarang_category_id', $id)->delete();
-            $menu = JenisbarangCategory::get();
-            if (count($menu) > 0) Session::put('categories', $menu);
-            if (count($menu) == 0) Session::put('categories', []);
-            return response()->json([
-                'status' => true,
-            ], 200);
-        } catch (\Throwable $th) {
-            Log::error($th->getMessage());
-            return response()->json([
-                'status' => false,
-            ], 500);
-        }
+        JenisbarangCategory::where('jenisbarang_category_id', $id)->delete();
+        return response()->json([
+            'status' => true,
+        ], 200);
+        
     }
 }
