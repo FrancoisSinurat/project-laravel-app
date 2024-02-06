@@ -42,7 +42,7 @@
                     @endif
                     @if(auth()->user()->hasPermissionTo('barang-list'))
                     <li>
-                        <a href="#">
+                    <a href="{{route('admin.jenisbarang-category.index')}}" class="{{Route::current()->getName() == 'admin.jenisbarang-category.index' ? 'active' : ''}}">
                             <i class="bi bi-chevron-double-right"></i><span>Jenis Barang</span>
                         </a>
                     </li>
