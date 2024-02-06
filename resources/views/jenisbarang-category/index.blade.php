@@ -1,5 +1,5 @@
 <x-layout>
-    @section('title', 'jenis-barang')
+    @section('title', 'Jenis Barang')
     <section class="section">
         <x-modal id="jenisbarang-type-modal">
             <x-slot name="title">Form @yield('title')</x-slot>
