@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\item;
+use App\Models\Item;
 use App\Models\ItemCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -25,7 +25,7 @@ class ItemController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()) {
-            $item = item::query()->with('item_category');
+            $item = Item::query()->with('item_category');
             return DataTables::of($item)->make();
         }
         $itemCategory = ItemCategory::get();
@@ -54,7 +54,7 @@ class ItemController extends Controller
             'item_name.unique' => 'Nama jenis barang sudah digunakan',
             'item_code.unique' => 'Kode jenis barang sudah digunakan'
         ]);
-        item::create($request->all());
+        Item::create($request->all());
         return response()->json([
             'status' => true,
         ], 200);
@@ -90,7 +90,7 @@ class ItemController extends Controller
             'item_name.unique' => 'Nama jenis barang sudah digunakan',
             'item_code.unique' => 'Kode jenis barang sudah digunakan'
         ]);
-        item::where('item_id', $id)->update($request->all());
+        Item::where('item_id', $id)->update($request->all());
         return response()->json([
             'status' => true,
         ], 200);
@@ -101,7 +101,7 @@ class ItemController extends Controller
      */
     public function destroy(string $id)
     {
-        item::where('item_id', $id)->delete();
+        Item::where('item_id', $id)->delete();
         return response()->json([
             'status' => true,
         ], 200);
