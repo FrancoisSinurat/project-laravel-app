@@ -27,11 +27,13 @@
                 <div class="card info-card sales-card">
                     <div class="card-body">
                         <div class="card-title d-flex justify-content-between">
-                            <div>Asal Perolehan</div>
+                            <div>@yield('title')</div>
+                            @if(auth()->user()->hasPermissionTo('asal-oleh-create')) 
                             <div>
                                 <a data-bs-toggle="modal" data-bs-target="#asaloleh-type-modal" href="javascript:void(0)"
                                     class="btn btn-sm btn-primary mb-2">Tambah Data</a>
                             </div>
+                            @endif
                         </div>
                         <div class="table-responsive">
                             <table id="asaloleh-category-table" class="table table-hover"
@@ -100,12 +102,18 @@
                             searchable: false,
                             render: function(data) {
                                 let button = `
+                                @if(auth()->user()->hasPermissionTo('asal-oleh-edit') || auth()->user()->hasPermissionTo('asal-oleh-delete'))
                                     <div class="d-flex justify-content-end">
                                         <div class="btn-group" role="group">
-                                            <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-primary"><i class="bi bi-pencil-fill"></i></button>
-                                            <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-danger"><i class="bi bi-trash-fill"></i></button>
+                                            @if(auth()->user()->hasPermissionTo('asal-oleh-edit')) 
+                                                <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-primary"><i class="bi bi-pencil-fill"></i></button>
+                                            @endif
+                                            @if(auth()->user()->hasPermissionTo('asal-oleh-delete')) 
+                                                <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-danger"><i class="bi bi-trash-fill"></i></button>
+                                            @endif
                                         </div>
-                                    </div>`;
+                                    </div>
+                                @endif`;
                                 return button;
                             }
                         },
