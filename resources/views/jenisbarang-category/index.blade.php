@@ -1,12 +1,12 @@
 <x-layout>
     @section('title', 'Jenis Barang')
     <section class="section">
-        <x-modal id="item-type-modal">
+        <x-modal id="jenisbarang-type-modal">
             <x-slot name="title">Form @yield('title')</x-slot>
             <x-slot name="body">
-                <form id="item-type-form" class="form needs-validation" novalidate>
+                <form id="jenisbarang-type-form" class="form needs-validation" novalidate>
                     <div class="mb-3">
-                        <input name="item_category_id" type="hidden" id="item_category_id">
+                        <input name="jenisbarang_category_id" type="hidden" id="jenisbarang_category_id">
                         <label for="item_category_id" class="col-form-label mandatory">Pilih Kategori Barang</label>
                         <select class="form-control" name="item_category_id" id="item_category_id">
                             <option value="" disabled>Pilih Kategori</option>
@@ -19,16 +19,16 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="item_name" class="col-form-label mandatory">Nama @yield('title')</label>
-                        <input type="text" name="item_name" class="form-control" id="item_name" required>
-                        <div id="item_name_feedback" class="invalid-feedback">
+                        <label for="jenisbarang_category_name" class="col-form-label mandatory">Nama @yield('title')</label>
+                        <input type="text" name="jenisbarang_category_name" class="form-control" id="jenisbarang_category_name" required>
+                        <div id="jenisbarang_category_name_feedback" class="invalid-feedback">
                             Wajib diisi.
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="item_code" class="col-form-label mandatory">Kode @yield('title')</label>
-                        <input type="text" name="item_code" class="form-control text-uppercase" id="item_code" required>
-                        <div id="item_code_feedback" class="invalid-feedback">
+                        <label for="jenisbarang_category_code" class="col-form-label mandatory">Kode @yield('title')</label>
+                        <input type="text" name="jenisbarang_category_code" class="form-control text-uppercase" id="jenisbarang_category_code" required>
+                        <div id="jenisbarang_category_code_feedback" class="invalid-feedback">
                             Wajib diisi.
                         </div>
                     </div>
@@ -49,12 +49,12 @@
                         <div class="card-title d-flex justify-content-between">
                             <div>@yield('title')</div>
                             <div>
-                                <a data-bs-toggle="modal" data-bs-target="#item-type-modal" href="javascript:void(0)"
+                                <a data-bs-toggle="modal" data-bs-target="#jenisbarang-type-modal" href="javascript:void(0)"
                                     class="btn btn-sm btn-primary mb-2">Tambah Data</a>
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table id="item-table" class="table table-hover" width="100%">
+                            <table id="jenisbarang-category-table" class="table table-hover" width="100%">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -76,9 +76,9 @@
     @push('scripts')
         <script src="{{ asset('assets/js/ajax.js') }}"></script>
         <script type="text/javascript">
-            let modal = 'item-type-modal';
-            let urlPost = "{{ route('admin.item.store') }}";
-            let formMain = 'item-type-form';
+            let modal = 'jenisbarang-type-modal';
+            let urlPost = "{{ route('admin.jenisbarang-category.store') }}";
+            let formMain = 'jenisbarang-type-form';
             let dataTableList;
             let options = {
                 modal: modal,
@@ -97,14 +97,14 @@
                 }
             }
             $(document).ready(function() {
-                dataTableList = $('#item-table').DataTable({
+                dataTableList = $('#jenisbarang-category-table').DataTable({
                     processing: true,
                     serverSide: true,
                     order: [[0, 'desc']],
                     ajax: '{{ url()->current() }}',
                     columns: [{
-                            data: 'item_id',
-                            name: 'item_id',
+                            data: 'jenisbarang_category_id',
+                            name: 'jenisbarang_category_id',
                             render: function(data, type, row, meta) {
                                 return meta.row + meta.settings._iDisplayStart + 1;
                             }
@@ -114,16 +114,16 @@
                             name: 'item_category.item_category_name',
                         },
                         {
-                            data: 'item_name',
-                            name: 'item_name'
+                            data: 'jenisbarang_category_name',
+                            name: 'jenisbarang_category_name'
                         },
                         {
-                            data: 'item_code',
-                            name: 'item_code'
+                            data: 'jenisbarang_category_code',
+                            name: 'jenisbarang_category_code'
                         },
                         {
                             name: 'action',
-                            data: 'item_id',
+                            data: 'jenisbarang_category_id',
                             orderable: false,
                             searchable: false,
                             render: function(data) {
@@ -180,19 +180,19 @@
 
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    $(`#${options.formMain}`).find('input[name="item_name"]').val(rowData.item_name);
-                    $(`#${options.formMain}`).find('input[name="item_code"]').val(rowData.item_code);
-                    $(`#${options.formMain}`).find('input[name="item_category_id"]').val(rowData.item_category_id);
+                    $(`#${options.formMain}`).find('input[name="jenisbarang_category_name"]').val(rowData.jenisbarang_category_name);
+                    $(`#${options.formMain}`).find('input[name="jenisbarang_category_code"]').val(rowData.jenisbarang_category_code);
+                    $(`#${options.formMain}`).find('input[name="jenisbarang_category_id"]').val(rowData.jenisbarang_category_id);
                     $("#item_category_id").val(rowData.item_category.item_category_id).change();
                     $(`#${options.modal}`).modal('show');
                     $(`#${options.modal}`).find('#save').text('Ubah');
-                    options.id = rowData.item_id;
+                    options.id = rowData.jenisbarang_category_id;
                 })
 
                 $(document).on('click','.btn-delete',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    options.dataTitle = rowData._name;
-                    deleteData(rowData.item_id);
+                    options.dataTitle = rowData.jenisbarang_category_name;
+                    deleteData(rowData.jenisbarang_category_id);
                 })
             });
         </script>
