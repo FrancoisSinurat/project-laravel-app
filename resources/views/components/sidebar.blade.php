@@ -102,11 +102,13 @@
                 <i class="bi bi-box-seam"></i><span>Aset</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="aset-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-                @foreach (Session::get('categories') as $category)
-                    <a href="#">
-                        <i class="bi bi-chevron-double-right"></i><span>{{$category->item_category_name}}</span>
-                    </a>
-                @endforeach
+                @if(Session::get('categories'))
+                    @foreach (Session::get('categories') as $category)
+                        <a href="#">
+                            <i class="bi bi-chevron-double-right"></i><span>{{$category->item_category_name}}</span>
+                        </a>
+                    @endforeach
+                @endif
             </ul>
         </li>
         @if(auth()->user()->hasPermissionTo('user-list') ||

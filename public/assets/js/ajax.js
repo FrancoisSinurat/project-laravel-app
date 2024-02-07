@@ -31,7 +31,7 @@ function validation(err) {
 }
 
 $(window).on('hide.bs.modal', function() {
-    if (options.modal) $('#'+options.modal).find('#save').text('Simpan');
+    if (options.modal) $('#'+options.modal).find('.btn-name').text('Simpan');
     if (options.formMain) {
         $('#'+options.formMain).removeClass('was-validated');
         $('#'+options.formMain).trigger('reset');
@@ -115,6 +115,9 @@ const DELETE_DATA = (options) => {
         icon: 'question',
         confirmButtonText: "Hapus",
         confirmButtonColor: "#0d6efd",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
@@ -125,6 +128,9 @@ const DELETE_DATA = (options) => {
                 },
                 data: {
                     _method: 'delete'
+                },
+                beforeSend: () => {
+                    LOADING_ALERT('Sedang menghapus data');
                 },
                 success: () => {
                     SUCCESS_ALERT('Berhasil menghapus data');

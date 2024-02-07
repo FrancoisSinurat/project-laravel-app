@@ -13,11 +13,9 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->uuid('item_id')->primary();
-            $table->uuid('item_category_id');
-            $table->foreign('item_category_id')
+            $table->foreignUuid('item_category_id')
                 ->references('item_category_id')
-                ->on('item_categories')
-                ->restrictOnDelete();
+                ->on('item_categories');
             $table->string('item_code');
             $table->string('item_name');
             $table->timestamps();

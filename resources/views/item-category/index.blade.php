@@ -37,7 +37,8 @@
                             data-bs-dismiss="modal">Tutup</button>
                         <button class="btn btn-primary" id="save" type="submit">
                             <span class="loading spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                            Simpan</button>
+                            <span class="btn-name">Simpan</span>
+                        </button>
                     </div>
                 </form>
             </x-slot>
@@ -193,7 +194,7 @@
                     $(`#${options.formMain}`).find('input[name="item_category_id"]').val(rowData.item_category_id);
                     $("#asset_category_id").val(rowData.asset_category.asset_category_id).change();
                     $(`#${options.modal}`).modal('show');
-                    $(`#${options.modal}`).find('#save').text('Ubah');
+                    $(`#${options.modal}`).find('.btn-name').text('Ubah');
                     options.id = rowData.item_category_id;
                 })
 

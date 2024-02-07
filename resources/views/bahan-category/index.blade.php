@@ -17,7 +17,8 @@
                             data-bs-dismiss="modal">Tutup</button>
                         <button class="btn btn-primary" id="save" type="submit">
                             <span class="loading spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                            Simpan</button>
+                            <span class="btn-name">Simpan</span>
+                        </button>
                     </div>
                 </form>
             </x-slot>
@@ -162,7 +163,7 @@
                     $(`#${options.formMain}`).find('input[name="bahan_category_name"]').val(rowData.bahan_category_name);
                     $(`#${options.formMain}`).find('input[name="bahan_category_id"]').val(rowData.bahan_category_id);
                     $(`#${options.modal}`).modal('show');
-                    $(`#${options.modal}`).find('#save').text('Ubah');
+                    $(`#${options.modal}`).find('.btn-name').text('Ubah');
                     options.id = rowData.bahan_category_id;
                 })
 
