@@ -29,4 +29,3 @@ class Item extends Model
         return $this->belongsTo(ItemCategory::class, 'item_category_id', 'item_category_id');
     }
 }
-
