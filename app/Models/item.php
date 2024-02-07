@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class JenisbarangCategory extends Model
+class item extends Model
 {
     use SoftDeletes, UuidTrait;
 
@@ -16,9 +16,9 @@ class JenisbarangCategory extends Model
      *
      * @var array<int, string>
      */
-    protected $primaryKey = 'jenisbarang_category_id';
+    protected $primaryKey = 'item_id';
 
-    protected $fillable = ['item_category_id','jenisbarang_category_name','jenisbarang_category_code'];
+    protected $fillable = ['item_category_id','item_name','item_code'];
 
     // public function user(): BelongsTo
     // {
@@ -29,3 +29,4 @@ class JenisbarangCategory extends Model
         return $this->belongsTo(ItemCategory::class, 'item_category_id', 'item_category_id');
     }
 }
+

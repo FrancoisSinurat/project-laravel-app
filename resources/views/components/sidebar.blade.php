@@ -29,7 +29,7 @@
                     class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="master-data-nav"
-                class="nav-content collapse {{in_array(Route::current()->getName(), ['admin.item-category.index', 'admin.asaloleh-category.index', 'admin.bidang-category.index', 'admin.satuan-category.index', 'admin.bahan-category.index', 'admin.jenisbarang-category.index', 'admin.asset-category.index']) ? 'show' : ''}}"
+                class="nav-content collapse {{in_array(Route::current()->getName(), ['admin.item-category.index', 'admin.asaloleh-category.index', 'admin.bidang-category.index', 'admin.satuan-category.index', 'admin.bahan-category.index', 'admin.item.index', 'admin.asset-category.index']) ? 'show' : ''}}"
                 data-bs-parent="#sidebar-nav">
                 @if(auth()->user()->hasPermissionTo('kategori-barang-list') || auth()->user()->hasPermissionTo('barang-list'))
                     <li class="nav-heading">Master Barang</li>
@@ -42,7 +42,7 @@
                     @endif
                     @if(auth()->user()->hasPermissionTo('barang-list'))
                     <li>
-                    <a href="{{route('admin.jenisbarang-category.index')}}" class="{{Route::current()->getName() == 'admin.jenisbarang-category.index' ? 'active' : ''}}">
+                    <a href="{{route('admin.item.index')}}" class="{{Route::current()->getName() == 'admin.item.index' ? 'active' : ''}}">
                             <i class="bi bi-chevron-double-right"></i><span>Jenis Barang</span>
                         </a>
                     </li>

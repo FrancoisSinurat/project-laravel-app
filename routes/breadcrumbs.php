@@ -62,9 +62,9 @@ Breadcrumbs::for('admin.asset-category.index', function (BreadcrumbTrail $trail)
 });
 
 // Dashboard > Jenisbarang Category
-Breadcrumbs::for('admin.jenisbarang-category.index', function (BreadcrumbTrail $trail) {
+Breadcrumbs::for('admin.item.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.dashboard');
-    $trail->push('Jenis Barang', route('admin.jenisbarang-category.index'));
+    $trail->push('Jenis Barang', route('admin.item.index'));
 });
 
 // // Home > Item Category > [Category]
