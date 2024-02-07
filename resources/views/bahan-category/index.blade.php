@@ -27,7 +27,7 @@
                 <div class="card info-card sales-card">
                     <div class="card-body">
                         <div class="card-title d-flex justify-content-between">
-                            <div>Bahan</div>
+                            <div>@yield('title')</div>
                             @if(auth()->user()->hasPermissionTo('bahan-create')) 
                             <div>
                                 <a data-bs-toggle="modal" data-bs-target="#bahan-type-modal" href="javascript:void(0)"
