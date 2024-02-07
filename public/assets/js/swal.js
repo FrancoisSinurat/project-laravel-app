@@ -13,3 +13,19 @@ const ERROR_ALERT = (text = null) => Swal.fire({
     showConfirmButton: false,
     timer: 1500
 });
+
+const LOADING_ALERT = (title = null, text = null, icon = 'info') => Swal.fire({
+    title: title,
+    text: text,
+    icon: icon,
+    willOpen() {
+        swal.showLoading()
+    },
+    didClose() {
+        swal.hideLoading()
+    },
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    allowEnterKey: false,
+    showConfirmButton: false
+});
