@@ -14,13 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return redirect('/admin/dashboard');
-});
 
-Route::get('/admin', function () {
-    return redirect('/admin/dashboard');
-});
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->middleware('auth');
 
 Auth::routes(['register' => false]);
 
