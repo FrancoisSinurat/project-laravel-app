@@ -1,0 +1,8 @@
+version: '3.0'
+
+services:
+    app:
+        image: registry.dcktrp.id/manajemen-aset:${IMAGE_TAG}
+        build: .
+        ports:
+            - '8074:80'
