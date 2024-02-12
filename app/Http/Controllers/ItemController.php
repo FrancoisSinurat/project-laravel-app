@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
+use App\Models\ItemCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
+use Yajra\DataTables\Facades\DataTables;
 
 class ItemController extends Controller
 {
@@ -17,9 +22,14 @@ class ItemController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('item.index');
+        if($request->ajax()) {
+            $item = Item::query()->with('item_category');
+            return DataTables::of($item)->make();
+        }
+        $itemCategory = ItemCategory::get();
+        return view('item.index', compact('itemCategory'));
     }
 
     /**
@@ -35,7 +45,19 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'item_name' => 'required|unique:items,item_name,NULL,NULL,deleted_at,NULL',
+            'item_code' => 'required|unique:items,item_code,NULL,NULL,deleted_at,NULL',
+            'item_category_id' => 'required',
+        ],
+        [
+            'item_name.unique' => 'Nama jenis barang sudah digunakan',
+            'item_code.unique' => 'Kode jenis barang sudah digunakan'
+        ]);
+        Item::create($request->all());
+        return response()->json([
+            'status' => true,
+        ], 200);
     }
 
     /**
@@ -59,7 +81,19 @@ class ItemController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $this->validate($request, [
+            'item_name' => "required|unique:items,item_name,$id,item_id,deleted_at,NULL",
+            'item_code' => "required|unique:items,item_code,$id,item_id,deleted_at,NULL",
+            'item_category_id' => 'required',
+        ],
+        [
+            'item_name.unique' => 'Nama jenis barang sudah digunakan',
+            'item_code.unique' => 'Kode jenis barang sudah digunakan'
+        ]);
+        Item::where('item_id', $id)->update($request->all());
+        return response()->json([
+            'status' => true,
+        ], 200);
     }
 
     /**
@@ -67,6 +101,9 @@ class ItemController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Item::where('item_id', $id)->delete();
+        return response()->json([
+            'status' => true,
+        ], 200);
     }
 }

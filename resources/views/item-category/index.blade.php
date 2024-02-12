@@ -49,10 +49,12 @@
                     <div class="card-body">
                         <div class="card-title d-flex justify-content-between">
                             <div>@yield('title')</div>
+                            @if(auth()->user()->hasPermissionTo('kategori-barang-create')) 
                             <div>
                                 <a data-bs-toggle="modal" data-bs-target="#item-type-modal" href="javascript:void(0)"
                                     class="btn btn-sm btn-primary mb-2">Tambah Data</a>
                             </div>
+                            @endif
                         </div>
                         <div class="table-responsive">
                             <table id="item-category-table" class="table table-hover" width="100%">
@@ -129,12 +131,18 @@
                             searchable: false,
                             render: function(data) {
                                 let button = `
+                                @if(auth()->user()->hasPermissionTo('kategori-barang-edit') || auth()->user()->hasPermissionTo('kategori-barang-delete'))
                                     <div class="d-flex justify-content-end">
-                                        <div class="btn-group" role="group" aria-label="Basic example">
-                                            <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-primary"><i class="bi bi-pencil-fill"></i></button>
-                                            <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-danger"><i class="bi bi-trash-fill"></i></button>
+                                        <div class="btn-group" role="group">
+                                            @if(auth()->user()->hasPermissionTo('kategori-barang-edit')) 
+                                                <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-primary"><i class="bi bi-pencil-fill"></i></button>
+                                            @endif
+                                            @if(auth()->user()->hasPermissionTo('kategori-barang-delete')) 
+                                                <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-danger"><i class="bi bi-trash-fill"></i></button>
+                                            @endif
                                         </div>
-                                    </div>`;
+                                    </div>
+                                @endif`;
                                 return button;
                             }
                         },
