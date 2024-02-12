@@ -14,8 +14,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             PermissionTableSeeder::class,
-            UserInitSeeder::class,
-            AssetCategorySeeder::class
+            // UserInitSeeder::class,
+            // AssetCategorySeeder::class
         ]);
     }
 }
