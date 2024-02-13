@@ -67,6 +67,18 @@ Breadcrumbs::for('admin.item.index', function (BreadcrumbTrail $trail) {
     $trail->push('Jenis Barang', route('admin.item.index'));
 });
 
+// Dashboard > Asset
+Breadcrumbs::for('admin.asset.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Asset', route('admin.asset.index'));
+});
+
+//Dashboard > Peminjaman
+Breadcrumbs::for('admin.peminjaman.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Peminjaman', route('admin.peminjaman.index'));
+});
+
 // // Home > Item Category > [Category]
 // Breadcrumbs::for('category', function (BreadcrumbTrail $trail, $category) {
 //     $trail->parent('blog');
