@@ -23,7 +23,7 @@ class PeminjamanController extends Controller
      */
     public function index(Request $request)
     {
-        return view('asset.index');
+        return view('peminjaman.index');
     }
 
     /**
