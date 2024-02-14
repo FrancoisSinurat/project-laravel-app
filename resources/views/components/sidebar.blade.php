@@ -97,20 +97,40 @@
         </li>
         @endif
 
-        <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#aset-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-box-seam"></i><span>Aset</span><i class="bi bi-chevron-down ms-auto"></i>
+        
+        <li class="nav-transaksi">
+            <a class="nav-link {{in_array(Route::current()->getName(), ['admin.asset.index', 'admin.peminjaman.index']) ? '' : 'collapsed'}}" data-bs-target="#aset-nav" data-bs-toggle="collapse" href="#">    
+                <i class="bi bi-box-seam"></i><span>Transaksi</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="aset-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-                @if(Session::get('categories'))
+
+            <ul id="aset-nav"
+                class="nav-content collapse {{in_array(Route::current()->getName(), ['admin.asset.index', 'admin.peminjaman.index']) ? 'show' : ''}}"
+                data-bs-parent="#sidebar-nav">
+
+                <!-- @if(Session::get('categories'))
                     @foreach (Session::get('categories') as $category)
                         <a href="#">
                             <i class="bi bi-chevron-double-right"></i><span>{{$category->item_category_name}}</span>
                         </a>
                     @endforeach
-                @endif
+                @endif -->
+
+                <li>
+                    <a href="{{route('admin.asset.index')}}" class="{{Route::current()->getName() == 'admin.asset.index' ? 'active' : ''}}">
+                        <i class="bi bi-chevron-double-right"></i><span>Asset</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{route('admin.peminjaman.index')}}" class="{{Route::current()->getName() == 'admin.peminjaman.index' ? 'active' : ''}}">
+                        <i class="bi bi-chevron-double-right"></i><span>Peminjaman</span>
+                    </a>
+                </li>
+
             </ul>
         </li>
+
+
         @if(auth()->user()->hasPermissionTo('user-list') ||
             auth()->user()->hasPermissionTo('role-list')
         )
