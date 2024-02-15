@@ -196,3 +196,4 @@
         </script> -->
     @endpush
 </x-layout>
+<div>peminjaman</div>

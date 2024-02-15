@@ -97,7 +97,6 @@
         </li>
         @endif
 
-        
         <li class="nav-transaksi">
             <a class="nav-link {{in_array(Route::current()->getName(), ['admin.asset.index', 'admin.peminjaman.index']) ? '' : 'collapsed'}}" data-bs-target="#aset-nav" data-bs-toggle="collapse" href="#">    
                 <i class="bi bi-box-seam"></i><span>Transaksi</span><i class="bi bi-chevron-down ms-auto"></i>

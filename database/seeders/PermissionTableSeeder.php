@@ -22,6 +22,10 @@ class PermissionTableSeeder extends Seeder
             'aset-create',
             'aset-edit',
             'aset-delete',
+            'aset-alokasi',
+            'aset-peminjaman',
+            'aset-penarikan',
+            'aset-persetujuan-peminjaman',
             'barang-list', // barang
             'barang-create',
             'barang-edit',
@@ -42,6 +46,10 @@ class PermissionTableSeeder extends Seeder
             'kategori-barang-create',
             'kategori-barang-edit',
             'kategori-barang-delete',
+            'lokasi-list', // lokasi
+            'lokasi-create',
+            'lokasi-edit',
+            'lokasi-delete',
             'role-list', // user role
             'role-create',
             'role-edit',
