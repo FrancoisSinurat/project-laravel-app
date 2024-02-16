@@ -72,3 +72,7 @@ Breadcrumbs::for('admin.item.index', function (BreadcrumbTrail $trail) {
 //     $trail->parent('blog');
 //     $trail->push($category->title, route('category', $category));
 // });
+Breadcrumbs::for('admin.asset.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Aset', route('admin.asset.index'));
+});
