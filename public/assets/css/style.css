@@ -858,6 +858,26 @@ h6 {
   background: #ffecdf;
 }
 
+.dashboard .blue-card .card-icon {
+  color: #4154f1;
+  background: #f6f6fe;
+}
+
+.dashboard .green-card .card-icon {
+  color: #2eca6a;
+  background: #e0f8e9;
+}
+
+.dashboard .red-card .card-icon {
+  color: #df0909;
+  background: #ffecdf;
+}
+
+.dashboard .yellow-card .card-icon {
+  color: #f37005;
+  background: #ffecdf;
+}
+
 /* Activity */
 .dashboard .activity {
   font-size: 14px;

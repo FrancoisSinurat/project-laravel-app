@@ -25,14 +25,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.'], fu
     Route::get('dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
     Route::resource('asaloleh-category', App\Http\Controllers\AsalolehCategoryController::class);
     Route::resource('asset-category', App\Http\Controllers\AssetCategoryController::class);
+    Route::resource('asset', App\Http\Controllers\AssetController::class);
     Route::resource('bahan-category', App\Http\Controllers\BahanCategoryController::class);
     Route::resource('bidang-category', App\Http\Controllers\BidangCategoryController::class);
     Route::resource('item-category', App\Http\Controllers\ItemCategoryController::class);
     Route::resource('item', App\Http\Controllers\ItemController::class);
     Route::resource('satuan-category', App\Http\Controllers\SatuanCategoryController::class);
-
-    Route::resource('asset', App\Http\Controllers\AssetController::class);
-    Route::resource('peminjaman', App\Http\Controllers\PeminjamanController::class);
 
     Route::resource('user', App\Http\Controllers\UserController::class);
     Route::resource('role', App\Http\Controllers\RoleController::class);

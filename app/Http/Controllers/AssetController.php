@@ -4,25 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Models\Asset;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
+
 
 class AssetController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
-        // $this->middleware('permission:asset-list', ['only' => ['index']]);
-        // $this->middleware('permission:asset-create', ['only' => ['store']]);
-        // $this->middleware('permission:asset-edit', ['only' => ['update']]);
-        // $this->middleware('permission:asset-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:aset-list', ['only' => ['index']]);
+        $this->middleware('permission:aset-create', ['only' => ['store']]);
+        $this->middleware('permission:aset-edit', ['only' => ['update']]);
+        $this->middleware('permission:aset-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        if($request->ajax()) {
+            $asset = Asset::query();
+            return DataTables::of($asset)->make();
+        }
         return view('asset.index');
     }
 
@@ -39,7 +42,7 @@ class AssetController extends Controller
      */
     public function store(Request $request)
     {
-        
+        //
     }
 
     /**
@@ -63,7 +66,7 @@ class AssetController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        
+        //
     }
 
     /**
@@ -71,6 +74,6 @@ class AssetController extends Controller
      */
     public function destroy(string $id)
     {
-
+        //
     }
 }

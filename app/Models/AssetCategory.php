@@ -4,10 +4,11 @@ namespace App\Models;
 
 use App\Trait\UuidTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AssetCategory extends Model
 {
-    use UuidTrait;
+    use SoftDeletes, UuidTrait;
 
     /**
      * The attributes that are mass assignable.
