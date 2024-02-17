@@ -37,7 +37,6 @@
                             data-bs-dismiss="modal">Tutup</button>
                         <button class="btn btn-primary" id="save" type="submit">
                             <span class="loading spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                            Simpan</button>
                             <span class="btn-name">Simpan</span>
                         </button>
                     </div>
@@ -144,6 +143,7 @@
                                         </div>
                                     </div>
                                 @endif`;
+                                return button;
                             }
                         },
 
@@ -175,7 +175,7 @@
                             event.stopPropagation();
                             form.classList.add('was-validated');
                         } else {
-                            let formData = $(#${options.formMain}).serialize();
+                            let formData = $(`#${options.formMain}`).serialize();
                             event.preventDefault();
                             event.stopPropagation();
                             options.disabledButton();
@@ -194,14 +194,12 @@
                     $(`#${options.formMain}`).find('input[name="item_category_id"]').val(rowData.item_category_id);
                     $("#item_category_id").val(rowData.item_category.item_category_id).change();
                     $(`#${options.modal}`).modal('show');
-                    $(`#${options.modal}`).find('#save').text('Ubah');
                     $(`#${options.modal}`).find('.btn-name').text('Ubah');
                     options.id = rowData.item_id;
                 })
 
                 $(document).on('click','.btn-delete',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    options.dataTitle = rowData._name;
                     options.dataTitle = rowData.item_name;
                     deleteData(rowData.item_id);
                 })
@@ -209,3 +207,4 @@
         </script>
     @endpush
 </x-layout>
+
