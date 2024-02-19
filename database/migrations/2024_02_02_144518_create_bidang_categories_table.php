@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('bidang_categories', function (Blueprint $table) {
             $table->uuid('bidang_category_id')->primary();
             $table->string('bidang_category_name');
-            $table->string('bidang_category_singkatan');
+            $table->string('bidang_category_code')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

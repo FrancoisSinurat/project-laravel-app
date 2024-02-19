@@ -6,10 +6,9 @@
             <x-slot name="body">
                 <form id="item-type-form" class="form needs-validation" novalidate>
                     <div class="mb-3">
-                        <input name="item_category_id" type="hidden" id="item_category_id">
                         <label for="asset_category_id" class="col-form-label mandatory">Pilih Jenis Aset</label>
-                        <select class="form-control" name="asset_category_id" id="asset_category_id">
-                            <option value="" disabled>Pilih Jenis Aset</option>
+                        <select class="form-control" name="asset_category_id" id="asset_category_id" required>
+                            <option value="">Pilih Jenis Aset</option>
                             @foreach ($assetCategory as $v)
                                 <option value="{{ $v->asset_category_id }}">{{ $v->asset_category_name }}</option>
                             @endforeach
@@ -49,7 +48,7 @@
                     <div class="card-body">
                         <div class="card-title d-flex justify-content-between">
                             <div>@yield('title')</div>
-                            @if(auth()->user()->hasPermissionTo('kategori-barang-create')) 
+                            @if(auth()->user()->hasPermissionTo('kategori-barang-create'))
                             <div>
                                 <a data-bs-toggle="modal" data-bs-target="#item-type-modal" href="javascript:void(0)"
                                     class="btn btn-sm btn-primary mb-2">Tambah Data</a>
@@ -134,10 +133,10 @@
                                 @if(auth()->user()->hasPermissionTo('kategori-barang-edit') || auth()->user()->hasPermissionTo('kategori-barang-delete'))
                                     <div class="d-flex justify-content-end">
                                         <div class="btn-group" role="group">
-                                            @if(auth()->user()->hasPermissionTo('kategori-barang-edit')) 
+                                            @if(auth()->user()->hasPermissionTo('kategori-barang-edit'))
                                                 <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-primary"><i class="bi bi-pencil-fill"></i></button>
                                             @endif
-                                            @if(auth()->user()->hasPermissionTo('kategori-barang-delete')) 
+                                            @if(auth()->user()->hasPermissionTo('kategori-barang-delete'))
                                                 <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-danger"><i class="bi bi-trash-fill"></i></button>
                                             @endif
                                         </div>
@@ -191,8 +190,7 @@
                     let rowData = dataTableList.row($(this).parents('tr')).data()
                     $(`#${options.formMain}`).find('input[name="item_category_name"]').val(rowData.item_category_name);
                     $(`#${options.formMain}`).find('input[name="item_category_code"]').val(rowData.item_category_code);
-                    $(`#${options.formMain}`).find('input[name="item_category_id"]').val(rowData.item_category_id);
-                    $("#asset_category_id").val(rowData.asset_category.asset_category_id).change();
+                    $("#asset_category_id").val(rowData.asset_category?.asset_category_id).change();
                     $(`#${options.modal}`).modal('show');
                     $(`#${options.modal}`).find('.btn-name').text('Ubah');
                     options.id = rowData.item_category_id;

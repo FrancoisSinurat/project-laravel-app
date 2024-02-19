@@ -6,10 +6,9 @@
             <x-slot name="body">
                 <form id="item-type-form" class="form needs-validation" novalidate>
                     <div class="mb-3">
-                        <input name="item_category_id" type="hidden" id="item_category_id">
                         <label for="item_category_id" class="col-form-label mandatory">Pilih Kategori Barang</label>
-                        <select class="form-control" name="item_category_id" id="item_category_id">
-                            <option value="" disabled>Pilih Kategori</option>
+                        <select class="form-control" name="item_category_id" id="item_category_id" required>
+                            <option value="">Pilih Kategori</option>
                             @foreach ($itemCategory as $v)
                                 <option value="{{ $v->item_category_id }}">{{ $v->item_category_name }}</option>
                             @endforeach
@@ -191,8 +190,7 @@
                     let rowData = dataTableList.row($(this).parents('tr')).data()
                     $(`#${options.formMain}`).find('input[name="item_name"]').val(rowData.item_name);
                     $(`#${options.formMain}`).find('input[name="item_code"]').val(rowData.item_code);
-                    $(`#${options.formMain}`).find('input[name="item_category_id"]').val(rowData.item_category_id);
-                    $("#item_category_id").val(rowData.item_category.item_category_id).change();
+                    $("#item_category_id").val(rowData.item_category?.item_category_id).trigger('change');
                     $(`#${options.modal}`).modal('show');
                     $(`#${options.modal}`).find('.btn-name').text('Ubah');
                     options.id = rowData.item_id;

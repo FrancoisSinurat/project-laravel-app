@@ -1,33 +1,148 @@
 <x-layout>
+    @push('styles')
     <style>
         .text-nav{
             color:#012970
         }
     </style>
+    <link href="{{asset('assets/vendor/select2/css/select2.min.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/vendor/select2/css/select2-bootstrap-5-theme.min.css')}}" rel="stylesheet">
+    @endpush
     @section('title', 'Aset')
     <section class="section">
-        {{-- <x-modal id="bahan-type-modal">
+        <x-modal id="asset-type-modal" size="modal-xl">
             <x-slot name="title">Form @yield('title')</x-slot>
             <x-slot name="body">
                 <form id="bahan-type-form" class="form needs-validation" novalidate>
                     <div class="mb-3">
-                        <label for="bahan_category_name" class="col-form-label">Nama Bahan:</label>
-                        <input type="text" name="bahan_category_name" class="form-control" id="bahan_category_name" required>
-                        <div id="bahan_category_name_feedback" class="invalid-feedback">
+                        <label for="asset_category_id" class="col-form-label mandatory">Pilih Jenis Aset</label>
+                        <select class="form-control select2assetCategories" data-action="{{route('admin.asset-category.ajax')}}" name="asset_category_id" id="asset_category_id" required>
+                        </select>
+                        <div id="asset_category_id_feedback" class="invalid-feedback">
                             Wajib diisi.
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="item_category_id" class="col-form-label mandatory">Pilih Kategori</label>
+                                <select class="form-control select2itemCategories" data-action="{{route('admin.item-category.ajax')}}" name="item_category_id" id="item_category_id" required>
+                                </select>
+                                <div id="item_category_id_feedback" class="invalid-feedback">
+                                    Wajib diisi.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="item_id" class="col-form-label mandatory">Pilih Jenis Barang</label>
+                                <select class="form-control select2items" data-action="{{route('admin.item.ajax')}}" name="item_id" id="item_id" required>
+                                </select>
+                                <div id="item_id_feedback" class="invalid-feedback">
+                                    Wajib diisi.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="item_brand_id" class="col-form-label mandatory">Pilih Merk</label>
+                                <select class="form-control select2brands" data-action="{{route('admin.brand.ajax')}}" name="item_brand_id" id="item_brand_id" required>
+                                </select>
+                                <div id="item_brand_id_feedback" class="invalid-feedback">
+                                    Wajib diisi.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="item_type_id" class="col-form-label mandatory">Pilih Tipe</label>
+                                <select class="form-control select2types" data-action="{{route('admin.type.ajax')}}" name="item_type_id" id="item_type_id" required>
+                                </select>
+                                <div id="item_type_id_feedback" class="invalid-feedback">
+                                    Wajib diisi.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label for="bidang_category_id" class="col-form-label mandatory">Pilih Bidang</label>
+                                <select class="form-control select2bidangs" data-action="{{route('admin.bidang.ajax')}}" name="bidang_category_id" id="bidang_category_id" required>
+                                </select>
+                                <div id="bidang_category_id_feedback" class="invalid-feedback">
+                                    Wajib diisi.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="asset_procurement_year" class="col-form-label mandatory">Pengadaan Tahun</label>
+                                <input type="number" class="form-control mandatory" name="asset_procurement_year" id="asset_procurement_year" required>
+                                <div id="asset_procurement_year_feedback" class="invalid-feedback">
+                                    Wajib diisi.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label for="asaloleh_category_id" class="col-form-label mandatory">Pilih Asal Oleh</label>
+                                <select class="form-control select2asalolehs" data-action="{{route('admin.asaloleh.ajax')}}" name="asaloleh_category_id" id="asaloleh_category_id" required>
+                                </select>
+                                <div id="asaloleh_category_id_feedback" class="invalid-feedback">
+                                    Wajib diisi.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="asset_asaloleh_date" class="col-form-label mandatory">Tanggal Asal Oleh</label>
+                                <input type="date" class="form-control mandatory" name="asset_asaloleh_date" id="asset_asaloleh_date" required>
+                                <div id="asset_asaloleh_date_feedback" class="invalid-feedback">
+                                    Wajib diisi.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="bahan_category_id" class="col-form-label mandatory">Bahan</label>
+                                <select class="form-control select2bahans" data-action="{{route('admin.bahan.ajax')}}" name="bahan_category_id" id="bahan_category_id" required>
+                                </select>
+                                <div id="bahan_category_id_feedback" class="invalid-feedback">
+                                    Wajib diisi.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="satuan_category_id" class="col-form-label mandatory">Satuan</label>
+                                <select class="form-control select2satuans" data-action="{{route('admin.satuan.ajax')}}" name="satuan_category_id" id="satuan_category_id" required>
+                                </select>
+                                <div id="satuan_category_id_feedback" class="invalid-feedback">
+                                    Wajib diisi.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="satuan_category_id" class="col-form-label">Spesifikasi</label>
+                        <textarea class="form-control" name="asset_specification"></textarea>
                     </div>
                     <div class="d-flex justify-content-end">
                         <button type="button" class="btn btn-outline-secondary me-2"
                             data-bs-dismiss="modal">Tutup</button>
-                        <button class="btn btn-primary" id="save" type="submit">
+                        {{-- <button class="btn btn-primary" id="save" type="submit">
                             <span class="loading spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                             <span class="btn-name">Simpan</span>
-                        </button>
+                        </button> --}}
                     </div>
                 </form>
             </x-slot>
-        </x-modal> --}}
+        </x-modal>
         <div class="row">
             <div class="col-md-12 h-100">
                 <div class="card info-card sales-card">
@@ -35,10 +150,10 @@
                         <div class="card-title d-flex justify-content-between">
                             <div>@yield('title')</div>
                             @if(auth()->user()->hasPermissionTo('aset-create'))
-                            {{-- <div>
-                                <a data-bs-toggle="modal" data-bs-target="#bahan-type-modal" href="javascript:void(0)"
+                            <div>
+                                <a data-bs-toggle="modal" data-bs-target="#asset-type-modal" href="javascript:void(0)"
                                     class="btn btn-sm btn-primary mb-2">Tambah Data</a>
-                            </div> --}}
+                            </div>
                             @endif
                         </div>
                         <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
@@ -75,6 +190,8 @@
         </div>
     </section>
     @push('scripts')
+        <script src="{{ asset('assets/vendor/select2/js/select2.min.js')}}"></script>
+        <script src="{{ asset('assets/js/select2-asset.js') }}"></script>
         <script src="{{ asset('assets/js/ajax.js') }}"></script>
         <script type="text/javascript">
             let modal = 'bahan-type-modal';

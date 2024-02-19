@@ -17,6 +17,6 @@ class BidangCategory extends Model
      */
     protected $primaryKey = 'bidang_category_id';
 
-    protected $fillable = ['bidang_category_name','bidang_category_singkatan'];
+    protected $fillable = ['bidang_category_name','bidang_category_code'];
 }
 

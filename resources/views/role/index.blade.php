@@ -1,20 +1,22 @@
 <x-layout>
     @section('title', 'Role')
-    <style>
-        .permission {
-            text-transform: lowercase;
-            font-size: small;
-            font-weight: normal;
-        }
-        .permission-divider {
-            margin: 0.45rem;
-        }
-        .role-title {
-            text-transform: uppercase;
-            font-size: 12px;
-            font-weight: bold;
-        }
-    </style>
+    @push('styles')
+        <style>
+            .permission {
+                text-transform: lowercase;
+                font-size: small;
+                font-weight: normal;
+            }
+            .permission-divider {
+                margin: 0.45rem;
+            }
+            .role-title {
+                text-transform: uppercase;
+                font-size: 12px;
+                font-weight: bold;
+            }
+        </style>
+    @endpush
     <section class="section">
         <x-modal id="role" size="modal-xl">
             <x-slot name="title">Form @yield('title')</x-slot>

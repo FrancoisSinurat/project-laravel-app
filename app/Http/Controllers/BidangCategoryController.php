@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\BidangCategory;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Log;
+
 
 class BidangCategoryController extends Controller
 {
@@ -43,11 +45,11 @@ class BidangCategoryController extends Controller
     {
         $this->validate($request, [
             'bidang_category_name' => 'required|unique:bidang_categories,bidang_category_name,NULL,NULL,deleted_at,NULL',
-            'bidang_category_singkatan' => 'required|unique:bidang_categories,bidang_category_singkatan,NULL,NULL,deleted_at,NULL',
+            'bidang_category_code' => 'required|unique:bidang_categories,bidang_category_code,NULL,NULL,deleted_at,NULL',
         ],
         [
             'bidang_category_name.unique' => 'Nama bidang sudah digunakan',
-            'bidang_category_singkatan.unique' => 'Singkatan bidang sudah digunakan'
+            'bidang_category_code.unique' => 'Singkatan bidang sudah digunakan'
         ]);
         BidangCategory::create($request->all());
         return response()->json([
@@ -99,6 +101,31 @@ class BidangCategoryController extends Controller
         return response()->json([
             'status' => true,
         ], 200);
+    }
+
+
+    public function ajax(Request $request)
+    {
+        try {
+            $bidang = BidangCategory::select('bidang_category_id', 'bidang_category_name')
+                ->when($request->search, function($query, $keyword) {
+                    $query->where("bidang_category_name", "like", "%$keyword%");
+                })
+                ->get();
+            if($bidang->isNotEmpty()) {
+
+                return response()->json([
+                    'results' => $bidang
+                ], 200);
+            }
+
+
+            return response()->json([], 200);
+
+        } catch (\Exception $e) {
+
+            Log::error($e->getMessage());
+        }
     }
 }
 

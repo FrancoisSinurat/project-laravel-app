@@ -54,7 +54,9 @@ class ItemController extends Controller
             'item_name.unique' => 'Nama jenis barang sudah digunakan',
             'item_code.unique' => 'Kode jenis barang sudah digunakan'
         ]);
-        Item::create($request->all());
+        $input = $request->all();
+        $input['item_code'] = strtoupper($input['item_code']);
+        Item::create($input);
         return response()->json([
             'status' => true,
         ], 200);
@@ -90,7 +92,9 @@ class ItemController extends Controller
             'item_name.unique' => 'Nama jenis barang sudah digunakan',
             'item_code.unique' => 'Kode jenis barang sudah digunakan'
         ]);
-        Item::where('item_id', $id)->update($request->all());
+        $input = $request->all();
+        $input['item_code'] = strtoupper($input['item_code']);
+        Item::where('item_id', $id)->update($input);
         return response()->json([
             'status' => true,
         ], 200);
@@ -105,5 +109,34 @@ class ItemController extends Controller
         return response()->json([
             'status' => true,
         ], 200);
+    }
+
+    public function ajax(Request $request)
+    {
+        try {
+            $item = Item::select('item_id', 'item_category_id', 'item_name', 'item_code')
+                ->when($request->search, function($query, $keyword) {
+                    $query->where("item_name", "like", "%$keyword%");
+                })
+                ->when($request->itemCategory, function($query, $itemCategory) {
+                    $query->where('item_category_id', $itemCategory);
+                }, function($query) {
+                    $query->whereNull('item_category_id');
+                })
+                ->get();
+            if($item->isNotEmpty()) {
+
+                return response()->json([
+                    'results' => $item
+                ], 200);
+            }
+
+
+            return response()->json([], 200);
+
+        } catch (\Exception $e) {
+
+            Log::error($e->getMessage());
+        }
     }
 }
