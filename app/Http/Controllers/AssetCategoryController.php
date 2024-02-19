@@ -104,6 +104,7 @@ class AssetCategoryController extends Controller
                 ->when($request->search, function($query, $keyword) {
                     $query->where("asset_category_name", "like", "%$keyword%");
                 })
+                ->limit(10)
                 ->get();
             if($assetCategories->isNotEmpty()) {
 

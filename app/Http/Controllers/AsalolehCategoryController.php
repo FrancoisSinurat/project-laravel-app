@@ -105,7 +105,8 @@ class AsalolehCategoryController extends Controller
                 ->when($request->search, function($query, $keyword) {
                     $query->where("asaloleh_category_name", "like", "%$keyword%");
                 })
-                ->limit(10)->get();
+                ->limit(10)
+                ->get();
             if($asalOleh->isNotEmpty()) {
 
                 return response()->json([
