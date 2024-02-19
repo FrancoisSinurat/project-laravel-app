@@ -15,8 +15,7 @@ return new class extends Migration
             $table->uuid('item_category_id')->primary();
             $table->foreignUuid('asset_category_id')
                 ->references('asset_category_id')
-                ->on('asset_categories')
-                ->constrained();
+                ->on('asset_categories');
             $table->string('item_category_name');
             $table->string('item_category_code');
             $table->timestamps();
