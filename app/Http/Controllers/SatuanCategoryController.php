@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\SatuanCategory;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Log;
+
 
 class SatuanCategoryController extends Controller
 {
@@ -95,5 +97,30 @@ class SatuanCategoryController extends Controller
         return response()->json([
             'status' => true,
         ], 200);
+    }
+
+    public function ajax(Request $request)
+    {
+        try {
+            $satuan = SatuanCategory::select('satuan_category_id', 'satuan_category_name')
+                ->when($request->search, function($query, $keyword) {
+                    $query->where("satuan_category_name", "like", "%$keyword%");
+                })
+                ->limit(10)
+                ->get();
+            if($satuan->isNotEmpty()) {
+
+                return response()->json([
+                    'results' => $satuan
+                ], 200);
+            }
+
+
+            return response()->json([], 200);
+
+        } catch (\Exception $e) {
+
+            Log::error($e->getMessage());
+        }
     }
 }

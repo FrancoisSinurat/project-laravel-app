@@ -11,7 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('asset_categories', function (Blueprint $table) {
+        Schema::create('item_brands', function (Blueprint $table) {
+            $table->uuid('item_brand_id')->primary();
+            $table->foreignUuid('item_id')
+            ->references('item_id')
+            ->on('items');
+            $table->string('item_brand_name')->nullable();
+            $table->timestamps();
             $table->softDeletes();
         });
     }
@@ -21,8 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('asset_categories', function (Blueprint $table) {
-            $table->dropColumn('deleted_at');
-        });
+        Schema::dropIfExists('item_brands');
     }
 };

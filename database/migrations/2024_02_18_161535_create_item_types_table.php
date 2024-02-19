@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('assets', function (Blueprint $table) {
-            $table->uuid('asset_id')->primary();
+        Schema::create('item_types', function (Blueprint $table) {
+            $table->uuid('item_type_id')->primary();
+            $table->foreignUuid('item_brand_id')
+            ->references('item_brand_id')
+            ->on('item_brands');
+            $table->string('item_type_name')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -23,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('assets');
+        Schema::dropIfExists('item_types');
     }
 };

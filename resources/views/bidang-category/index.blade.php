@@ -13,9 +13,9 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="bidang_category_singkatan" class="col-form-label mandatory">Singkatan</label>
-                        <input type="text" name="bidang_category_singkatan" class="form-control" id="bidang_category_singkatan" required>
-                        <div id="bidang_category_singkatan_feedback" class="invalid-feedback">
+                        <label for="bidang_category_code" class="col-form-label mandatory">Singkatan</label>
+                        <input type="text" name="bidang_category_code" class="form-control" id="bidang_category_code" required>
+                        <div id="bidang_category_code_feedback" class="invalid-feedback">
                             Wajib diisi.
                         </div>
                     </div>
@@ -36,7 +36,7 @@
                     <div class="card-body">
                         <div class="card-title d-flex justify-content-between">
                             <div>@yield('title')</div>
-                            @if(auth()->user()->hasPermissionTo('bidang-create')) 
+                            @if(auth()->user()->hasPermissionTo('bidang-create'))
                             <div>
                                 <a data-bs-toggle="modal" data-bs-target="#bidang-type-modal" href="javascript:void(0)"
                                     class="btn btn-sm btn-primary mb-2">Tambah Data</a>
@@ -50,7 +50,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Nama Bidang</th>
-                                        <th>Singkatan</th>
+                                        <th>code</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -105,8 +105,8 @@
                             name: 'bidang_category_name'
                         },
                         {
-                            data: 'bidang_category_singkatan',
-                            name: 'bidang_category_singkatan'
+                            data: 'bidang_category_code',
+                            name: 'bidang_category_code'
                         },
                         {
                             name: 'action',
@@ -118,10 +118,10 @@
                                 @if(auth()->user()->hasPermissionTo('bidang-edit') || auth()->user()->hasPermissionTo('bidang-delete'))
                                     <div class="d-flex justify-content-end">
                                         <div class="btn-group" role="group">
-                                            @if(auth()->user()->hasPermissionTo('bidang-edit')) 
+                                            @if(auth()->user()->hasPermissionTo('bidang-edit'))
                                                 <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-primary"><i class="bi bi-pencil-fill"></i></button>
                                             @endif
-                                            @if(auth()->user()->hasPermissionTo('bidang-delete')) 
+                                            @if(auth()->user()->hasPermissionTo('bidang-delete'))
                                                 <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-danger"><i class="bi bi-trash-fill"></i></button>
                                             @endif
                                         </div>
@@ -175,7 +175,7 @@
                     let rowData = dataTableList.row($(this).parents('tr')).data()
                     $(`#${options.formMain}`).find('input[name="bidang_category_name"]').val(rowData.bidang_category_name);
                     $(`#${options.formMain}`).find('input[name="bidang_category_id"]').val(rowData.bidang_category_id);
-                    $(`#${options.formMain}`).find('input[name="bidang_category_singkatan"]').val(rowData.bidang_category_singkatan);
+                    $(`#${options.formMain}`).find('input[name="bidang_category_code"]').val(rowData.bidang_category_code);
                     $(`#${options.modal}`).modal('show');
                     $(`#${options.modal}`).find('.btn-name').text('Ubah');
                     options.id = rowData.bidang_category_id;

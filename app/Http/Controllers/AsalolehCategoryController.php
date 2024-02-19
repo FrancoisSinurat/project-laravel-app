@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AsalolehCategory;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Log;
 
 class AsalolehCategoryController extends Controller
 {
@@ -95,6 +96,30 @@ class AsalolehCategoryController extends Controller
         return response()->json([
             'status' => true,
         ], 200);
+    }
+
+    public function ajax(Request $request)
+    {
+        try {
+            $asalOleh = AsalolehCategory::select('asaloleh_category_id', 'asaloleh_category_name')
+                ->when($request->search, function($query, $keyword) {
+                    $query->where("asaloleh_category_name", "like", "%$keyword%");
+                })
+                ->limit(10)->get();
+            if($asalOleh->isNotEmpty()) {
+
+                return response()->json([
+                    'results' => $asalOleh
+                ], 200);
+            }
+
+
+            return response()->json([], 200);
+
+        } catch (\Exception $e) {
+
+            Log::error($e->getMessage());
+        }
     }
 }
 

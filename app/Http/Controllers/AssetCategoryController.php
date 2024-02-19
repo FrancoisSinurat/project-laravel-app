@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AssetCategory;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Log;
 
 class AssetCategoryController extends Controller
 {
@@ -58,7 +59,6 @@ class AssetCategoryController extends Controller
      */
     public function show(string $id)
     {
-        //
     }
 
     /**
@@ -95,6 +95,30 @@ class AssetCategoryController extends Controller
         return response()->json([
             'status' => true,
         ], 200);
+    }
+
+    public function ajax(Request $request)
+    {
+        try {
+            $assetCategories = AssetCategory::select('asset_category_id', 'asset_category_name')
+                ->when($request->search, function($query, $keyword) {
+                    $query->where("asset_category_name", "like", "%$keyword%");
+                })
+                ->get();
+            if($assetCategories->isNotEmpty()) {
+
+                return response()->json([
+                    'results' => $assetCategories
+                ], 200);
+            }
+
+
+            return response()->json([], 200);
+
+        } catch (\Exception $e) {
+
+            Log::error($e->getMessage());
+        }
     }
 }
 

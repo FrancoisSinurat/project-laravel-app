@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Manajemen Asset | @yield('title', '')</title>
+  <title>Manajemen Aset | @yield('title', '')</title>
   <meta content="Manajamen Asset DCKTRP" name="description">
   <meta content="" name="keywords">
   <meta name="csrf-token" content="{{ csrf_token() }}" />
@@ -37,6 +37,7 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+  @stack('styles')
 </head>
 
 <body>

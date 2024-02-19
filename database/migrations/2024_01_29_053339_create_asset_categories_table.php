@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('asset_category_id')->primary();
             $table->string('asset_category_name');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

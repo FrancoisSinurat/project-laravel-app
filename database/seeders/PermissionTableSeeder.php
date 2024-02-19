@@ -25,7 +25,7 @@ class PermissionTableSeeder extends Seeder
             'aset-alokasi',
             'aset-peminjaman',
             'aset-penarikan',
-            'aset-persetujuan-peminjaman',
+            'aset-persetujuan_peminjaman',
             'barang-list', // barang
             'barang-create',
             'barang-edit',

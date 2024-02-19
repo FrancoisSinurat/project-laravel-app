@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asset;
+use App\Models\AssetCategory;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Log;
 
 
 class AssetController extends Controller
@@ -26,7 +28,8 @@ class AssetController extends Controller
             $asset = Asset::query();
             return DataTables::of($asset)->make();
         }
-        return view('asset.index');
+        $assetCategory = AssetCategory::get();
+        return view('asset.index', compact('assetCategory'));
     }
 
     /**
