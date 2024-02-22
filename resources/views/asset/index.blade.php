@@ -69,10 +69,10 @@
                     <div class="row">
                         <div class="col-md-8">
                             <div class="mb-3">
-                                <label for="bidang_category_id" class="col-form-label mandatory">Pilih Bidang</label>
-                                <select class="form-control select2bidangs" data-action="{{route('admin.bidang.ajax')}}" name="bidang_category_id" id="bidang_category_id" required>
+                                <label for="asalpengadaan_category_id" class="col-form-label mandatory">Pilih Asal Pengadaan</label>
+                                <select class="form-control select2asalpengadaans" data-action="{{route('admin.asalpengadaan.ajax')}}" name="asalpengadaan_category_id" id="asalpengadaan_category_id" required>
                                 </select>
-                                <div id="bidang_category_id_feedback" class="invalid-feedback">
+                                <div id="asalpengadaan_category_id_feedback" class="invalid-feedback">
                                     Wajib diisi.
                                 </div>
                             </div>
@@ -164,18 +164,19 @@
                             @endforeach
                           </ul>
                           <div class="table-responsive">
-                            <table id="asset-table" class="table table-hover"
+                            <table id="asset-table" class="table table-hover nowrap"
                             width="100%">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Kode KAB</th>
+                                    <th>Kode Barang</th>
+                                    <th>No Registrasi</th>
                                     <th>Jenis Barang</th>
-                                    <th>Pengguna</th>
                                     <th>Nama Barang</th>
                                     <th>Ukuran</th>
                                     <th>Satuan</th>
                                     <th>Tipe</th>
+                                    <th>Pengguna</th>
                                     <th>QR Code</th>
                                     <th></th>
                                 </tr>
@@ -227,6 +228,10 @@
                             render: function(data, type, row, meta) {
                                 return meta.row + meta.settings._iDisplayStart + 1;
                             }
+                        },
+                        {
+                            data: 'asset_id',
+                            name: 'asset_id',
                         },
                         {
                             data: 'asset_id',
