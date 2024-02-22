@@ -17,8 +17,9 @@ class DatabaseSeeder extends Seeder
             // UserInitSeeder::class,
             // AssetCategorySeeder::class,
             // SourceSeeder::class,
-            // BidangSeeder::class,
+            // AsalpengadaanSeeder::class,
             // BahanSeeder::class,
+            // SatuanSeeder::class,
         ]);
     }
 }
