@@ -14,11 +14,12 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             PermissionTableSeeder::class,
-            // UserInitSeeder::class,
-            // AssetCategorySeeder::class,
-            // SourceSeeder::class,
-            // BidangSeeder::class,
-            // BahanSeeder::class,
+            UserInitSeeder::class,
+            AssetCategorySeeder::class,
+            SourceSeeder::class,
+            AsalpengadaanSeeder::class,
+            BahanSeeder::class,
+            SatuanSeeder::class,
         ]);
     }
 }

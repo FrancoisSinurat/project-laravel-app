@@ -26,6 +26,10 @@ class PermissionTableSeeder extends Seeder
             'aset-peminjaman',
             'aset-penarikan',
             'aset-persetujuan_peminjaman',
+            'peminjaman-list', // peminjaman
+            'peminjaman-create',
+            'peminjaman-edit',
+            'peminjaman-delete',
             'barang-list', // barang
             'barang-create',
             'barang-edit',
@@ -34,10 +38,10 @@ class PermissionTableSeeder extends Seeder
             'bahan-create',
             'bahan-edit',
             'bahan-delete',
-            'bidang-list', // bidang
-            'bidang-create',
-            'bidang-edit',
-            'bidang-delete',
+            'asal-pengadaan-list', // pengadaan
+            'asal-pengadaan-create',
+            'asal-pengadaan-edit',
+            'asal-pengadaan-delete',
             'jenis-aset-list', // jenis aset
             'jenis-aset-create',
             'jenis-aset-edit',
@@ -68,3 +72,4 @@ class PermissionTableSeeder extends Seeder
          }
     }
 }
+ 

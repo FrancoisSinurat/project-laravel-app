@@ -9,7 +9,7 @@ let selectAsset = {
         selectAsset.brands();
         selectAsset.types();
         selectAsset.asalolehs();
-        selectAsset.bidangs();
+        selectAsset.asalpengadaans();
         selectAsset.bahans();
         selectAsset.satuans();
     },
@@ -22,13 +22,13 @@ let selectAsset = {
             dropdownParent: $('#asset-type-modal .modal-content'),
             theme: 'bootstrap-5',
             width: '100%',
-            dataType: 'json',
             allowClear: true,
             placeholder: 'Pilih Aset',
             ajax: {
                 url: urlAssetCategories,
                 type: 'GET',
                 dataType: 'json',
+                delay: 250,
                 data: function (params) {
                     return {
                         search: params.term || ''
@@ -96,6 +96,7 @@ let selectAsset = {
                 url: urlItemCategories,
                 type: 'GET',
                 dataType: 'json',
+                delay: 250,
                 data: function (params) {
                     return {
                         assetCategory: assetCategory,
@@ -156,6 +157,7 @@ let selectAsset = {
                 url: urlItem,
                 type: 'GET',
                 dataType: 'json',
+                delay: 250,
                 data: function (params) {
                     return {
                         itemCategory: itemCategory,
@@ -208,6 +210,7 @@ let selectAsset = {
                 url: urlBrand,
                 type: 'GET',
                 dataType: 'json',
+                delay: 250,
                 data: function (params) {
                     return {
                         item: item,
@@ -256,6 +259,7 @@ let selectAsset = {
                 url: urlBrand,
                 type: 'GET',
                 dataType: 'json',
+                delay: 250,
                 data: function (params) {
                     return {
                         brand: brand,
@@ -290,6 +294,7 @@ let selectAsset = {
                 url: urlBrand,
                 type: 'GET',
                 dataType: 'json',
+                delay: 250,
                 data: function (params) {
                     return {
                         search: params.term || ''
@@ -309,20 +314,21 @@ let selectAsset = {
         });
     },
 
-    bidangs: function () {
+    asalpengadaans: function () {
 
-        let urlBrand = $('.select2bidangs').attr('data-action');
+        let urlBrand = $('.select2asalpengadaans').attr('data-action');
 
-        $('.select2bidangs').select2({
+        $('.select2asalpengadaans').select2({
             dropdownParent: $('#asset-type-modal .modal-content'),
             theme: 'bootstrap-5',
             width: '100%',
             allowClear: true,
-            placeholder: 'Pilih Bidang',
+            placeholder: 'Pilih Asal Pengadaan',
             ajax: {
                 url: urlBrand,
                 type: 'GET',
                 dataType: 'json',
+                delay: 250,
                 data: function (params) {
                     return {
                         search: params.term || ''
@@ -332,8 +338,8 @@ let selectAsset = {
                     return {
                         results: $.map(data.results, function (item) {
                             return {
-                                text: item.bidang_category_name,
-                                id: item.bidang_category_id,
+                                text: item.asalpengadaan_category_name,
+                                id: item.asalpengadaan_category_id,
                             }
                         })
                     };
@@ -356,6 +362,7 @@ let selectAsset = {
                 url: urlBrand,
                 type: 'GET',
                 dataType: 'json',
+                delay: 250,
                 data: function (params) {
                     return {
                         search: params.term || ''
@@ -385,10 +392,12 @@ let selectAsset = {
             width: '100%',
             allowClear: true,
             placeholder: 'Pilih Satuan',
+            delay: 250,
             ajax: {
                 url: urlBrand,
                 type: 'GET',
                 dataType: 'json',
+                delay: 250,
                 data: function (params) {
                     return {
                         search: params.term || ''

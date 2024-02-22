@@ -30,10 +30,10 @@ return new class extends Migration
                 ->nullable()
                 ->references('item_brand_id')
                 ->on('item_brands');
-            $table->foreignUuid('bidang_category_id')
+            $table->foreignUuid('asalpengadaan_category_id')
                 ->nullable()
-                ->references('bidang_category_id')
-                ->on('bidang_categories');
+                ->references('asalpengadaan_category_id')
+                ->on('asalpengadaan_categories');
             $table->foreignUuid('bahan_category_id')
                 ->nullable()
                 ->references('bahan_category_id')
