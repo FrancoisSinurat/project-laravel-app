@@ -22,13 +22,13 @@ let selectAsset = {
             dropdownParent: $('#asset-type-modal .modal-content'),
             theme: 'bootstrap-5',
             width: '100%',
-            dataType: 'json',
             allowClear: true,
             placeholder: 'Pilih Aset',
             ajax: {
                 url: urlAssetCategories,
                 type: 'GET',
                 dataType: 'json',
+                delay: 250,
                 data: function (params) {
                     return {
                         search: params.term || ''
@@ -96,6 +96,7 @@ let selectAsset = {
                 url: urlItemCategories,
                 type: 'GET',
                 dataType: 'json',
+                delay: 250,
                 data: function (params) {
                     return {
                         assetCategory: assetCategory,
@@ -156,6 +157,7 @@ let selectAsset = {
                 url: urlItem,
                 type: 'GET',
                 dataType: 'json',
+                delay: 250,
                 data: function (params) {
                     return {
                         itemCategory: itemCategory,
@@ -208,6 +210,7 @@ let selectAsset = {
                 url: urlBrand,
                 type: 'GET',
                 dataType: 'json',
+                delay: 250,
                 data: function (params) {
                     return {
                         item: item,
@@ -256,6 +259,7 @@ let selectAsset = {
                 url: urlBrand,
                 type: 'GET',
                 dataType: 'json',
+                delay: 250,
                 data: function (params) {
                     return {
                         brand: brand,
@@ -290,6 +294,7 @@ let selectAsset = {
                 url: urlBrand,
                 type: 'GET',
                 dataType: 'json',
+                delay: 250,
                 data: function (params) {
                     return {
                         search: params.term || ''
@@ -323,6 +328,7 @@ let selectAsset = {
                 url: urlBrand,
                 type: 'GET',
                 dataType: 'json',
+                delay: 250,
                 data: function (params) {
                     return {
                         search: params.term || ''
@@ -356,6 +362,7 @@ let selectAsset = {
                 url: urlBrand,
                 type: 'GET',
                 dataType: 'json',
+                delay: 250,
                 data: function (params) {
                     return {
                         search: params.term || ''
@@ -385,10 +392,12 @@ let selectAsset = {
             width: '100%',
             allowClear: true,
             placeholder: 'Pilih Satuan',
+            delay: 250,
             ajax: {
                 url: urlBrand,
                 type: 'GET',
                 dataType: 'json',
+                delay: 250,
                 data: function (params) {
                     return {
                         search: params.term || ''
