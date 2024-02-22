@@ -9,7 +9,7 @@ let selectAsset = {
         selectAsset.brands();
         selectAsset.types();
         selectAsset.asalolehs();
-        selectAsset.bidangs();
+        selectAsset.asalpengadaans();
         selectAsset.bahans();
         selectAsset.satuans();
     },
@@ -309,16 +309,16 @@ let selectAsset = {
         });
     },
 
-    bidangs: function () {
+    asalpengadaans: function () {
 
-        let urlBrand = $('.select2bidangs').attr('data-action');
+        let urlBrand = $('.select2asalpengadaans').attr('data-action');
 
-        $('.select2bidangs').select2({
+        $('.select2asalpengadaans').select2({
             dropdownParent: $('#asset-type-modal .modal-content'),
             theme: 'bootstrap-5',
             width: '100%',
             allowClear: true,
-            placeholder: 'Pilih Bidang',
+            placeholder: 'Pilih Asal Pengadaan',
             ajax: {
                 url: urlBrand,
                 type: 'GET',
@@ -332,8 +332,8 @@ let selectAsset = {
                     return {
                         results: $.map(data.results, function (item) {
                             return {
-                                text: item.bidang_category_name,
-                                id: item.bidang_category_id,
+                                text: item.asalpengadaan_category_name,
+                                id: item.asalpengadaan_category_id,
                             }
                         })
                     };

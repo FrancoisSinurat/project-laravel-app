@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bidang_categories', function (Blueprint $table) {
-            $table->uuid('bidang_category_id')->primary();
-            $table->string('bidang_category_name');
-            $table->string('bidang_category_code')->nullable();
+        Schema::create('asalpengadaan_categories', function (Blueprint $table) {
+            $table->uuid('asalpengadaan_category_id')->primary();
+            $table->string('asalpengadaan_category_name');
+            $table->string('asalpengadaan_category_code')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bidang_categories');
+        Schema::dropIfExists('asalpengadaan_categories');
     }
 };
