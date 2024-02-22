@@ -34,4 +34,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.'], fu
 
     Route::resource('user', App\Http\Controllers\UserController::class);
     Route::resource('role', App\Http\Controllers\RoleController::class);
+
+    // ajax
+    Route::get('/asset-category-ajax', [App\Http\Controllers\AssetCategoryController::class, 'ajax'])->name('asset-category.ajax');
+    Route::get('/item-category-ajax', [App\Http\Controllers\ItemCategoryController::class, 'ajax'])->name('item-category.ajax');
+    Route::get('/item-ajax', [App\Http\Controllers\ItemController::class, 'ajax'])->name('item.ajax');
+    Route::get('/brand-ajax', [App\Http\Controllers\ItemBrandController::class, 'ajax'])->name('brand.ajax');
+    Route::get('/type-ajax', [App\Http\Controllers\ItemTypeController::class, 'ajax'])->name('type.ajax');
+    Route::get('/asaloleh-ajax', [App\Http\Controllers\AsalolehCategoryController::class, 'ajax'])->name('asaloleh.ajax');
+    Route::get('/bidang-ajax', [App\Http\Controllers\BidangCategoryController::class, 'ajax'])->name('bidang.ajax');
+    Route::get('/bahan-ajax', [App\Http\Controllers\BahanCategoryController::class, 'ajax'])->name('bahan.ajax');
+    Route::get('/satuan-ajax', [App\Http\Controllers\SatuanCategoryController::class, 'ajax'])->name('satuan.ajax');
 });

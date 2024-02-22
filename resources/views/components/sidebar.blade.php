@@ -1,3 +1,4 @@
+@push('styles')
 <style>
     .divider {
         width: 80%;
@@ -5,6 +6,7 @@
         opacity: .07;
     }
 </style>
+@endpush
 
 <aside id="sidebar" class="sidebar">
 

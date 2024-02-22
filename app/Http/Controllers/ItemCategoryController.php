@@ -146,4 +146,33 @@ class ItemCategoryController extends Controller
             ], 500);
         }
     }
+
+    public function ajax(Request $request)
+    {
+        try {
+            $itemCategories = ItemCategory::select('item_category_id', 'asset_category_id', 'item_category_name', 'item_category_code')
+                ->when($request->search, function($query, $keyword) {
+                    $query->where("item_category_name", "like", "%$keyword%");
+                })
+                ->when($request->assetCategory, function($query, $assetCategory) {
+                    $query->where('asset_category_id', $assetCategory);
+                }, function($query) {
+                    $query->whereNull('asset_category_id');
+                })
+                ->get();
+            if($itemCategories->isNotEmpty()) {
+
+                return response()->json([
+                    'results' => $itemCategories
+                ], 200);
+            }
+
+
+            return response()->json([], 200);
+
+        } catch (\Exception $e) {
+
+            Log::error($e->getMessage());
+        }
+    }
 }
