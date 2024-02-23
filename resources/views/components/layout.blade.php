@@ -26,8 +26,7 @@
   <link href="{{asset('assets/vendor/remixicon/remixicon.css')}}" rel="stylesheet">
   <link href="{{asset('assets/vendor/bootstrap/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet">
   <link href="{{asset('assets/vendor/swal2/sweetalert2.min.css')}}" rel="stylesheet">
-  <!-- Datetimepicker -->
-  <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+  <link href="{{asset('assets/vendor/gijgo/gijgo.min.css')}}" rel="stylesheet">
   <!-- Template Main CSS File -->
   <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
 
@@ -67,8 +66,7 @@
   <script src="{{asset('assets/vendor/tinymce/tinymce.min.js')}}"></script>
   <script src="{{asset('assets/vendor/php-email-form/validate.js')}}"></script>
   <script src="{{asset('assets/vendor/swal2/sweetalert2.all.min.js')}}"></script>
-  <!-- Datetimepicker -->
-  <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
+  <script src="{{asset('assets/vendor/gijgo/gijgo.min.js')}}"></script>
 
   <!-- Template Main JS File -->
   <script src="{{asset('assets/js/main.js')}}"></script>
