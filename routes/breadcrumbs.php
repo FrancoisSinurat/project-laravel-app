@@ -76,3 +76,9 @@ Breadcrumbs::for('admin.asset.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.dashboard');
     $trail->push('Aset', route('admin.asset.index'));
 });
+
+// Dashboard > Item Brand
+Breadcrumbs::for('admin.brand.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Merk', route('admin.brand.index'));
+});

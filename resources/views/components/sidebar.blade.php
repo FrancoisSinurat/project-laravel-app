@@ -95,6 +95,13 @@
                     </a>
                 </li>
                 @endif
+                @if(auth()->user()->hasPermissionTo('satuan-list'))
+                <li>
+                    <a href="{{route('admin.brand.index')}}" class="{{Route::current()->getName() == 'admin.brand.index' ? 'active' : ''}}">
+                        <i class="bi bi-chevron-double-right"></i><span>Merk</span>
+                    </a>
+                </li>
+                @endif
             </ul>
         </li>
         @endif
