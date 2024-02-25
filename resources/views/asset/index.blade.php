@@ -453,7 +453,8 @@
 
                 $(document).on('click','.btn-delete',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    options.dataTitle = rowData.bahan_category_name;
+                    console.log(rowData);
+                    options.dataTitle = rowData.asset_name;
                     deleteData(rowData.asset_id);
                 })
             });
