@@ -18,5 +18,10 @@ class AsalpengadaanCategory extends Model
     protected $primaryKey = 'asalpengadaan_category_id';
 
     protected $fillable = ['asalpengadaan_category_name','asalpengadaan_category_code'];
+
+    public function asset()
+    {
+        return $this->hasMany(Asset::class, 'asalpengadaan_category_id', 'asalpengadaan_category_id');
+    }
 }
 

@@ -11,7 +11,7 @@ class PermissionTableSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run() :void
+    public function run(): void
     {
         $permissions = [
             'asal-oleh-list', // sumber
@@ -23,7 +23,6 @@ class PermissionTableSeeder extends Seeder
             'aset-edit',
             'aset-delete',
             'aset-alokasi',
-            'aset-peminjaman',
             'aset-penarikan',
             'aset-persetujuan_peminjaman',
             'peminjaman-list', // peminjaman
@@ -66,10 +65,9 @@ class PermissionTableSeeder extends Seeder
             'user-create',
             'user-edit',
             'user-delete'
-         ];
-         foreach ($permissions as $permission) {
-            Permission::updateOrCreate(['name' => $permission],['name' => $permission]);
-         }
+        ];
+        foreach ($permissions as $permission) {
+            Permission::updateOrCreate(['name' => $permission], ['name' => $permission]);
+        }
     }
 }
- 

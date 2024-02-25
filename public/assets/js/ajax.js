@@ -35,6 +35,7 @@ $(window).on('hide.bs.modal', function() {
     if (options.formMain) {
         $('#'+options.formMain).removeClass('was-validated');
         $('#'+options.formMain).trigger('reset');
+        $('#'+options.formMain+' select').val('').trigger('change');
     }
     options.id = null;
     if (options.error) {

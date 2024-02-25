@@ -38,12 +38,21 @@ return new class extends Migration
                 ->nullable()
                 ->references('bahan_category_id')
                 ->on('bahan_categories');
+            $table->foreignUuid('satuan_category_id')
+                ->nullable()
+                ->references('satuan_category_id')
+                ->on('satuan_categories');
             $table->foreignUuid('asaloleh_category_id')
                 ->nullable()
                 ->references('asaloleh_category_id')
                 ->on('asaloleh_categories');
             $table->date('asset_asaloleh_date')->nullable();
             $table->integer('asset_procurement_year')->nullable();
+            $table->string('asset_status')->nullable();
+            $table->foreignUuid('asset_used_by')
+                ->nullable()
+                ->references('user_id')
+                ->on('users');
             $table->string('asset_code')->nullable();
             $table->string('asset_name')->nullable();
             $table->text('asset_note')->nullable();

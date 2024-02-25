@@ -12,7 +12,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app['files']->requireOnce(__DIR__.'/../Helpers/Helpers.php');
     }
 
     /**
