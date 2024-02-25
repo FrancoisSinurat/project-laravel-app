@@ -22,7 +22,7 @@
             auth()->user()->hasPermissionTo('barang-list') ||
             auth()->user()->hasPermissionTo('asal-oleh-list') ||
             auth()->user()->hasPermissionTo('asal-pengadaan-list') ||
-            auth()->user()->hasPermissionTo('jenis-aset') ||
+            auth()->user()->hasPermissionTo('jenis-aset-list') ||
             auth()->user()->hasPermissionTo('bahan-list') ||
             auth()->user()->hasPermissionTo('satuan-list'))
         <li class="nav-item">

@@ -20,12 +20,13 @@ class ItemCategory extends Model
 
     protected $fillable = ['asset_category_id','item_category_name','item_category_code'];
 
-    // public function user(): BelongsTo
-    // {
-    //     return $this->belongsTo(User::class);
-    // }
-    public function asset_category(): BelongsTo
+    public function asset_category()
     {
         return $this->belongsTo(AssetCategory::class, 'asset_category_id', 'asset_category_id');
+    }
+
+    public function asset()
+    {
+        return $this->hasMany(Asset::class, 'asset_category_id', 'asset_category_id');
     }
 }

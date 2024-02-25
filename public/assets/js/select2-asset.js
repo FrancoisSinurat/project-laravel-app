@@ -12,6 +12,7 @@ let selectAsset = {
         selectAsset.asalpengadaans();
         selectAsset.bahans();
         selectAsset.satuans();
+        selectAsset.users();
     },
 
     assetCategories: function () {
@@ -19,7 +20,7 @@ let selectAsset = {
         let urlAssetCategories = $('.select2assetCategories').attr('data-action');
 
         $('.select2assetCategories').select2({
-            dropdownParent: $('#asset-type-modal .modal-content'),
+            dropdownParent: $('#asset-modal .modal-content'),
             theme: 'bootstrap-5',
             width: '100%',
             allowClear: true,
@@ -87,7 +88,7 @@ let selectAsset = {
         let urlItemCategories = $('.select2itemCategories').attr('data-action');
 
         $('.select2itemCategories').select2({
-            dropdownParent: $('#asset-type-modal .modal-content'),
+            dropdownParent: $('#asset-modal .modal-content'),
             theme: 'bootstrap-5',
             width: '100%',
             allowClear: true,
@@ -148,7 +149,7 @@ let selectAsset = {
         let urlItem = $('.select2items').attr('data-action');
 
         $('.select2items').select2({
-            dropdownParent: $('#asset-type-modal .modal-content'),
+            dropdownParent: $('#asset-modal .modal-content'),
             theme: 'bootstrap-5',
             width: '100%',
             allowClear: true,
@@ -201,7 +202,7 @@ let selectAsset = {
         let urlBrand = $('.select2brands').attr('data-action');
 
         $('.select2brands').select2({
-            dropdownParent: $('#asset-type-modal .modal-content'),
+            dropdownParent: $('#asset-modal .modal-content'),
             theme: 'bootstrap-5',
             width: '100%',
             allowClear: true,
@@ -250,7 +251,7 @@ let selectAsset = {
         let urlBrand = $('.select2types').attr('data-action');
 
         $('.select2types').select2({
-            dropdownParent: $('#asset-type-modal .modal-content'),
+            dropdownParent: $('#asset-modal .modal-content'),
             theme: 'bootstrap-5',
             width: '100%',
             allowClear: true,
@@ -285,7 +286,7 @@ let selectAsset = {
         let urlBrand = $('.select2asalolehs').attr('data-action');
 
         $('.select2asalolehs').select2({
-            dropdownParent: $('#asset-type-modal .modal-content'),
+            dropdownParent: $('#asset-modal .modal-content'),
             theme: 'bootstrap-5',
             width: '100%',
             allowClear: true,
@@ -319,7 +320,7 @@ let selectAsset = {
         let urlBrand = $('.select2asalpengadaans').attr('data-action');
 
         $('.select2asalpengadaans').select2({
-            dropdownParent: $('#asset-type-modal .modal-content'),
+            dropdownParent: $('#asset-modal .modal-content'),
             theme: 'bootstrap-5',
             width: '100%',
             allowClear: true,
@@ -353,7 +354,7 @@ let selectAsset = {
         let urlBrand = $('.select2bahans').attr('data-action');
 
         $('.select2bahans').select2({
-            dropdownParent: $('#asset-type-modal .modal-content'),
+            dropdownParent: $('#asset-modal .modal-content'),
             theme: 'bootstrap-5',
             width: '100%',
             allowClear: true,
@@ -387,12 +388,11 @@ let selectAsset = {
         let urlBrand = $('.select2satuans').attr('data-action');
 
         $('.select2satuans').select2({
-            dropdownParent: $('#asset-type-modal .modal-content'),
+            dropdownParent: $('#asset-modal .modal-content'),
             theme: 'bootstrap-5',
             width: '100%',
             allowClear: true,
             placeholder: 'Pilih Satuan',
-            delay: 250,
             ajax: {
                 url: urlBrand,
                 type: 'GET',
@@ -409,6 +409,42 @@ let selectAsset = {
                             return {
                                 text: item.satuan_category_name,
                                 id: item.satuan_category_id,
+                            }
+                        })
+                    };
+                }
+            }
+        });
+    },
+
+    users: function () {
+        let urlUsers = $('.select2users').attr('data-action');
+
+        $('.select2users').select2({
+            dropdownParent: $('#asset-modal .modal-content'),
+            theme: 'bootstrap-5',
+            width: '100%',
+            allowClear: true,
+            minimumInputLength: 3,
+            placeholder: 'Cari berdasarkan nama atau NRK',
+            ajax: {
+                url: urlUsers,
+                type: 'GET',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        search: params.term || ''
+                    }
+                },
+                processResults: function (data) {
+                    return {
+                        results: $.map(data.results, function (item) {
+                            let text = item.user_fullname;
+                            if (item.user_nrk) text += '-'+item.user_nrk;
+                            return {
+                                text: text,
+                                id: item.user_id,
                             }
                         })
                     };

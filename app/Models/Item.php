@@ -20,13 +20,19 @@ class Item extends Model
 
     protected $fillable = ['item_category_id','item_name','item_code'];
 
-    // public function user(): BelongsTo
-    // {
-    //     return $this->belongsTo(User::class);
-    // }
-    public function item_category(): BelongsTo
+    public function item_category()
     {
         return $this->belongsTo(ItemCategory::class, 'item_category_id', 'item_category_id');
     }
+
+    public function brand() {
+        return $this->hasMany(ItemBrand::class, 'item_id', 'item_id');
+    }
+
+    public function asset()
+    {
+        return $this->hasMany(Asset::class, 'item_id', 'item_id');
+    }
+
 }
 

@@ -18,4 +18,9 @@ class AsalolehCategory extends Model
     protected $primaryKey = 'asaloleh_category_id';
 
     protected $fillable = ['asaloleh_category_name'];
+
+    public function asset()
+    {
+        return $this->hasMany(Asset::class, 'asaloleh_category_id', 'asaloleh_category_id');
+    }
 }

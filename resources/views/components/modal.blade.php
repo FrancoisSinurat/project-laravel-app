@@ -2,15 +2,17 @@
 <style>
     .modal-body{
         font-size: medium;
-        font-weight: 600;
-        color: #6c757d;
+        font-weight: 400;
+        color: #012970;
         text-transform: capitalize;
+        font-family: "Poppins", sans-serif;
     }
     .modal-title {
         font-size:larger;
         font-weight: 600;
-        color: #6c757d;
+        color: #012970;
         text-transform: capitalize;
+        font-family: "Poppins", sans-serif;
     }
     </style>
 @endpush

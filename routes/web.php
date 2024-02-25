@@ -46,4 +46,5 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.'], fu
     Route::get('/asalpendadaan-ajax', [App\Http\Controllers\AsalpengadaanCategoryController::class, 'ajax'])->name('asalpengadaan.ajax');
     Route::get('/bahan-ajax', [App\Http\Controllers\BahanCategoryController::class, 'ajax'])->name('bahan.ajax');
     Route::get('/satuan-ajax', [App\Http\Controllers\SatuanCategoryController::class, 'ajax'])->name('satuan.ajax');
+    Route::get('/user-ajax', [App\Http\Controllers\UserController::class, 'ajax'])->name('user.ajax');
 });
