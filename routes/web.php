@@ -32,6 +32,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.'], fu
     Route::resource('item', App\Http\Controllers\ItemController::class);
     Route::resource('satuan-category', App\Http\Controllers\SatuanCategoryController::class);
     Route::resource('brand', App\Http\Controllers\ItemBrandController::class);
+    Route::resource('item-type', App\Http\Controllers\ItemTypeController::class);
 
     Route::resource('user', App\Http\Controllers\UserController::class);
     Route::resource('role', App\Http\Controllers\RoleController::class);

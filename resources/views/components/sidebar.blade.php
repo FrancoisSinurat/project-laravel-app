@@ -102,6 +102,13 @@
                     </a>
                 </li>
                 @endif
+                @if(auth()->user()->hasPermissionTo('satuan-list'))
+                <li>
+                    <a href="{{route('admin.item-type.index')}}" class="{{Route::current()->getName() == 'admin.item-type.index' ? 'active' : ''}}">
+                        <i class="bi bi-chevron-double-right"></i><span>Tipe</span>
+                    </a>
+                </li>
+                @endif
             </ul>
         </li>
         @endif
