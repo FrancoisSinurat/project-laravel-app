@@ -165,7 +165,7 @@
                             orderable: false,
                             searchable: false,
                             render: function(data, type, row, meta) {
-                                return data[0].name;
+                                return data[0]?.name || '';
                             }
                         },
                         {
@@ -231,6 +231,7 @@
 
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
+                    console.log(rowData);
                     $(`#${options.formMain}`).find('input[name="user_name"]').val(rowData.user_name);
                     $(`#${options.formMain}`).find('input[name="user_email"]').val(rowData.user_email);
                     if (rowData.user_nrk) $(`#${options.formMain}`).find('input[name="user_nrk"]').val(rowData.user_nrk);
@@ -239,7 +240,7 @@
                     if (rowData.user_fullname) $(`#${options.formMain}`).find('input[name="user_fullname"]').val(rowData.user_fullname);
                     $(`#${options.formMain}`).find('input[name="user_password"]').prop('required',false);
                     $(`#${options.formMain}`).find('input[name="user_confirm_password"]').prop('required',false);
-                    $("#role_id").val(rowData.roles[0].id).change();
+                    $("#role_id").val(rowData.roles[0]?.id || null).change();
                     $(`#${options.modal}`).modal('show');
                     $(`#${options.modal}`).find('.btn-name').text('Ubah');
                     options.id = rowData.user_id;

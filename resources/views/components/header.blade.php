@@ -1,8 +1,8 @@
 <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
       <a href="{{route('admin.dashboard')}}" class="logo d-flex align-items-center">
-        <img src="{{asset('assets/img/logo.png')}}" alt="">
-        <span class="d-block"><img src="{{asset('assets/img/logo-text.png')}}" alt=""></span>
+        <img src="{{asset('assets/img/icon.png')}}" alt="">
+        <span class="d-none d-lg-block"><img src="{{asset('assets/img/text.png')}}" width="160px" alt=""></span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->

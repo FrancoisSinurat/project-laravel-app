@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
+use App\Services\Siadik;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
@@ -27,7 +30,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()) {
-            $item = User::query()->with('roles');
+            $item = User::query()->with(['roles']);
             return DataTables::of($item)->make();
         }
         $role = Role::select('id', 'name')->get();
@@ -149,5 +152,40 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function ajax(Request $request) {
+        try {
+            $user = User::select('user_fullname', 'user_nrk', 'user_id')
+                ->when($request->search, function($query, $keyword) {
+                    $query->where("user_nrk", "like", "%$keyword%");
+                    $query->orWhere("user_fullname", "like", "%$keyword%");
+                })
+                ->limit(10)
+                ->get();
+            if($user->isNotEmpty()) return response()->json([ 'results' => $user ], 200);
+            if (is_numeric($request->search) && strlen($request->search) === 6) {
+                $find = Siadik::findByNRK($request->search);
+                if (empty($find)) return response()->json([], 200);
+                try {
+                    DB::beginTransaction();
+                        $user = User::createUserFromSiadik($find);
+                    DB::commit();
+                    $user = [
+                        ['user_fullname' => $find['nama_pegawai'], 'user_nrk' => $find['nrk'], 'user_id' => $user['user_id']]
+                    ];
+                    return response()->json(['results' => $user], 200);
+                } catch (\Exception $e) {
+                    Log::error($e->getMessage());
+                    DB::rollBack();
+                }
+            }
+
+            return response()->json([], 200);
+
+        } catch (\Exception $e) {
+
+            Log::error($e->getMessage());
+        }
     }
 }

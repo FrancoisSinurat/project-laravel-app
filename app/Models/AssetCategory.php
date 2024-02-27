@@ -17,5 +17,10 @@ class AssetCategory extends Model
      */
     protected $primaryKey = 'asset_category_id';
 
-    protected $fillable = ['asset_category_name'];
+    protected $fillable = ['asset_category_name', 'asset_category_code'];
+
+    public function asset()
+    {
+        return $this->hasMany(Asset::class, 'asset_category_id', 'asset_category_id');
+    }
 }

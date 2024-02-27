@@ -31,10 +31,10 @@ Breadcrumbs::for('admin.role.index', function (BreadcrumbTrail $trail) {
     $trail->push('Hak Akses', route('admin.role.index'));
 });
 
-// Dashboard > Bidang Category
-Breadcrumbs::for('admin.bidang-category.index', function (BreadcrumbTrail $trail) {
+// Dashboard > Asal Pengadaan Category
+Breadcrumbs::for('admin.asalpengadaan-category.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.dashboard');
-    $trail->push('Bidang', route('admin.bidang-category.index'));
+    $trail->push('Asal Pengadaan', route('admin.asalpengadaan-category.index'));
 });
 
 // Dashboard > Satuan Category
@@ -72,19 +72,15 @@ Breadcrumbs::for('admin.item.index', function (BreadcrumbTrail $trail) {
 //     $trail->parent('blog');
 //     $trail->push($category->title, route('category', $category));
 // });
+
+// Dashboard > Aset
 Breadcrumbs::for('admin.asset.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.dashboard');
     $trail->push('Aset', route('admin.asset.index'));
 });
 
-// Dashboard > Item Brand
-Breadcrumbs::for('admin.brand.index', function (BreadcrumbTrail $trail) {
+// Dashboard > Peminjaman
+Breadcrumbs::for('admin.peminjaman.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.dashboard');
-    $trail->push('Merk', route('admin.brand.index'));
-});
-
-// Dashboard > Item Type
-Breadcrumbs::for('admin.item-type.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('admin.dashboard');
-    $trail->push('Tipe', route('admin.item-type.index'));
+    $trail->push('Peminjaman', route('admin.peminjaman.index'));
 });

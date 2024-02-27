@@ -19,4 +19,8 @@ class SatuanCategory extends Model
 
     protected $fillable = ['satuan_category_name','satuan_category_description'];
 
+    public function asset()
+    {
+        return $this->hasMany(Asset::class, 'satuan_category_id', 'satuan_category_id');
+    }
 }
