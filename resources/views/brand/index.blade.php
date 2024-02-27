@@ -54,7 +54,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Merk</th>
-                                        <th>Jenis Barang</th>
+                                        <!-- <th>Jenis Barang</th> -->
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -109,8 +109,8 @@
                             name: 'item_brand_name',
                         },
                         // {
-                        //     data: 'item.item_id',
-                        //     name: 'item.item_id',
+                        //     data: 'item_category.item_name',
+                        //     name: 'item_category.item_name',
                         // },
                         {
                             name: 'action',
@@ -178,7 +178,7 @@
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
                     $(`#${options.formMain}`).find('input[name="item_brand_name"]').val(rowData.item_brand_name);
-                    $("#item_id").val(rowData.item?.item_id).trigger('change');
+                    $("#item_id").val(rowData.item_category?.item_id).trigger('change');
                     $(`#${options.modal}`).modal('show');
                     $(`#${options.modal}`).find('.btn-name').text('Ubah');
                     options.id = rowData.item_brand_id;

@@ -27,11 +27,10 @@ class ItemBrandController extends Controller
      */
     public function index(Request $request)
     {
-
         if($request->ajax()) {
-            // $brand = ItemBrand::query()->with('item');
-            $brand = ItemBrand::query();
-            return DataTables::of($brand)->make();
+            // $item = ItemBrand::query()->with('item_category');
+            $item = ItemBrand::query();
+            return DataTables::of($item)->make();
         }
         $itemCategory = Item::get();
         return view('brand.index', compact('itemCategory'));
@@ -57,11 +56,23 @@ class ItemBrandController extends Controller
         [
             'item_brand_name.unique' => 'Nama Merk sudah digunakan'
         ]);
-        $input = $request->all();
-        ItemBrand::create($input);
-        return response()->json([
-            'status' => true,
-        ], 200);
+        try {
+            $input = $request->all();
+            ItemBrand::create($input);
+            $menu = ItemBrand::get();
+            if (count($menu) > 0) Session::put('categories', $menu);
+            if (count($menu) == 0) Session::put('categories', []);
+            return response()->json([
+                'status' => true,
+            ], 200);
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            return response()->json([
+                'status' => false,
+                'data' => $th,
+            ], 500);
+        }
+
     }
 
     /**
@@ -94,10 +105,20 @@ class ItemBrandController extends Controller
             // 'item_id.unique' => 'ID Merk sudah digunakan'
         ]);
         $input = $request->all();
-        ItemBrand::where('item_id', $id)->update($input);
-        return response()->json([
-            'status' => true,
-        ], 200);
+        try {
+            ItemBrand::where('item_brand_id', $id)->update($input);
+            $menu = ItemBrand::get();
+            if (count($menu) > 0) Session::put('categories', $menu);
+            if (count($menu) == 0) Session::put('categories', []);
+            return response()->json([
+                'status' => true,
+            ], 200);
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            return response()->json([
+                'status' => false,
+            ], 500);
+        }
     }
 
     /**
@@ -105,17 +126,31 @@ class ItemBrandController extends Controller
      */
     public function destroy(string $id)
     {
-        ItemBrand::where('item_brand_id', $id)->delete();
-        return response()->json([
-            'status' => true,
-        ], 200);
+        try {
+            if ($id == null) {
+                return response()->json([
+                    'status' => false,
+                ], 500);
+            }
+            ItemBrand::where('item_brand_id', $id)->delete();
+            $menu = ItemBrand::get();
+            if (count($menu) > 0) Session::put('categories', $menu);
+            if (count($menu) == 0) Session::put('categories', []);
+            return response()->json([
+                'status' => true,
+            ], 200);
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            return response()->json([
+                'status' => false,
+            ], 500);
+        }
     }
-
 
     public function ajax(Request $request)
     {
         try {
-            $itemBrands = ItemBrand::select('item_brand_id', 'item_id', 'item_brand_name')
+            $itemBrands = ItemBrand::select('item_barand_id', 'item_id', 'item_brand_name')
                 ->when($request->search, function($query, $keyword) {
                     $query->where("item_brand_name", "like", "%$keyword%");
                 })
@@ -125,10 +160,10 @@ class ItemBrandController extends Controller
                     $query->whereNull('item_id');
                 })
                 ->get();
-            if($itemBrands->isNotEmpty()) {
+            if($itemCategories->isNotEmpty()) {
 
                 return response()->json([
-                    'results' => $itemBrands
+                    'results' => $itemCategories
                 ], 200);
             }
 
