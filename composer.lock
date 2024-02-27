@@ -6603,16 +6603,16 @@
         },
         {
             "name": "yajra/laravel-datatables-buttons",
-            "version": "v10.0.8",
+            "version": "v10.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yajra/laravel-datatables-buttons.git",
-                "reference": "cdd2b907f892cba4b840b4ed14f73bc73086d0cf"
+                "reference": "dc93c0ec8bae12005d7e591beebbe053f0abda7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yajra/laravel-datatables-buttons/zipball/cdd2b907f892cba4b840b4ed14f73bc73086d0cf",
-                "reference": "cdd2b907f892cba4b840b4ed14f73bc73086d0cf",
+                "url": "https://api.github.com/repos/yajra/laravel-datatables-buttons/zipball/dc93c0ec8bae12005d7e591beebbe053f0abda7f",
+                "reference": "dc93c0ec8bae12005d7e591beebbe053f0abda7f",
                 "shasum": ""
             },
             "require": {
@@ -6623,8 +6623,8 @@
             },
             "require-dev": {
                 "barryvdh/laravel-snappy": "^1.0.1",
+                "larastan/larastan": "^2.4",
                 "maatwebsite/excel": "^3.1.46",
-                "nunomaduro/larastan": "^2.4",
                 "orchestra/testbench": "^8",
                 "rap2hpoutre/fast-excel": "^5.1"
             },
@@ -6670,7 +6670,7 @@
             ],
             "support": {
                 "issues": "https://github.com/yajra/laravel-datatables-buttons/issues",
-                "source": "https://github.com/yajra/laravel-datatables-buttons/tree/v10.0.8"
+                "source": "https://github.com/yajra/laravel-datatables-buttons/tree/v10.0.9"
             },
             "funding": [
                 {
@@ -6678,7 +6678,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-11-15T06:05:11+00:00"
+            "time": "2024-02-27T06:52:35+00:00"
         },
         {
             "name": "yajra/laravel-datatables-editor",

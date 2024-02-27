@@ -17,31 +17,31 @@ class RoleAsetSeeder extends Seeder
     public function run(): void
     {
         $permissionPejabatAset = [
-            'asal-oleh-list', // sumber
-            'aset-list', // aset
+            'asal-oleh-list', 
+            'aset-list', 
             'aset-create',
             'aset-edit',
             'aset-delete',
             'aset-alokasi',
             'aset-penarikan',
             'aset-persetujuan_peminjaman',
-            'peminjaman-list', // peminjaman
+            'peminjaman-list', 
             'peminjaman-create',
             'peminjaman-edit',
-            'barang-list', // barang
+            'barang-list', 
             'barang-create',
             'barang-edit',
-            'bahan-list', // bahan
+            'bahan-list', 
             'bahan-create',
             'bahan-edit',
-            'asal-pengadaan-list', // pengadaan
+            'asal-pengadaan-list', 
             'asal-pengadaan-create',
             'asal-pengadaan-edit',
-            'jenis-aset-list', // jenis aset
-            'kategori-barang-list', // kategori barang
+            'jenis-aset-list', 
+            'kategori-barang-list', 
             'kategori-barang-create',
             'kategori-barang-edit',
-            'satuan-list', // satuan
+            'satuan-list', 
             'satuan-create',
             'satuan-edit',
         ];

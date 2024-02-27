@@ -14,54 +14,54 @@ class PermissionTableSeeder extends Seeder
     public function run(): void
     {
         $permissions = [
-            'asal-oleh-list', // sumber
+            'asal-oleh-list', 
             'asal-oleh-create',
             'asal-oleh-edit',
             'asal-oleh-delete',
-            'aset-list', // aset
+            'aset-list', 
             'aset-create',
             'aset-edit',
             'aset-delete',
             'aset-alokasi',
             'aset-penarikan',
             'aset-persetujuan_peminjaman',
-            'peminjaman-list', // peminjaman
+            'peminjaman-list', 
             'peminjaman-create',
             'peminjaman-edit',
             'peminjaman-delete',
-            'barang-list', // barang
+            'barang-list', 
             'barang-create',
             'barang-edit',
             'barang-delete',
-            'bahan-list', // bahan
+            'bahan-list', 
             'bahan-create',
             'bahan-edit',
             'bahan-delete',
-            'asal-pengadaan-list', // pengadaan
+            'asal-pengadaan-list', 
             'asal-pengadaan-create',
             'asal-pengadaan-edit',
             'asal-pengadaan-delete',
-            'jenis-aset-list', // jenis aset
+            'jenis-aset-list', 
             'jenis-aset-create',
             'jenis-aset-edit',
             'jenis-aset-delete',
-            'kategori-barang-list', // kategori barang
+            'kategori-barang-list', 
             'kategori-barang-create',
             'kategori-barang-edit',
             'kategori-barang-delete',
-            'lokasi-list', // lokasi
+            'lokasi-list', 
             'lokasi-create',
             'lokasi-edit',
             'lokasi-delete',
-            'role-list', // user role
+            'role-list',
             'role-create',
             'role-edit',
             'role-delete',
-            'satuan-list', // satuan
+            'satuan-list', 
             'satuan-create',
             'satuan-edit',
             'satuan-delete',
-            'user-list', // user
+            'user-list', 
             'user-create',
             'user-edit',
             'user-delete'
