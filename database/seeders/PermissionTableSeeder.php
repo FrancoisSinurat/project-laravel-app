@@ -64,7 +64,15 @@ class PermissionTableSeeder extends Seeder
             'user-list', 
             'user-create',
             'user-edit',
-            'user-delete'
+            'user-delete',
+            'brand-list', 
+            'brand-create',
+            'brand-edit',
+            'brand-delete',
+            'tipe-list', 
+            'tipe-create',
+            'tipe-edit',
+            'tipe-delete'
         ];
         foreach ($permissions as $permission) {
             Permission::updateOrCreate(['name' => $permission], ['name' => $permission]);
