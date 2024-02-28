@@ -6,9 +6,9 @@
             <x-slot name="body">
                 <form id="item-type-form" class="form needs-validation" novalidate>
                     <div class="mb-3">
-                        <label for="item_brand_id" class="col-form-label mandatory">Pilih Jenis Aset</label>
+                        <label for="item_brand_id" class="col-form-label mandatory">Pilih Merk</label>
                         <select class="form-control" name="item_brand_id" id="item_brand_id" required>
-                            <option value="">Pilih Jenis Aset</option>
+                            <option value="">Pilih Merk</option>
                             @foreach ($itemBrand as $v)
                                 <option value="{{ $v->item_brand_id }}">{{ $v->item_brand_name }}</option>
                             @endforeach
@@ -103,10 +103,10 @@
                                 return meta.row + meta.settings._iDisplayStart + 1;
                             }
                         },
-                        // {
-                        //     data: 'item_brand.item_brand_name',
-                        //     name: 'item_brand.item_brand_name',
-                        // },
+                        {
+                            data: 'brand.item_brand_name',
+                            name: 'brand.item_brand_name',
+                        },
                         {
                             data: 'item_type_name',
                             name: 'item_type_name'
@@ -177,7 +177,7 @@
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
                     $(`#${options.formMain}`).find('input[name="item_type_name"]').val(rowData.item_type_name);
-                    $("#item_brand_id").val(rowData.item_brand?.item_brand_id).change();
+                    $("#item_brand_id").val(rowData.brand?.item_brand_id).change();
                     $(`#${options.modal}`).modal('show');
                     $(`#${options.modal}`).find('.btn-name').text('Ubah');
                     options.id = rowData.item_type_id;

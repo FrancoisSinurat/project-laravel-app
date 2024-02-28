@@ -9,10 +9,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
-
 class ItemBrandController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -21,7 +19,6 @@ class ItemBrandController extends Controller
         $this->middleware('permission:satuan-edit', ['only' => ['update']]);
         $this->middleware('permission:satuan-delete', ['only' => ['destroy']]);
     }
-
     /**
      * Display a listing of the resource.
      */
@@ -29,11 +26,11 @@ class ItemBrandController extends Controller
     {
         if($request->ajax()) {
             // $item = ItemBrand::query()->with('item_category');
-            $item = ItemBrand::query();
+            $item = ItemBrand::query()->with('item');;
             return DataTables::of($item)->make();
         }
-        $itemCategory = Item::get();
-        return view('brand.index', compact('itemCategory'));
+        $item = Item::get();
+        return view('brand.index', compact('item'));
     }
 
     /**
@@ -56,22 +53,11 @@ class ItemBrandController extends Controller
         [
             'item_brand_name.unique' => 'Nama Merk sudah digunakan'
         ]);
-        try {
-            $input = $request->all();
-            ItemBrand::create($input);
-            $menu = ItemBrand::get();
-            if (count($menu) > 0) Session::put('categories', $menu);
-            if (count($menu) == 0) Session::put('categories', []);
-            return response()->json([
-                'status' => true,
-            ], 200);
-        } catch (\Throwable $th) {
-            Log::error($th->getMessage());
-            return response()->json([
-                'status' => false,
-                'data' => $th,
-            ], 500);
-        }
+        $input = $request->all();
+        ItemBrand::create($input);
+        return response()->json([
+            'status' => true,
+        ], 200);
 
     }
 
@@ -102,23 +88,12 @@ class ItemBrandController extends Controller
         ],
         [
             'item_brand_name.unique' => 'Nama Merk sudah digunakan'
-            // 'item_id.unique' => 'ID Merk sudah digunakan'
         ]);
         $input = $request->all();
-        try {
-            ItemBrand::where('item_brand_id', $id)->update($input);
-            $menu = ItemBrand::get();
-            if (count($menu) > 0) Session::put('categories', $menu);
-            if (count($menu) == 0) Session::put('categories', []);
-            return response()->json([
-                'status' => true,
-            ], 200);
-        } catch (\Throwable $th) {
-            Log::error($th->getMessage());
-            return response()->json([
-                'status' => false,
-            ], 500);
-        }
+        ItemBrand::where('item_brand_id', $id)->update($input);
+        return response()->json([
+            'status' => true,
+        ], 200);
     }
 
     /**
@@ -126,44 +101,29 @@ class ItemBrandController extends Controller
      */
     public function destroy(string $id)
     {
-        try {
-            if ($id == null) {
-                return response()->json([
-                    'status' => false,
-                ], 500);
-            }
-            ItemBrand::where('item_brand_id', $id)->delete();
-            $menu = ItemBrand::get();
-            if (count($menu) > 0) Session::put('categories', $menu);
-            if (count($menu) == 0) Session::put('categories', []);
-            return response()->json([
-                'status' => true,
-            ], 200);
-        } catch (\Throwable $th) {
-            Log::error($th->getMessage());
-            return response()->json([
-                'status' => false,
-            ], 500);
-        }
+        ItemBrand::where('item_brand_id', $id)->delete();
+        return response()->json([
+            'status' => true,
+        ], 200);
     }
 
     public function ajax(Request $request)
     {
         try {
-            $itemBrands = ItemBrand::select('item_barand_id', 'item_id', 'item_brand_name')
+            $item = ItemBrand::select('item_brand_id', 'item_id', 'item_brand_name')
                 ->when($request->search, function($query, $keyword) {
                     $query->where("item_brand_name", "like", "%$keyword%");
                 })
-                ->when($request->itemCategory, function($query, $itemCategory) {
-                    $query->where('item_id', $itemCategory);
+                ->when($request->item, function($query, $item) {
+                    $query->where('item_id', $item);
                 }, function($query) {
                     $query->whereNull('item_id');
                 })
                 ->get();
-            if($itemCategories->isNotEmpty()) {
+            if($item->isNotEmpty()) {
 
                 return response()->json([
-                    'results' => $itemCategories
+                    'results' => $item
                 ], 200);
             }
 

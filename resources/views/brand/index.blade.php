@@ -1,15 +1,15 @@
 <x-layout>
     @section('title', 'Merk')
     <section class="section">
-        <x-modal id="item-type-modal">
+        <x-modal id="item-brand-modal">
             <x-slot name="title">Form @yield('title')</x-slot>
             <x-slot name="body">
-                <form id="item-type-form" class="form needs-validation" novalidate>
+                <form id="item-brand-form" class="form needs-validation" novalidate>
                     <div class="mb-3">
                         <label for="item_id" class="col-form-label mandatory">Pilih Jenis Barang</label>
                         <select class="form-control" name="item_id" id="item_id" required>
                             <option value="">Pilih Jenis</option>
-                            @foreach ($itemCategory as $v)
+                            @foreach ($item as $v)
                                 <option value="{{ $v->item_id }}">{{ $v->item_name }}</option>
                             @endforeach
                         </select>
@@ -43,7 +43,7 @@
                             <div>@yield('title')</div>
                             @if(auth()->user()->hasPermissionTo('barang-create'))
                             <div>
-                                <a data-bs-toggle="modal" data-bs-target="#item-type-modal" href="javascript:void(0)"
+                                <a data-bs-toggle="modal" data-bs-target="#item-brand-modal" href="javascript:void(0)"
                                     class="btn btn-sm btn-primary mb-2">Tambah Data</a>
                             </div>
                             @endif
@@ -54,7 +54,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Merk</th>
-                                        <!-- <th>Jenis Barang</th> -->
+                                        <th>Jenis Barang</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -70,9 +70,9 @@
     @push('scripts')
         <script src="{{ asset('assets/js/ajax.js') }}"></script>
         <script type="text/javascript">
-            let modal = 'item-type-modal';
+            let modal = 'item-brand-modal';
             let urlPost = "{{ route('admin.brand.store') }}";
-            let formMain = 'item-type-form';
+            let formMain = 'item-brand-form';
             let dataTableList;
             let options = {
                 modal: modal,
@@ -108,10 +108,10 @@
                             data: 'item_brand_name',
                             name: 'item_brand_name',
                         },
-                        // {
-                        //     data: 'item_category.item_name',
-                        //     name: 'item_category.item_name',
-                        // },
+                        {
+                            data: 'item.item_name',
+                            name: 'item.item_name',
+                        },
                         {
                             name: 'action',
                             data: 'item_brand_id',
@@ -178,7 +178,7 @@
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
                     $(`#${options.formMain}`).find('input[name="item_brand_name"]').val(rowData.item_brand_name);
-                    $("#item_id").val(rowData.item_category?.item_id).trigger('change');
+                    $("#item_id").val(rowData.item?.item_id).trigger('change');
                     $(`#${options.modal}`).modal('show');
                     $(`#${options.modal}`).find('.btn-name').text('Ubah');
                     options.id = rowData.item_brand_id;

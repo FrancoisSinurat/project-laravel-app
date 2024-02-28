@@ -26,8 +26,7 @@ class ItemTypeController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()) {
-            // $item = ItemType::query()->with('item_brand');
-            $item = ItemType::query();
+            $item = ItemType::query()->with('brand');
             return DataTables::of($item)->make();
         }
         $itemBrand = ItemBrand::get();
@@ -54,22 +53,11 @@ class ItemTypeController extends Controller
         [
             'item_type_name.unique' => 'Tipe barang sudah digunakan',
         ]);
-        try {
-            $input = $request->all();
-            ItemType::create($input);
-            $menu = ItemType::get();
-            if (count($menu) > 0) Session::put('types', $menu);
-            if (count($menu) == 0) Session::put('types', []);
-            return response()->json([
-                'status' => true,
-            ], 200);
-        } catch (\Throwable $th) {
-            Log::error($th->getMessage());
-            return response()->json([
-                'status' => false,
-                'data' => $th,
-            ], 500);
-        }
+        $input = $request->all();
+        ItemType::create($input);
+        return response()->json([
+            'status' => true,
+        ], 200);
     }
 
     /**
@@ -100,20 +88,10 @@ class ItemTypeController extends Controller
             'item_type_name.unique' => 'Tipe barang sudah digunakan',
         ]);
         $input = $request->all();
-        try {
-            ItemType::where('item_type_id', $id)->update($input);
-            $menu = ItemType::get();
-            if (count($menu) > 0) Session::put('types', $menu);
-            if (count($menu) == 0) Session::put('types', []);
-            return response()->json([
-                'status' => true,
-            ], 200);
-        } catch (\Throwable $th) {
-            Log::error($th->getMessage());
-            return response()->json([
-                'status' => false,
-            ], 500);
-        }
+        ItemType::where('item_type_id', $id)->update($input);
+        return response()->json([
+            'status' => true,
+        ], 200);
     }
 
     /**
@@ -121,31 +99,18 @@ class ItemTypeController extends Controller
      */
     public function destroy(string $id)
     {
-        try {
-            if ($id == null) {
-                return response()->json([
-                    'status' => false,
-                ], 500);
-            }
-            ItemType::where('item_type_id', $id)->delete();
-            $menu = ItemType::get();
-            if (count($menu) > 0) Session::put('types', $menu);
-            if (count($menu) == 0) Session::put('types', []);
-            return response()->json([
-                'status' => true,
-            ], 200);
-        } catch (\Throwable $th) {
-            Log::error($th->getMessage());
-            return response()->json([
-                'status' => false,
-            ], 500);
-        }
+        ItemType::where('item_type_id', $id)->delete();
+        return response()->json([
+            'status' => true,
+        ], 200);
+
     }
+
 
     public function ajax(Request $request)
     {
         try {
-            $itemTypes = ItemType::select('item_type_id', 'item_brand_id', 'item_type_name')
+            $item = ItemType::select('item_type_id', 'item_brand_id', 'item_type_name')
                 ->when($request->search, function($query, $keyword) {
                     $query->where("item_type_name", "like", "%$keyword%");
                 })
@@ -155,10 +120,10 @@ class ItemTypeController extends Controller
                     $query->whereNull('item_brand_id');
                 })
                 ->get();
-            if($itemTypes->isNotEmpty()) {
+            if($item->isNotEmpty()) {
 
                 return response()->json([
-                    'results' => $itemTypes
+                    'results' => $item
                 ], 200);
             }
 
@@ -170,4 +135,5 @@ class ItemTypeController extends Controller
             Log::error($e->getMessage());
         }
     }
+
 }
