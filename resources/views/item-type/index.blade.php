@@ -41,7 +41,7 @@
                     <div class="card-body">
                         <div class="card-title d-flex justify-content-between">
                             <div>@yield('title')</div>
-                            @if(auth()->user()->hasPermissionTo('kategori-barang-create'))
+                            @if(auth()->user()->hasPermissionTo('tipe-create'))
                             <div>
                                 <a data-bs-toggle="modal" data-bs-target="#item-type-modal" href="javascript:void(0)"
                                     class="btn btn-sm btn-primary mb-2">Tambah Data</a>
@@ -118,13 +118,13 @@
                             searchable: false,
                             render: function(data) {
                                 let button = `
-                                @if(auth()->user()->hasPermissionTo('kategori-barang-edit') || auth()->user()->hasPermissionTo('kategori-barang-delete'))
+                                @if(auth()->user()->hasPermissionTo('tipe-edit') || auth()->user()->hasPermissionTo('tipe-delete'))
                                     <div class="d-flex justify-content-end">
                                         <div class="btn-group" role="group">
-                                            @if(auth()->user()->hasPermissionTo('kategori-barang-edit'))
+                                            @if(auth()->user()->hasPermissionTo('tipe-edit'))
                                                 <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-primary"><i class="bi bi-pencil-fill"></i></button>
                                             @endif
-                                            @if(auth()->user()->hasPermissionTo('kategori-barang-delete'))
+                                            @if(auth()->user()->hasPermissionTo('tipe-delete'))
                                                 <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-danger"><i class="bi bi-trash-fill"></i></button>
                                             @endif
                                         </div>

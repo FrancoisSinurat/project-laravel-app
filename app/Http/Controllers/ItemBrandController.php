@@ -14,10 +14,10 @@ class ItemBrandController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('permission:satuan-list', ['only' => ['index']]);
-        $this->middleware('permission:satuan-create', ['only' => ['store']]);
-        $this->middleware('permission:satuan-edit', ['only' => ['update']]);
-        $this->middleware('permission:satuan-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:brand-list', ['only' => ['index']]);
+        $this->middleware('permission:brand-create', ['only' => ['store']]);
+        $this->middleware('permission:brand-edit', ['only' => ['update']]);
+        $this->middleware('permission:brand-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.

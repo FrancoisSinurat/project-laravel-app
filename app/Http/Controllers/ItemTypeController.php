@@ -15,10 +15,10 @@ class ItemTypeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('permission:kategori-barang-list', ['only' => ['index']]);
-        $this->middleware('permission:kategori-barang-create', ['only' => ['store']]);
-        $this->middleware('permission:kategori-barang-edit', ['only' => ['update']]);
-        $this->middleware('permission:kategori-barang-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:tipe-list', ['only' => ['index']]);
+        $this->middleware('permission:tipe-create', ['only' => ['store']]);
+        $this->middleware('permission:tipe-edit', ['only' => ['update']]);
+        $this->middleware('permission:tipe-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
