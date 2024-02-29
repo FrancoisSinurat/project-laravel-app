@@ -110,20 +110,21 @@ class ItemTypeController extends Controller
     public function ajax(Request $request)
     {
         try {
-            $item = ItemType::select('item_type_id', 'item_brand_id', 'item_type_name')
+            $type = ItemType::select('item_brand_id', 'item_type_id', 'item_type_name')
                 ->when($request->search, function($query, $keyword) {
                     $query->where("item_type_name", "like", "%$keyword%");
                 })
-                ->when($request->itemBrand, function($query, $itemBrand) {
-                    $query->where('item_brand_id', $itemBrand);
+                ->when($request->brand, function($query, $brand) {
+                    $query->where('item_brand_id', $brand);
                 }, function($query) {
                     $query->whereNull('item_brand_id');
                 })
+                ->limit(10)
                 ->get();
-            if($item->isNotEmpty()) {
+            if($type->isNotEmpty()) {
 
                 return response()->json([
-                    'results' => $item
+                    'results' => $type
                 ], 200);
             }
 
