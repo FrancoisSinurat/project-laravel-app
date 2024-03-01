@@ -17,33 +17,35 @@ class RoleAsetSeeder extends Seeder
     public function run(): void
     {
         $permissionPejabatAset = [
-            'asal-oleh-list', 
-            'aset-list', 
+            'asal-oleh-list',
+            'aset-list',
             'aset-create',
             'aset-edit',
             'aset-delete',
             'aset-alokasi',
             'aset-penarikan',
             'aset-persetujuan_peminjaman',
-            'peminjaman-list', 
+            'peminjaman-list',
             'peminjaman-create',
             'peminjaman-edit',
-            'barang-list', 
+            'barang-list',
             'barang-create',
             'barang-edit',
-            'bahan-list', 
+            'bahan-list',
             'bahan-create',
             'bahan-edit',
-            'asal-pengadaan-list', 
+            'asal-pengadaan-list',
             'asal-pengadaan-create',
             'asal-pengadaan-edit',
-            'jenis-aset-list', 
-            'kategori-barang-list', 
+            'jenis-aset-list',
+            'kategori-barang-list',
             'kategori-barang-create',
             'kategori-barang-edit',
-            'satuan-list', 
+            'satuan-list',
             'satuan-create',
             'satuan-edit',
+            'brand-list',
+            'tipe-list'
         ];
 
         $permissionPegawai = [
@@ -83,6 +85,8 @@ class RoleAsetSeeder extends Seeder
             'user-list', // user
             'user-create',
             'user-edit',
+            'brand-list',
+            'tipe-list'
         ];
 
         $rolePejabat = Role::updateOrCreate(['name' => 'Pejabat Aset'], ['name' => 'Pejabat Aset']);
