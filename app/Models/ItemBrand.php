@@ -14,7 +14,6 @@ class ItemBrand extends Model
 
     protected $fillable = ['item_brand_name', 'item_id'];
 
-
     /**
      * Get the user that owns the ItemBrand
      *
@@ -34,4 +33,5 @@ class ItemBrand extends Model
     {
         return $this->hasMany(Asset::class, 'item_brand_id', 'item_brand_id');
     }
+
 }

@@ -84,3 +84,15 @@ Breadcrumbs::for('admin.peminjaman.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.dashboard');
     $trail->push('Peminjaman', route('admin.peminjaman.index'));
 });
+
+// Dashboard > Brand
+Breadcrumbs::for('admin.brand.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Merk', route('admin.brand.index'));
+});
+
+// Dashboard > Brand
+Breadcrumbs::for('admin.item-type.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Tipe Barang', route('admin.item-type.index'));
+});

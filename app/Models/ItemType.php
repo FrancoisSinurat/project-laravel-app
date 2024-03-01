@@ -11,8 +11,9 @@ class ItemType extends Model
     use UuidTrait, SoftDeletes;
 
     protected $primaryKey = 'item_type_id';
-
+    
     protected $fillable = ['item_type_name', 'item_brand_id'];
+
 
     /**
      * Get the user that owns the ItemType
@@ -28,4 +29,6 @@ class ItemType extends Model
     {
         return $this->hasMany(Asset::class, 'item_type_id', 'item_type_id');
     }
+
+
 }
