@@ -47,15 +47,25 @@ class ItemController extends Controller
     {
         $this->validate($request, [
             'item_name' => 'required|unique:items,item_name,NULL,NULL,deleted_at,NULL',
-            'item_code' => 'required|unique:items,item_code,NULL,NULL,deleted_at,NULL',
             'item_category_id' => 'required',
         ],
         [
             'item_name.unique' => 'Nama jenis barang sudah digunakan',
-            'item_code.unique' => 'Kode jenis barang sudah digunakan'
         ]);
+
         $input = $request->all();
-        $input['item_code'] = strtoupper($input['item_code']);
+
+        if (empty($input['item_code'])) {
+            date_default_timezone_set("Asia/Jakarta");
+            $tgl = date("dmY");
+            $getLastNumber = Item::where('item_category_id', $input['item_category_id'])->count();
+            $lastNumber = $getLastNumber ? intval($getLastNumber) + 1 : 1;
+            $code = str_pad($lastNumber, 5, '0', STR_PAD_LEFT);
+            $itemCategory = ItemCategory::where('item_category_id', $input['item_category_id'])->first();
+            $itemCode = $itemCategory->item_category_code.'-'.$tgl.'-'.$code;
+            $input['item_code'] = $itemCode;
+        }
+
         Item::create($input);
         return response()->json([
             'status' => true,
