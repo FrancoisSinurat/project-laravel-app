@@ -25,8 +25,8 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="item_code" class="col-form-label mandatory">Kode @yield('title')</label>
-                        <input type="text" name="item_code" class="form-control text-uppercase" id="item_code" required>
+                        <label for="item_code" class="col-form-label ">Kode @yield('title')</label>
+                        <input type="text" name="item_code" class="form-control text-uppercase" id="item_code" >
                         <div id="item_code_feedback" class="invalid-feedback">
                             Wajib diisi.
                         </div>

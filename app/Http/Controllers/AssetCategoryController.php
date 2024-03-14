@@ -43,10 +43,12 @@ class AssetCategoryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'asset_category_name' => 'required|unique:asset_categories,asset_category_name',
+            'asset_category_name' => 'required|unique:asset_categories,asset_category_name,NULL,NULL,deleted_at,NULL',
+            'asset_category_code' => 'required|unique:asset_categories,asset_category_code,NULL,NULL,deleted_at,NULL',
         ],
         [
             'asset_category_name.unique' => 'Nama sudah digunakan',
+            'asset_category_code.unique' => 'Kode sudah digunakan'
         ]);
         AssetCategory::create($request->all());
         return response()->json([
@@ -75,10 +77,12 @@ class AssetCategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validate($request, [
-            'asset_category_name' => "required|unique:asset_categories,asset_category_name,$id,asset_category_id",
+            'asset_category_name' => "required|unique:asset_categories,asset_category_name,$id,asset_category_id,deleted_at,NULL",
+            'asset_category_code' => "required|unique:asset_categories,asset_category_code,$id,asset_category_id,deleted_at,NULL",
         ],
         [
             'asset_category_name.unique' => 'Nama sudah digunakan',
+            'asset_category_code.unique' => 'Kode sudah digunakan'
         ]);
         AssetCategory::where('asset_category_id', $id)->update($request->all());
         return response()->json([

@@ -6,9 +6,16 @@
             <x-slot name="body">
                 <form id="asset-type-form" class="form needs-validation" novalidate>
                     <div class="mb-3">
-                        <label for="asset_category_name" class="col-form-label mandatory">Jenis Asset</label>
+                        <label for="asset_category_name" class="col-form-label mandatory">Nama @yield('title')</label>
                         <input type="text" name="asset_category_name" class="form-control" id="asset_category_name" required>
                         <div id="asset_category_name_feedback" class="invalid-feedback">
+                            Wajib diisi.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="asset_category_code" class="col-form-label mandatory">Kode @yield('title')</label>
+                        <input type="text" name="asset_category_code" class="form-control text-uppercase" id="asset_category_code" required>
+                        <div id="asset_category_code_feedback" class="invalid-feedback">
                             Wajib diisi.
                         </div>
                     </div>
@@ -42,7 +49,8 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Jenis Asset</th>
+                                        <th>Nama Jenis Aset</th>
+                                        <th>Kode Jenis Aset</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -95,6 +103,10 @@
                         {
                             data: 'asset_category_name',
                             name: 'asset_category_name'
+                        },
+                        {
+                            data: 'asset_category_code',
+                            name: 'asset_category_code'
                         },
                         {
                             name: 'action',
@@ -162,7 +174,7 @@
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
                     $(`#${options.formMain}`).find('input[name="asset_category_name"]').val(rowData.asset_category_name);
-                    $(`#${options.formMain}`).find('input[name="asset_category_id"]').val(rowData.asset_category_id);
+                    $(`#${options.formMain}`).find('input[name="asset_category_code"]').val(rowData.asset_category_code);
                     $(`#${options.modal}`).modal('show');
                     $(`#${options.modal}`).find('.btn-name').text('Ubah');
                     options.id = rowData.asset_category_id;

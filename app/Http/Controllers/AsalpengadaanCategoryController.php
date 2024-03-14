@@ -80,11 +80,11 @@ class AsalpengadaanCategoryController extends Controller
     {
         $this->validate($request, [
             'asalpengadaan_category_name' => "required|unique:asalpengadaan_categories,asalpengadaan_category_name,$id,asalpengadaan_category_id,deleted_at,NULL",
-            'asalpengadaan_category_singkatan' => "required|unique:asalpengadaan_categories,asalpengadaan_category_singkatan,$id,asalpengadaan_category_id,deleted_at,NULL",
+            'asalpengadaan_category_code' => "required|unique:asalpengadaan_categories,asalpengadaan_category_code,$id,asalpengadaan_category_id,deleted_at,NULL",
         ],
         [
             'asalpengadaan_category_name.unique' => 'Nama Asal Pengadaan sudah digunakan',
-            'asalpengadaan_category_singkatan.unique' => 'Singkatan Asal Pengadaan sudah digunakan'
+            'asalpengadaan_category_code.unique' => 'Singkatan Asal Pengadaan sudah digunakan'
         ]);
         AsalpengadaanCategory::where('asalpengadaan_category_id', $id)->update($request->all());
         return response()->json([

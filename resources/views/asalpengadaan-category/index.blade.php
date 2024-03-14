@@ -174,7 +174,6 @@
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
                     $(`#${options.formMain}`).find('input[name="asalpengadaan_category_name"]').val(rowData.asalpengadaan_category_name);
-                    $(`#${options.formMain}`).find('input[name="asalpengadaan_category_id"]').val(rowData.asalpengadaan_category_id);
                     $(`#${options.formMain}`).find('input[name="asalpengadaan_category_code"]').val(rowData.asalpengadaan_category_code);
                     $(`#${options.modal}`).modal('show');
                     $(`#${options.modal}`).find('.btn-name').text('Ubah');
