@@ -47,10 +47,12 @@ class ItemController extends Controller
     {
         $this->validate($request, [
             'item_name' => 'required|unique:items,item_name,NULL,NULL,deleted_at,NULL',
+            'item_code' => 'nullable|unique:items,item_code,NULL,NULL,deleted_at,NULL',
             'item_category_id' => 'required',
         ],
         [
             'item_name.unique' => 'Nama jenis barang sudah digunakan',
+            'item_code.unique' => 'Kode jenis barang sudah digunakan'
         ]);
 
         $input = $request->all();
