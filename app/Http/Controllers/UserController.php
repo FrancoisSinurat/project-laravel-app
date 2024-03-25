@@ -151,7 +151,10 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        User::where('user_id', $id)->delete();
+        return response()->json([
+            'status' => true,
+        ], 200);
     }
 
     public function ajax(Request $request) {
