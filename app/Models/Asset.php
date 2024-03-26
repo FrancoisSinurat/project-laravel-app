@@ -103,11 +103,13 @@ class Asset extends Model
 
     public static function generateAssetName($input) {
         $name = '';
-        $item = Item::with(['brand.type'])->where('item_id', $input['item_id'])->first();
+        $item = Item::where('item_id', $input['item_id'])->first();
         if ($item) {
             $name = $item->item_name;
-            if (!empty($item->brand)) $name .= ' '.$item->brand[0]->item_brand_name;
-            if (!empty($item->brand) && !empty($item->brand[0]->type)) $name .= ' '.$item->brand[0]->type[0]->item_type_name;
+            $brand = ItemBrand::where('item_brand_id', $input['item_brand_id'])->first();
+            $type = ItemType::where('item_type_id', $input['item_type_id'])->first();
+            if (!empty($brand)) $name .= ' '.$brand->item_brand_name;
+            if (!empty($type)) $name .= ' '.$type->item_type_name;
         }
         return $name;
     }
@@ -126,7 +128,7 @@ class Asset extends Model
         $result = $input;
         $result['asset_asaloleh_date'] = Carbon::createFromFormat('d-m-Y', $input['asset_asaloleh_date'])->toDateString();
         $result['asset_price'] = replaceComma($input['asset_price']);
-        $result['asset_code'] = self::generateAssetCode($input);
+        if (!isset($input['asset_code'])) $result['asset_code'] = self::generateAssetCode($input);
         $result['asset_name'] = self::generateAssetName($input);
         $result['asset_qty'] = isset($input['asset_qty']) ? $input['asset_qty'] : 1;
         $result['asset_status'] = isset($input['asset_used_by']) ? Asset::STATUS_ASSET_DIGUNAKAN : Asset::STATUS_ASSET_TERSEDIA;
@@ -135,10 +137,18 @@ class Asset extends Model
 
     public static function createAsset($input) {
         $createAsset = Asset::create($input);
+        $historyClass = Asset::class;
+        $historyId = $createAsset->asset_id;
+        $status = $input['asset_status'];
+        if ($status === Asset::STATUS_ASSET_DIGUNAKAN) {
+            $assetUsed = AssetUsed::create(['asset_id' => $createAsset->asset_id, 'user_id' => $input['asset_used_by'], 'asset_used_date' => date('Y-m-d')]);
+            $historyClass = AssetUsed::class;
+            $historyId = $assetUsed->asset_used_id;
+        }
         $createAssetHistory = [
-            'asset_history_status' => isset($input['asset_used_by']) ? Asset::STATUS_ASSET_DIGUNAKAN : Asset::STATUS_ASSET_TERSEDIA,
-            'asset_historyable_id' => $createAsset->asset_id,
-            'asset_historyable_type' => Asset::class,
+            'asset_history_status' => $status,
+            'asset_historyable_id' =>  $historyId,
+            'asset_historyable_type' => $historyClass,
             'asset_history_user_id' => Auth::user()->user_id,
         ];
         AssetHistory::create($createAssetHistory);

@@ -26,11 +26,10 @@ class ItemBrandController extends Controller
     {
         if($request->ajax()) {
             // $item = ItemBrand::query()->with('item_category');
-            $item = ItemBrand::query()->with('item');;
+            $item = ItemBrand::query();
             return DataTables::of($item)->make();
         }
-        $item = Item::get();
-        return view('brand.index', compact('item'));
+        return view('brand.index');
     }
 
     /**
@@ -48,7 +47,6 @@ class ItemBrandController extends Controller
     {
         $this->validate($request, [
             'item_brand_name' => 'required|unique:item_brands,item_brand_name,NULL,NULL,deleted_at,NULL',
-            'item_id' => 'required',
         ],
         [
             'item_brand_name.unique' => 'Nama Merk sudah digunakan'
@@ -84,7 +82,6 @@ class ItemBrandController extends Controller
     {
         $this->validate($request, [
             'item_brand_name' => "required|unique:item_brands,item_brand_name,$id,item_brand_id,deleted_at,NULL",
-            'item_id' => 'required',
         ],
         [
             'item_brand_name.unique' => 'Nama Merk sudah digunakan'
@@ -110,16 +107,11 @@ class ItemBrandController extends Controller
     public function ajax(Request $request)
     {
         try {
-            $item = ItemBrand::select('item_brand_id', 'item_id', 'item_brand_name')
+            $item = ItemBrand::select('item_brand_id', 'item_brand_name')
                 ->when($request->search, function($query, $keyword) {
+                    $keyword = strtolower($keyword);
                     $query->where("item_brand_name", "like", "%$keyword%");
-                })
-                ->when($request->item, function($query, $item) {
-                    $query->where('item_id', $item);
-                }, function($query) {
-                    $query->whereNull('item_id');
-                })
-                ->get();
+                })->get();
             if($item->isNotEmpty()) {
 
                 return response()->json([

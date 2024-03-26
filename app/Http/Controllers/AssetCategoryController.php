@@ -106,6 +106,7 @@ class AssetCategoryController extends Controller
         try {
             $assetCategories = AssetCategory::select('asset_category_id', 'asset_category_name')
                 ->when($request->search, function($query, $keyword) {
+                    $keyword = strtolower($keyword);
                     $query->where("asset_category_name", "like", "%$keyword%");
                 })
                 ->limit(10)

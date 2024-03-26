@@ -13,9 +13,6 @@ return new class extends Migration
     {
         Schema::create('item_brands', function (Blueprint $table) {
             $table->uuid('item_brand_id')->primary();
-            $table->foreignUuid('item_id')
-            ->references('item_id')
-            ->on('items');
             $table->string('item_brand_name')->nullable();
             $table->timestamps();
             $table->softDeletes();

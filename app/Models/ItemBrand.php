@@ -12,18 +12,13 @@ class ItemBrand extends Model
 
     protected $primaryKey = 'item_brand_id';
 
-    protected $fillable = ['item_brand_name', 'item_id'];
+    protected $fillable = ['item_brand_name'];
 
     /**
      * Get the user that owns the ItemBrand
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function item()
-    {
-        return $this->belongsTo(Item::class, 'item_id', 'item_id');
-    }
-
     public function type()
     {
         return $this->hasMany(ItemType::class, 'item_brand_id', 'item_brand_id');

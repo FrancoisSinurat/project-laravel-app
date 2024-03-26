@@ -47,7 +47,7 @@ class ItemTypeController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'item_type_name' => 'required|unique:item_types,item_type_name,NULL,NULL,deleted_at,NULL',
+            'item_type_name' => "required|unique:item_types,item_type_name,NULL,NULL,item_brand_id,$request->item_brand_id,deleted_at,NULL",
             'item_brand_id' => 'required',
         ],
         [
@@ -81,7 +81,7 @@ class ItemTypeController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validate($request, [
-            'item_type_name' => "required|unique:item_types,item_type_name,$id,item_type_id,deleted_at,NULL",
+            'item_type_name' => "required|unique:item_types,item_type_name,$id,item_type_id,item_brand_id,$request->item_brand_id,deleted_at,NULL",
             'item_brand_id' => 'required',
         ],
         [
@@ -112,6 +112,7 @@ class ItemTypeController extends Controller
         try {
             $type = ItemType::select('item_brand_id', 'item_type_id', 'item_type_name')
                 ->when($request->search, function($query, $keyword) {
+                    $keyword = strtolower($keyword);
                     $query->where("item_type_name", "like", "%$keyword%");
                 })
                 ->when($request->brand, function($query, $brand) {
