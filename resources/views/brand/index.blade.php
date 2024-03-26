@@ -6,18 +6,6 @@
             <x-slot name="body">
                 <form id="item-brand-form" class="form needs-validation" novalidate>
                     <div class="mb-3">
-                        <label for="item_id" class="col-form-label mandatory">Pilih Jenis Barang</label>
-                        <select class="form-control" name="item_id" id="item_id" required>
-                            <option value="">Pilih Jenis</option>
-                            @foreach ($item as $v)
-                                <option value="{{ $v->item_id }}">{{ $v->item_name }}</option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback">
-                            Wajib diisi.
-                        </div>
-                    </div>
-                    <div class="mb-3">
                         <label for="item_brand_name" class="col-form-label mandatory">Nama @yield('title')</label>
                         <input type="text" name="item_brand_name" class="form-control" id="item_brand_name" required>
                         <div id="item_brand_name_feedback" class="invalid-feedback">
@@ -54,7 +42,6 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Merk</th>
-                                        <th>Jenis Barang</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -107,10 +94,6 @@
                         {
                             data: 'item_brand_name',
                             name: 'item_brand_name',
-                        },
-                        {
-                            data: 'item.item_name',
-                            name: 'item.item_name',
                         },
                         {
                             name: 'action',
@@ -178,7 +161,6 @@
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
                     $(`#${options.formMain}`).find('input[name="item_brand_name"]').val(rowData.item_brand_name);
-                    $("#item_id").val(rowData.item?.item_id).trigger('change');
                     $(`#${options.modal}`).modal('show');
                     $(`#${options.modal}`).find('.btn-name').text('Ubah');
                     options.id = rowData.item_brand_id;

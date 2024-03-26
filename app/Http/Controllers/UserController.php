@@ -161,6 +161,7 @@ class UserController extends Controller
         try {
             $user = User::select('user_fullname', 'user_nrk', 'user_id')
                 ->when($request->search, function($query, $keyword) {
+                    $keyword = strtolower($keyword);
                     $query->where("user_nrk", "like", "%$keyword%");
                     $query->orWhere("user_fullname", "like", "%$keyword%");
                 })

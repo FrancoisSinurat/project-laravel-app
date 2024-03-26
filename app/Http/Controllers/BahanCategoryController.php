@@ -104,6 +104,7 @@ class BahanCategoryController extends Controller
         try {
             $bahan = BahanCategory::select('bahan_category_id', 'bahan_category_name')
                 ->when($request->search, function($query, $keyword) {
+                    $keyword = strtolower($keyword);
                     $query->where("bahan_category_name", "like", "%$keyword%");
                 })
                 ->limit(10)
