@@ -115,8 +115,15 @@ class Asset extends Model
     }
 
     public static function generateAssetCode($input) {
-        $getLastNumber = Asset::where('item_id', $input['item_id'])->count();
-        $lastNumber = $getLastNumber ? intval($getLastNumber) + 1 : 1;
+        $getLastNumber = Asset::where('item_id', $input['item_id'])->latest('asset_id')->first();
+        $lastNumber = 1;
+        if ($getLastNumber) {
+            $extractAssetCode = explode('-', $getLastNumber->asset_code);
+            $assetCodeNumber = last($extractAssetCode);
+            $lastNumber = $assetCodeNumber+1;
+        }
+        Log::info('generate asset code');
+        Log::info($lastNumber);
         $code = str_pad($lastNumber, 6, '0', STR_PAD_LEFT);
         $item = Item::where('item_id', $input['item_id'])->first();
         $assetCategory = AssetCategory::where('asset_category_id', $input['asset_category_id'])->first();
@@ -130,7 +137,7 @@ class Asset extends Model
         $result = $input;
         $result['asset_asaloleh_date'] = Carbon::createFromFormat('d-m-Y', $input['asset_asaloleh_date'])->toDateString();
         $result['asset_price'] = replaceComma($input['asset_price']);
-        if (!isset($input['asset_code'])) $result['asset_code'] = self::generateAssetCode($input);
+        if (!isset($input['asset_id'])) $result['asset_code'] = self::generateAssetCode($input);
         $result['asset_name'] = self::generateAssetName($input);
         $result['asset_qty'] = isset($input['asset_qty']) ? $input['asset_qty'] : 1;
         $result['asset_status'] = isset($input['asset_used_by']) ? Asset::STATUS_ASSET_DIGUNAKAN : Asset::STATUS_ASSET_TERSEDIA;
@@ -138,6 +145,7 @@ class Asset extends Model
     }
 
     public static function createAsset($input) {
+        Log::info('create asset');
         Log::info($input);
         $createAsset = Asset::create($input);
         $historyClass = Asset::class;
