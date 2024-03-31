@@ -425,6 +425,8 @@
                     assetCategoryId = attributeData.assetCategoryId;
                     assetCategoryName = attributeData.assetCategoryName
                     formTitle = `Form ${assetCategoryName} ${categoryName}`;
+                    console.log(assetCategoryId);
+                    console.log(categoryId);
                 }
                 const disabledForm = (categoryId) => {
                     // kendaraan
@@ -500,6 +502,8 @@
 
                 $(document).on('click','.btn-add',function(){
                     formTitle = `Form ${assetCategoryName} ${categoryName}`;
+                    $('#asset_category_id').val(assetCategoryId);
+                    $('#item_category_id').val(categoryId);
                 })
 
                 $(document).on('click','.btn-edit',function(){
