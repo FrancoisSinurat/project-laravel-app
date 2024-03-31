@@ -129,7 +129,7 @@ class ItemController extends Controller
             $item = Item::select('item_id', 'item_category_id', 'item_name', 'item_code')
                 ->when($request->search, function($query, $keyword) {
                     $keyword = strtolower($keyword);
-                    $query->whereRaw('LOWER(`item_name`) LIKE ? ',['%'.$keyword.'%']);
+                    $query->whereRaw('LOWER(item_name) LIKE ? ',['%'.$keyword.'%']);
 
                 })
                 ->when($request->itemCategory, function($query, $itemCategory) {
