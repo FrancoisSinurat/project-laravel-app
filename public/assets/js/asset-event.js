@@ -17,8 +17,9 @@ const showAssetOnModal = (data) => {
     if (asset.item_category_code == 'KDO') {
         $('.asset-detail-additional').removeClass('d-none')
     }
-    for (const [k, v] of Object.entries(asset)) {
-        if (v) $('table').find(`#${k}`).html(`${v}`);
+    for (let [k, v] of Object.entries(asset)) {
+        if (!v) v = '';
+        $('table').find(`#${k}`).html(`${v}`);
         console.log(`${k}: ${v}`);
     }
     $('#asset-history tr:not(:first)').remove();
