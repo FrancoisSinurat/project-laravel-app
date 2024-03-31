@@ -110,7 +110,7 @@ class AsalpengadaanCategoryController extends Controller
             $asalpengadaan = AsalpengadaanCategory::select('asalpengadaan_category_id', 'asalpengadaan_category_name')
                 ->when($request->search, function($query, $keyword) {
                     $keyword = strtolower($keyword);
-                    $query->whereRaw('LOWER(`asalpengadaan_category_name`) LIKE ? ',['%'.$keyword.'%']);
+                    $query->whereRaw('LOWER(asalpengadaan_category_name) LIKE ? ',['%'.$keyword.'%']);
 
                 })
                 ->get();

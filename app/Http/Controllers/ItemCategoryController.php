@@ -153,7 +153,7 @@ class ItemCategoryController extends Controller
             $itemCategories = ItemCategory::select('item_category_id', 'asset_category_id', 'item_category_name', 'item_category_code')
                 ->when($request->search, function($query, $keyword) {
                     $keyword = strtolower($keyword);
-                    $query->whereRaw('LOWER(`item_category_name`) LIKE ? ',['%'.$keyword.'%']);
+                    $query->whereRaw('LOWER(item_category_name) LIKE ? ',['%'.$keyword.'%']);
 
                 })
                 ->when($request->assetCategory, function($query, $assetCategory) {
