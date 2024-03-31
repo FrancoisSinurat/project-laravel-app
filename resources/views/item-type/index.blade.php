@@ -53,8 +53,8 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Tipe</th>
                                         <th>Merk</th>
+                                        <th>Tipe</th>
                                         <th></th>
                                     </tr>
                                 </thead>
