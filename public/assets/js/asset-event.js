@@ -19,7 +19,7 @@ const showAssetOnModal = (data) => {
     }
     for (let [k, v] of Object.entries(asset)) {
         if (!v) v = '';
-        $('table').find(`#${k}`).html(`${v}`);
+        $('.table-detail-asset').find(`#${k}`).html(`${v}`);
         console.log(`${k}: ${v}`);
     }
     $('#asset-history tr:not(:first)').remove();
@@ -27,7 +27,7 @@ const showAssetOnModal = (data) => {
         let description = generateDescription(v);
         $('#asset-history').append(`<tr>
             <td>
-                ${new Date(v.created_at).toLocaleDateString()}
+                ${new Date(v.created_at).getDate()}/${new Date(v.created_at).getMonth() + 1}/${new Date(v.created_at).getFullYear()}
             </td>
             <td>
                 ${v.asset_history_status}
@@ -81,7 +81,7 @@ const editAssetOnModal = (data) => {
     }
 
     if (asset.asset_asaloleh_date) {
-        const asalOlehDate = new Date(asset.asset_asaloleh_date).getDate() + '-' + new Date(asset.asset_asaloleh_date).getMonth() + '-' + new Date(asset.asset_asaloleh_date).getFullYear();
+        const asalOlehDate = new Date(asset.asset_asaloleh_date).getDate() + '-' + (new Date(asset.asset_asaloleh_date).getMonth() + 1) + '-' + new Date(asset.asset_asaloleh_date).getFullYear();
         $(`#${data.modal}`).find('input[name="asset_asaloleh_date"]').val(asalOlehDate);
     }
 }
