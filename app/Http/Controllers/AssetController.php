@@ -8,6 +8,7 @@ use App\Models\AssetHistory;
 use App\Models\AssetUsed;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Log;
@@ -29,7 +30,12 @@ class AssetController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()) {
+
             $asset = Asset::query()->with('item', 'satuan', 'user')->where('item_category_id', $request->categoryId);
+            $user = Auth::user();
+            if (!$user->hasPermissionTo('aset-create')) {
+                $asset = $asset->where('asset_used_by', $user->user_id);
+            }
             return DataTables::of($asset)->make();
         }
         $assetCategory = AssetCategory::get();

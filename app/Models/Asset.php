@@ -125,6 +125,8 @@ class Asset extends Model
     }
 
     public static function normalize($input) {
+        Log::info('normalize asset');
+        Log::info($input);
         $result = $input;
         $result['asset_asaloleh_date'] = Carbon::createFromFormat('d-m-Y', $input['asset_asaloleh_date'])->toDateString();
         $result['asset_price'] = replaceComma($input['asset_price']);
@@ -136,7 +138,6 @@ class Asset extends Model
     }
 
     public static function createAsset($input) {
-        Log::info('create asset');
         Log::info($input);
         $createAsset = Asset::create($input);
         $historyClass = Asset::class;
