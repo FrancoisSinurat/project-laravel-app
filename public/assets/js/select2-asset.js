@@ -3,8 +3,8 @@
 let selectAsset = {
 
     init: function () {
-        selectAsset.assetCategories();
-        selectAsset.itemCategories();
+        // selectAsset.assetCategories();
+        // selectAsset.itemCategories();
         selectAsset.items();
         selectAsset.brands();
         selectAsset.types();
@@ -161,7 +161,7 @@ let selectAsset = {
                 delay: 250,
                 data: function (params) {
                     return {
-                        itemCategory: itemCategory,
+                        itemCategory: itemCategory || categoryId,
                         search: params.term || ''
                     }
                 },

@@ -3,14 +3,14 @@
     .modal-body{
         font-size: medium;
         font-weight: 400;
-        color: #012970;
+        /* color: #012970; */
         text-transform: capitalize;
         font-family: "Poppins", sans-serif;
     }
     .modal-title {
         font-size:larger;
-        font-weight: 600;
-        color: #012970;
+        font-weight: 500;
+        /* color: #012970; */
         text-transform: capitalize;
         font-family: "Poppins", sans-serif;
     }

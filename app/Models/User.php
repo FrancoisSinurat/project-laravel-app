@@ -72,6 +72,11 @@ class User extends Authenticatable
         return $this->hasMany(Asset::class, 'user_id', 'asset_used_by');
     }
 
+    public function asset_history()
+    {
+        return $this->hasMany(AssetHistory::class, 'user_id', 'asset_history_user_id');
+    }
+
     public static function getUserByNRKOrEmail ($data) {
         return User::where('user_nrk', $data)->orWhere('user_email', $data)->first();
     }

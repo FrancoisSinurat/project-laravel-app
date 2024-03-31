@@ -13,7 +13,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin -
 # Setup application
 COPY . /var/www/html
 
-RUN cd /var/www/html && composer install && php artisan key:generate && php artisan migrate:fresh && php artisan db:seed
+RUN cd /var/www/html && composer install && php artisan migrate:fresh && php artisan db:seed php artisan key:generate
 
 RUN chown -R nginx:nginx /var/www/html/storage
 RUN chown -R nginx:nginx /var/www/html/bootstrap/cache

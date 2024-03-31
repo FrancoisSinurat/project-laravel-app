@@ -18,12 +18,12 @@
     @endpush
     @section('title', 'Aset')
     <section class="section">
-        <x-modal id="asset-modal" size="modal-xl">
+        <x-modal id="asset-modal" size="modal-fullscreen">
             <x-slot name="title">Form @yield('title')</x-slot>
             <x-slot name="body">
                 <form id="asset-form" class="form needs-validation" novalidate>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-7">
                             <div class="p-2">
                                 {{-- <div class="card-body"> --}}
                                     <div class="mb-2">
@@ -31,14 +31,17 @@
                                         <select class="form-control select2users" data-action="{{route('admin.user.ajax')}}" name="asset_used_by" id="asset_used_by">
                                         </select>
                                         <div class="form-text">Input NRK untuk mengambil data dari Siadik</div>
+                                        <input type="hidden" name="asset_category_id" id="asset_category_id">
+                                        <input type="hidden" name="item_category_id" id="item_category_id">
+
                                     </div>
                                     <div class="mb-2">
-                                        <label for="asset_category_id" class="col-form-label mandatory">Pilih Jenis Aset</label>
+                                        {{-- <label for="asset_category_id" class="col-form-label mandatory">Pilih Jenis Aset</label>
                                         <select class="form-control select2assetCategories" data-action="{{route('admin.asset-category.ajax')}}" name="asset_category_id" id="asset_category_id" required>
                                         </select>
                                         <div id="asset_category_id_feedback" class="invalid-feedback">
                                             Wajib diisi.
-                                        </div>
+                                        </div> --}}
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
@@ -83,11 +86,11 @@
                                 {{-- </div> --}}
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <div class="p-2">
                                 {{-- <div class="card-body"> --}}
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        {{-- <div class="col-md-6">
                                             <div class="mb-2">
                                                 <label for="item_category_id" class="col-form-label mandatory">Pilih Kategori</label>
                                                 <select class="form-control select2itemCategories" data-action="{{route('admin.item-category.ajax')}}" name="item_category_id" id="item_category_id" required>
@@ -96,8 +99,8 @@
                                                     Wajib diisi.
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
+                                        </div> --}}
+                                        <div class="col-md-12">
                                             <div class="mb-2">
                                                 <label for="item_id" class="col-form-label mandatory">Pilih Jenis Barang</label>
                                                 <select class="form-control select2items" data-action="{{route('admin.item.ajax')}}" name="item_id" id="item_id" required>
@@ -215,23 +218,38 @@
                 </form>
             </x-slot>
         </x-modal>
+        <x-modal id="asset-detail-modal" size="modal-fullscreen">
+            <x-slot name="title">Asset Detail Modal</x-slot>
+            <x-slot name="body">
+                <x-asset.detail-asset></x-asset.detail-asset>
+            </x-slot>
+        </x-modal>
         <div class="row">
             <div class="col-md-12 h-100">
                 <div class="card info-card sales-card">
                     <div class="card-body">
                         <div class="card-title d-flex justify-content-between">
-                            <div>@yield('title')</div>
+                            <div id="form-title"></div>
                             @if(auth()->user()->hasPermissionTo('aset-create'))
                             <div>
                                 <a data-bs-toggle="modal" data-bs-target="#asset-modal" href="javascript:void(0)"
-                                    class="btn btn-sm btn-primary mb-2">Tambah Data</a>
+                                    class="btn btn-sm btn-add btn-primary mb-2">Tambah Data</a>
                             </div>
                             @endif
                         </div>
                         <ul class="nav nav-tabs mb-2" id="myTab" role="tablist">
                             @foreach (Session::get('categories') as $key => $category)
+                            {{-- @dd($category->asset_category->name); --}}
                             <li class="nav-item" role="presentation">
-                              <button class="nav-link tab-asset text-nav {{$key == 0 ? 'active' : ''}}" id="{{$category->item_category_code}}" data-bs-toggle="tab" data-bs-target="#{{$category->item_category_code}}-pane" data-id="{{$category->item_category_id}}" type="button" role="tab" aria-controls="{{$category->item_category_code}}-pane" aria-selected="{{$key == 0 ? true : false}}">{{$category->item_category_name}}</button>
+                              <button class="nav-link tab-asset text-nav {{$key == 0 ? 'active' : ''}}" id="{{$category->item_category_code}}"
+                                data-category-name="{{$category->item_category_name}}"
+                                data-category-id="{{$category->item_category_id}}"
+                                data-asset-category-id="{{$category->asset_category->asset_category_id}}"
+                                data-asset-category-name="{{$category->asset_category->asset_category_name}}"
+                                data-bs-toggle="tab"
+                                data-bs-target="#{{$category->item_category_code}}-pane"
+                                data-id="{{$category->item_category_id}}"
+                                type="button" role="tab" aria-controls="{{$category->item_category_code}}-pane" aria-selected="{{$key == 0 ? true : false}}">{{$category->item_category_name}}</button>
                             </li>
                             @endforeach
                           </ul>
@@ -265,11 +283,17 @@
         <script src="{{ asset('assets/vendor/select2/js/select2.min.js')}}"></script>
         <script src="{{ asset('assets/js/select2-asset.js') }}"></script>
         <script src="{{ asset('assets/js/ajax.js') }}"></script>
+        <script src="{{ asset('assets/js/asset-event.js') }}"></script>
         <script src="{{ asset('assets/js/simple.money.format.js') }}"></script>
         <script type="text/javascript">
             let modal = 'asset-modal';
             let urlPost = "{{ route('admin.asset.store') }}";
             let formMain = 'asset-form';
+            let categoryId = '9b674b35-aad3-4a21-a0ba-e8c2fa9ad0da';
+            let categoryName = null;
+            let assetCategoryId = null;
+            let assetCategoryName = null;
+            let formTitle = null;
             var dataTableList;
             let options = {
                 modal: modal,
@@ -293,8 +317,9 @@
                     uiLibrary: 'bootstrap5',
                     format: 'dd-mm-yyyy'
                 });
+
                 $('.money').simpleMoneyFormat();
-                let categoryId = '9b674b35-aad3-4a21-a0ba-e8c2fa9ad0da';
+
                 dataTableList = $('#asset-table').DataTable({
                     processing: true,
                     serverSide: true,
@@ -320,6 +345,12 @@
                         {
                             data: 'asset_code',
                             name: 'asset_code',
+                            render: function(data, type, row, meta) {
+                                return `<span style="cursor: pointer;" data-id="${data}" class="badge btn-show text-bg-primary">
+                                    ${data}
+                                    <span id="loading-${data}" class="loading-detail spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                </span>`;
+                            }
                         },
                         {
                             data: 'item.item_name',
@@ -372,6 +403,9 @@
                                             @if(auth()->user()->hasPermissionTo('aset-edit'))
                                                 <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-primary"><i class="bi bi-pencil-fill"></i></button>
                                             @endif
+                                            @if(auth()->user()->hasPermissionTo('aset-list'))
+                                                <button type="button" data-id="${data}" class="btn btn-sm btn-show btn-success"><i class="bi bi-eye-fill"></i></button>
+                                            @endif
                                             @if(auth()->user()->hasPermissionTo('aset-delete'))
                                                 <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-danger"><i class="bi bi-trash-fill"></i></button>
                                             @endif
@@ -384,7 +418,16 @@
 
                     ]
                 });
+
+                const tabHandle = () => {
+                    let attributeData = $(`[data-id='${categoryId}']`).data();
+                    categoryName = attributeData.categoryName;
+                    assetCategoryId = attributeData.assetCategoryId;
+                    assetCategoryName = attributeData.assetCategoryName
+                    formTitle = `Form ${assetCategoryName} ${categoryName}`;
+                }
                 const disabledForm = (categoryId) => {
+                    // kendaraan
                     if (categoryId === '9b674b35-abd7-482b-af0a-0e30e8791d26') {
                         $('#asset_serial_number_group').hide();
                         $('#asset_machine_number_group').show();
@@ -396,15 +439,25 @@
                         $('#asset_frame_number_group').hide();
                         $('#asset_police_number_group').hide();
                     }
+                    tabHandle();
                 }
-                // dataTableList.column(1).search(categoryId).draw();
                 dataTableList.ajax.reload();
                 disabledForm(categoryId);
+
                 $(document).on('click','.tab-asset',function(){
                     categoryId = $(this).attr('data-id');
+                    tabHandle();
                     disabledForm(categoryId);
                     dataTableList.ajax.reload();
                 });
+
+
+                const editAsset = (data) => {
+                    // $('#asset_procurement_year').val(data)
+                    // setTimeout(() => {
+                    //     $(".select2items").trigger('change');
+                    // }, 100);
+                }
 
                 const saveData = (formData) => {
                     options.data = formData;
@@ -441,19 +494,45 @@
                     });
                 });
 
+                $(`#${modal}`).on('shown.bs.modal', function (e) {
+                    if (!options.id) $('#form-aset-title').html(`Form Aset`);
+                })
+
+                $(document).on('click','.btn-add',function(){
+                    formTitle = `Form ${assetCategoryName} ${categoryName}`;
+                })
 
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data();
-                    // $(`#${options.formMain}`).find('input[name="bahan_category_name"]').val(rowData.bahan_category_name);
-                    // $(`#${options.formMain}`).find('input[name="asset_id"]').val(rowData.asset_id);
-                    $(`#${options.modal}`).modal('show');
+                    formTitle = `Form ${assetCategoryName} ${categoryName}` + '<p>' + rowData.asset_name + '</p>';
+                    $('#form-aset-title').html(formTitle);
+                    $('#asset_category_id').val(assetCategoryId);
+                    $('#item_category_id').val(categoryId);
+                    let newOptions = {
+                        url: options.url,
+                        id: rowData.asset_id,
+                        modal: options.modal,
+                        assetCode: rowData.asset_code,
+                    }
+                    EDIT_ASSET_ON_MODAL(newOptions);
+                    $(`#${options.modal}`).find('#save').show();
                     $(`#${options.modal}`).find('.btn-name').text('Ubah');
                     options.id = rowData.asset_id;
                 })
 
+                $(document).on('click','.btn-show',function(){
+                    let rowData = dataTableList.row($(this).parents('tr')).data();
+                    let newOptions = {
+                        url: options.url,
+                        id: rowData.asset_id,
+                        modal: 'asset-detail-modal',
+                        assetCode: rowData.asset_code,
+                    }
+                    DETAIL_ASSET_ON_MODAL(newOptions);
+                })
+
                 $(document).on('click','.btn-delete',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    console.log(rowData);
                     options.dataTitle = rowData.asset_name;
                     deleteData(rowData.asset_id);
                 })

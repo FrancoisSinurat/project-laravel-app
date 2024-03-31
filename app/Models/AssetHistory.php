@@ -13,18 +13,24 @@ class AssetHistory extends Model
     protected $primaryKey = 'asset_history_id';
     protected $fillable = [
         'asset_history_status',
-        'asset_historyable_id',
-        'asset_historyable_type',
+        'asset_id',
+        'historyable_id',
+        'historyable_type',
         'asset_history_user_id',
     ];
 
-    public static function createAssetHistory($input) {
-        $createAssetHistory = [
-            'asset_history_status' => $input['asset_status'],
-            'asset_historyable_id' => $input['historyable_id'],
-            'asset_historyable_type' => $input['class'],
-            'asset_history_user_id' => $input['user_id'],
-        ];
-        return AssetHistory::create($createAssetHistory);
+    /**
+     * Get the user that owns the AssetHistory
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'asset_history_user_id', 'user_id');
+    }
+
+    public function historyable()
+    {
+        return $this->morphTo();
     }
 }
