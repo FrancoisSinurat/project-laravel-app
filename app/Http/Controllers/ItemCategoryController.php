@@ -59,7 +59,7 @@ class ItemCategoryController extends Controller
             $input = $request->all();
             $input['item_category_code'] = strtoupper($input['item_category_code']);
             ItemCategory::create($input);
-            $menu = ItemCategory::get();
+            $menu = ItemCategory::with('asset_category')->get();
             if (count($menu) > 0) Session::put('categories', $menu);
             if (count($menu) == 0) Session::put('categories', []);
             return response()->json([
@@ -107,7 +107,7 @@ class ItemCategoryController extends Controller
         $input['item_category_code'] = strtoupper($input['item_category_code']);
         try {
             ItemCategory::where('item_category_id', $id)->update($input);
-            $menu = ItemCategory::get();
+            $menu = ItemCategory::with('asset_category')->get();
             if (count($menu) > 0) Session::put('categories', $menu);
             if (count($menu) == 0) Session::put('categories', []);
             return response()->json([
@@ -153,7 +153,8 @@ class ItemCategoryController extends Controller
             $itemCategories = ItemCategory::select('item_category_id', 'asset_category_id', 'item_category_name', 'item_category_code')
                 ->when($request->search, function($query, $keyword) {
                     $keyword = strtolower($keyword);
-                    $query->where("item_category_name", "like", "%$keyword%");
+                    $query->whereRaw('LOWER(`item_category_name`) LIKE ? ',['%'.$keyword.'%']);
+
                 })
                 ->when($request->assetCategory, function($query, $assetCategory) {
                     $query->where('asset_category_id', $assetCategory);

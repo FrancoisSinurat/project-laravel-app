@@ -45,23 +45,26 @@ $(window).on('hide.bs.modal', function() {
         }
         options.error = null;
     }
+    $(`#${options.modal}`).find('#save').show();
 });
 
 const GET_DATA = (options) => {
-    console.log('GET_DATA', options);
+    let url =  options.url + '/' + options.id + '';
+    if (options.transform) url = url + '?transform=true';
     $.ajax({
-        url: options.url + '/' + options.id,
+        url,
         type: 'GET',
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
         },
-        success: (result) => {
-            console.log(result);
-        },
-        error: (err) => {
-            console.log(err);
+    }).then((data) => {
+        const result = data.data;
+        if (options.modal) {
+            result.modal = options.modal;
+            options.callbackModal()(result);
         }
     });
+
 }
 
 const POST_DATA = (options) => {

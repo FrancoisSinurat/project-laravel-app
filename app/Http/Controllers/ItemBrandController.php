@@ -110,7 +110,8 @@ class ItemBrandController extends Controller
             $item = ItemBrand::select('item_brand_id', 'item_brand_name')
                 ->when($request->search, function($query, $keyword) {
                     $keyword = strtolower($keyword);
-                    $query->where("item_brand_name", "like", "%$keyword%");
+                    $query->whereRaw('LOWER(`item_brand_name`) LIKE ? ',['%'.$keyword.'%']);
+
                 })->get();
             if($item->isNotEmpty()) {
 
