@@ -129,8 +129,8 @@ class AssetController extends Controller
         $input = $request->all();
         try {
             DB::beginTransaction();
+                $input['asset_id'] = $id;
                 $data = Asset::normalize($input);
-                $data['asset_id'] = $id;
                 Asset::updateAsset($data);
             DB::commit();
             return response()->json([
