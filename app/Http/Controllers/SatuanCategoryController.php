@@ -105,7 +105,8 @@ class SatuanCategoryController extends Controller
             $satuan = SatuanCategory::select('satuan_category_id', 'satuan_category_name')
                 ->when($request->search, function($query, $keyword) {
                     $keyword = strtolower($keyword);
-                    $query->where("satuan_category_name", "like", "%$keyword%");
+                    $query->whereRaw('LOWER(satuan_category_name) LIKE ? ',['%'.$keyword.'%']);
+
                 })
                 ->limit(10)
                 ->get();

@@ -104,7 +104,7 @@ class AsalolehCategoryController extends Controller
             $asalOleh = AsalolehCategory::select('asaloleh_category_id', 'asaloleh_category_name')
                 ->when($request->search, function($query, $keyword) {
                     $keyword = strtolower($keyword);
-                    $query->where("asaloleh_category_name", "like", "%$keyword%");
+                    $query->whereRaw('LOWER(asaloleh_category_name) LIKE ? ',['%'.$keyword.'%']);
                 })
                 ->limit(10)
                 ->get();

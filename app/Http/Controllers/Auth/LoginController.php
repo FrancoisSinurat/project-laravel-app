@@ -54,7 +54,7 @@ class LoginController extends Controller
         if (Auth::attempt([$fieldType => $username, 'password' => $password])) {
             $user = Auth::user();
             $attributes = ['user_id' => $user->user_id, 'user_name' => $user->user_name, 'user_status', 'user_fullname' => $user->user_fullname];
-            $menu = ItemCategory::get();
+            $menu = ItemCategory::with('asset_category')->get();
             if (count($menu) > 0) Session::put('categories', $menu);
             if (count($menu) == 0) Session::put('categories', []);
             Session::put('user', $attributes);

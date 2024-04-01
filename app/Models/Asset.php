@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class Asset extends Model
 {
@@ -50,7 +51,6 @@ class Asset extends Model
         'asset_qty',
         'asset_shrinkage'
     ];
-
     public function asset_category()
     {
         return $this->belongsTo(AssetCategory::class, 'asset_category_id', 'asset_category_id');
@@ -115,8 +115,15 @@ class Asset extends Model
     }
 
     public static function generateAssetCode($input) {
-        $getLastNumber = Asset::where('item_id', $input['item_id'])->count();
-        $lastNumber = $getLastNumber ? intval($getLastNumber) + 1 : 1;
+        $getLastNumber = Asset::where('item_id', $input['item_id'])->latest('asset_id')->first();
+        $lastNumber = 1;
+        if ($getLastNumber) {
+            $extractAssetCode = explode('-', $getLastNumber->asset_code);
+            $assetCodeNumber = last($extractAssetCode);
+            $lastNumber = $assetCodeNumber+1;
+        }
+        Log::info('generate asset code');
+        Log::info($lastNumber);
         $code = str_pad($lastNumber, 6, '0', STR_PAD_LEFT);
         $item = Item::where('item_id', $input['item_id'])->first();
         $assetCategory = AssetCategory::where('asset_category_id', $input['asset_category_id'])->first();
@@ -125,10 +132,12 @@ class Asset extends Model
     }
 
     public static function normalize($input) {
+        Log::info('normalize asset');
+        Log::info($input);
         $result = $input;
         $result['asset_asaloleh_date'] = Carbon::createFromFormat('d-m-Y', $input['asset_asaloleh_date'])->toDateString();
         $result['asset_price'] = replaceComma($input['asset_price']);
-        if (!isset($input['asset_code'])) $result['asset_code'] = self::generateAssetCode($input);
+        if (!isset($input['asset_id'])) $result['asset_code'] = self::generateAssetCode($input);
         $result['asset_name'] = self::generateAssetName($input);
         $result['asset_qty'] = isset($input['asset_qty']) ? $input['asset_qty'] : 1;
         $result['asset_status'] = isset($input['asset_used_by']) ? Asset::STATUS_ASSET_DIGUNAKAN : Asset::STATUS_ASSET_TERSEDIA;
@@ -136,6 +145,8 @@ class Asset extends Model
     }
 
     public static function createAsset($input) {
+        Log::info('create asset');
+        Log::info($input);
         $createAsset = Asset::create($input);
         $historyClass = Asset::class;
         $historyId = $createAsset->asset_id;
@@ -147,10 +158,64 @@ class Asset extends Model
         }
         $createAssetHistory = [
             'asset_history_status' => $status,
-            'asset_historyable_id' =>  $historyId,
-            'asset_historyable_type' => $historyClass,
+            'asset_id' =>  $createAsset->asset_id,
+            'historyable_id' => $historyId,
+            'historyable_type' => $historyClass,
             'asset_history_user_id' => Auth::user()->user_id,
         ];
         AssetHistory::create($createAssetHistory);
+    }
+
+    public static function updateAsset($input) {
+        Log::info('update asset');
+        Log::info($input);
+        $beforeUpdate = Asset::where('asset_id', $input['asset_id'])->first();
+        $status = $input['asset_status'];
+        $historyClass = Asset::class;
+        $historyId = $input['asset_id'];
+        $usedBy = $input['asset_used_by'] ?? null;
+        $input['asset_used_by'] = $usedBy;
+        Asset::where('asset_id', $input['asset_id'])->update($input);
+        if ($status === Asset::STATUS_ASSET_DIGUNAKAN && $beforeUpdate->asset_used_by != $usedBy) {
+            $assetUsed = AssetUsed::create(['asset_id' => $input['asset_id'], 'user_id' => $input['asset_used_by'], 'asset_used_date' => date('Y-m-d')]);
+            $historyClass = AssetUsed::class;
+            $historyId = $assetUsed->asset_used_id;
+        }
+        if ($beforeUpdate->asset_status != $status || $beforeUpdate->asset_used_by != $usedBy) {
+            $createAssetHistory = [
+                'asset_history_status' => $status,
+                'asset_id' =>  $input['asset_id'],
+                'historyable_id' => $historyId,
+                'historyable_type' => $historyClass,
+                'asset_history_user_id' => Auth::user()->user_id,
+            ];
+            AssetHistory::create($createAssetHistory);
+        }
+    }
+
+    public static function transform($data) {
+        return [
+            'asset_id' => $data->asset_id ?? null,
+            'asset_category_name' => $data->asset_category->asset_category_name ?? null,
+            'asset_category_code' => $data->asset_category->asset_category_code ?? null,
+            'item_category_code' => $data->item_category->item_category_code ?? null,
+            'item_category_name' => $data->item_category->item_category_name ?? null,
+            'asset_code' => $data->asset_code ?? null,
+            'asset_status' => $data->asset_status ?? null,
+            'asset_procurement_year' => $data->asset_procurement_year ?? null,
+            'asset_asaloleh_category_name' => $data->asal_oleh->asaloleh_category_name ?? null,
+            'asset_asalpengadaan_category_name' => $data->asal_pengadaan->asalpengadaan_category_name ?? null,
+            'asset_asaloleh_date' => $data->asset_asaloleh_date ? date('d-m-Y', strtotime($data->asset_asaloleh_date)) : null,
+            'asset_name' => $data->asset_name ?? null,
+            'asset_item_name' => $data->item->item_name ?? null,
+            'asset_bahan_name' => $data->bahan->bahan_category_name ?? null,
+            'asset_serial_number' => $data->asset_serial_number ?? null,
+            'asset_price' => numberFormat($data->asset_price) ?? null,
+            'asset_shrinkage' => $data->asset_shrinkage .'%' ?? null,
+            'asset_specification' => $data->asset_specification ?? null,
+            'asset_frame_number' => $data->asset_frame_number ?? null,
+            'asset_machine_number' => $data->asset_machine_number ?? null,
+            'asset_police_number' => $data->asset_police_number ?? null,
+        ];
     }
 }

@@ -113,7 +113,7 @@ class ItemTypeController extends Controller
             $type = ItemType::select('item_brand_id', 'item_type_id', 'item_type_name')
                 ->when($request->search, function($query, $keyword) {
                     $keyword = strtolower($keyword);
-                    $query->where("item_type_name", "like", "%$keyword%");
+                    $query->whereRaw('LOWER(item_type_name) LIKE ? ',['%'.$keyword.'%']);
                 })
                 ->when($request->brand, function($query, $brand) {
                     $query->where('item_brand_id', $brand);

@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Asset;
 use App\Models\AssetCategory;
 use App\Models\AssetHistory;
+use App\Models\AssetUsed;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Log;
@@ -28,7 +30,12 @@ class AssetController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()) {
+
             $asset = Asset::query()->with('item', 'satuan', 'user')->where('item_category_id', $request->categoryId);
+            $user = Auth::user();
+            if (!$user->hasPermissionTo('aset-create')) {
+                $asset = $asset->where('asset_used_by', $user->user_id);
+            }
             return DataTables::of($asset)->make();
         }
         $assetCategory = AssetCategory::get();
@@ -76,9 +83,26 @@ class AssetController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request, string $id)
     {
-        //
+        if($request->ajax()) {
+            $isTransform = $request->query('transform') ?? false;
+            $asset = Asset::query()->with(
+            'asset_category',
+            'item_category',
+            'item',
+            'item_type',
+            'item_brand',
+            'asal_pengadaan',
+            'bahan',
+            'satuan',
+            'asal_oleh',
+            'user')->where('asset_id', $id)->first();
+            if (!$isTransform) return response()->json([ 'status' => true, 'data' => ['asset'=>$asset]], 200);
+            $asset = Asset::transform($asset);
+            $history = AssetHistory::with(['historyable','historyable.user'])->where('asset_id', $id)->orderBy('asset_history_id', 'asc')->get();
+            return response()->json([ 'status' => true, 'data' => ['asset'=>$asset, 'history'=>$history]], 200);
+        }
     }
 
     /**
@@ -94,7 +118,32 @@ class AssetController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // 'item_type_name' => "required|unique:item_types,item_type_name,$id,item_type_id,item_brand_id,$request->item_brand_id,deleted_at,NULL",
+
+        $this->validate($request, [
+            'asset_serial_number' => "nullable|unique:assets,asset_serial_number,$id,asset_id,deleted_at,NULL",
+        ],
+        [
+            'asset_serial_number.unique' => 'Serial number sudah digunakan',
+        ]);
+        $input = $request->all();
+        try {
+            DB::beginTransaction();
+                $input['asset_id'] = $id;
+                $data = Asset::normalize($input);
+                Asset::updateAsset($data);
+            DB::commit();
+            return response()->json([
+                'status' => true,
+            ], 200);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Log::error($th->getMessage());
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -110,7 +159,7 @@ class AssetController extends Controller
             }
             DB::beginTransaction();
                 Asset::find($id)->delete();
-                AssetHistory::where('asset_historyable_id', $id)->where('asset_historyable_type', Asset::class)->delete();
+                AssetHistory::where('asset_id', $id)->delete();
             DB::commit();
             return response()->json([
                 'status' => true,

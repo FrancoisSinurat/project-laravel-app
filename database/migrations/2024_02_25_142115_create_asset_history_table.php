@@ -13,17 +13,21 @@ return new class extends Migration
     {
         Schema::create('asset_histories', function (Blueprint $table) {
             $table->uuid('asset_history_id')->primary();
+            $table->foreignUuid('asset_id')
+            ->nullable()
+            ->references('asset_id')
+            ->on('assets');
             $table->string('asset_history_status');
-            $table->string('asset_historyable_id');
-            $table->string('asset_historyable_type');
+            $table->string('historyable_id');
+            $table->string('historyable_type');
             $table->foreignUuid('asset_history_user_id')
                 ->nullable()
                 ->references('user_id')
                 ->on('users');
             $table->timestamps();
             $table->softDeletes();
-            $table->index('asset_historyable_id');
-            $table->index('asset_historyable_type');
+            $table->index('historyable_id');
+            $table->index('historyable_type');
         });
     }
 
