@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Trait\UuidTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Item extends Model
 {
@@ -22,6 +23,10 @@ class Item extends Model
     public function item_category()
     {
         return $this->belongsTo(ItemCategory::class, 'item_category_id', 'item_category_id');
+    }
+
+    public function brand() {
+        return $this->hasMany(ItemBrand::class, 'item_id', 'item_id');
     }
 
     public function asset()
