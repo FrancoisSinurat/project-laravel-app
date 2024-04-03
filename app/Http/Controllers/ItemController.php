@@ -67,7 +67,7 @@ class ItemController extends Controller
             $itemCode = $itemCategory->item_category_code.'-'.$tgl.'-'.$code;
             $input['item_code'] = $itemCode;
         }
-
+        $input['item_code'] = strtoupper($input['item_code']);
         Item::create($input);
         return response()->json([
             'status' => true,
