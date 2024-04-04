@@ -50,7 +50,10 @@ class AssetCategoryController extends Controller
             'asset_category_name.unique' => 'Nama sudah digunakan',
             'asset_category_code.unique' => 'Kode sudah digunakan'
         ]);
-        AssetCategory::create($request->all());
+
+        $input = $request->all();
+        $input['asset_category_code'] = strtoupper($input['asset_category_code']);
+        AssetCategory::create($input);
         return response()->json([
             'status' => true,
         ], 200);
@@ -84,7 +87,10 @@ class AssetCategoryController extends Controller
             'asset_category_name.unique' => 'Nama sudah digunakan',
             'asset_category_code.unique' => 'Kode sudah digunakan'
         ]);
-        AssetCategory::where('asset_category_id', $id)->update($request->all());
+
+        $input = $request->all();
+        $input['asset_category_code'] = strtoupper($input['asset_category_code']);
+        AssetCategory::where('asset_category_id', $id)->update($input);
         return response()->json([
             'status' => true,
         ], 200);
