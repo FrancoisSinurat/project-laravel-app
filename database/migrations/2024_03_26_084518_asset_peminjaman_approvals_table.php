@@ -20,6 +20,7 @@ return new class extends Migration
                 ->nullable()
                 ->references('user_id')
                 ->on('users');
+            $table->char('sort')->nullable();
             $table->string('asset_peminjaman_approval_status')->nullable();
             $table->date('asset_peminjaman_approval_date')->nullable();
             $table->timestamps();

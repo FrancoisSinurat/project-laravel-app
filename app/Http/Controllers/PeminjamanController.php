@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Peminjaman;
+use App\Models\Asset;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Log;
 
@@ -20,9 +24,19 @@ class PeminjamanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+    public function index(Request $request)
     {
-        return view('peminjaman.index');
+        if($request->ajax()) {
+            $peminjaman = Peminjaman::query()->with('asset','user', 'peminjamanApproval', 'peminjamanApproval.user');
+            $user = Auth::user();
+            if (!$user->hasPermissionTo('aset-persetujuan_peminjaman') && !$user->hasRole('Super Admin')) {
+                $peminjaman = $peminjaman->where('user_id', $user->user_id);
+            }
+            return DataTables::of($peminjaman)->make();
+        }
+        $asset = Asset::get();
+        return view('peminjaman.index', compact('asset'));
     }
 
     /**
@@ -38,7 +52,23 @@ class PeminjamanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+        try {
+            DB::beginTransaction();
+                $data = Peminjaman::normalize($input);
+                Peminjaman::createPeminjaman($data);
+            DB::commit();
+            return response()->json([
+                'status' => true,
+            ], 200);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Log::error($th);
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -62,7 +92,23 @@ class PeminjamanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $input = $request->all();
+        try {
+            DB::beginTransaction();
+                $input['asset_peminjaman_id'] = $id;
+                Peminjaman::updatePeminjaman($input);
+            DB::commit();
+            return response()->json([
+                'status' => true,
+            ], 200);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Log::error($th->getMessage());
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -70,6 +116,9 @@ class PeminjamanController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Peminjaman::where('asset_peminjaman_id', $id)->delete();
+        return response()->json([
+            'status' => true,
+        ], 200);
     }
 }

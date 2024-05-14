@@ -116,23 +116,27 @@
             </ul>
         </li>
         @endif
-        @if(auth()->user()->hasPermissionTo('aset-list'))
-
+        @if(auth()->user()->hasPermissionTo('aset-list') ||
+            auth()->user()->hasPermissionTo('peminjaman-list'))
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#aset-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link {{in_array(Route::current()->getName(), ['admin.asset.index', 'admin.peminjaman.index']) ? '' : 'collapsed'}}" data-bs-target="#asset-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-box-seam"></i><span>Transaksi</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="aset-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <ul id="asset-nav" class="nav-content collapse {{in_array(Route::current()->getName(), ['admin.asset.index', 'admin.peminjaman.index']) ? 'show' : ''}}" data-bs-parent="#sidebar-nav">
+                @if(auth()->user()->hasPermissionTo('aset-list'))
                 <li>
                     <a href="{{route('admin.asset.index')}}" class="{{Route::current()->getName() == 'admin.asset.index' ? 'active' : ''}}">
                         <i class="bi bi-chevron-double-right"></i><span>Aset</span>
                     </a>
                 </li>
+                @endif
+                @if(auth()->user()->hasPermissionTo('peminjaman-list'))
                 <li>
                     <a href="{{route('admin.peminjaman.index')}}" class="{{Route::current()->getName() == 'admin.peminjaman.index' ? 'active' : ''}}">
                         <i class="bi bi-chevron-double-right"></i><span>Peminjaman</span>
                     </a>
                 </li>
+                @endif
             </ul>
         </li>
         @endif

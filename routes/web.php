@@ -39,6 +39,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.'], fu
     Route::resource('role', App\Http\Controllers\RoleController::class);
 
     // ajax
+    Route::get('/asset-ajax', [App\Http\Controllers\AssetController::class, 'ajax'])->name('asset.ajax');
     Route::get('/asset-category-ajax', [App\Http\Controllers\AssetCategoryController::class, 'ajax'])->name('asset-category.ajax');
     Route::get('/item-category-ajax', [App\Http\Controllers\ItemCategoryController::class, 'ajax'])->name('item-category.ajax');
     Route::get('/item-ajax', [App\Http\Controllers\ItemController::class, 'ajax'])->name('item.ajax');

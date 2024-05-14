@@ -26,13 +26,13 @@ class ItemSeeder extends Seeder
             DB::beginTransaction();
             $item = Item::updateOrCreate($createItem, $createItem);
             $createItemBrand = [
-                'item_id' => $item->item_id,
-                'item_brand_name' => 'DELL',
+                'item_brand_id' => $item->item_brand_id,
+                'item_brand_name' => 'HP',
             ];
             $itemBrand = ItemBrand::updateOrCreate($createItemBrand, $createItemBrand);
             $createItemType = [
-                'item_brand_id' => $itemBrand->item_brand_id,
-                'item_type_name' => 'Latitude E7220',
+                    'item_brand_id' => $itemBrand->item_brand_id,
+                    'item_type_name' => 'Latitude E7220',
             ];
             ItemType::updateOrCreate($createItemType, $createItemType);
             DB::commit();

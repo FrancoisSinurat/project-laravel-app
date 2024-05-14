@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Asset;
 use App\Models\AssetCategory;
 use App\Models\AssetHistory;
-use App\Models\AssetUsed;
+use App\Models\Peminjaman;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -101,7 +101,8 @@ class AssetController extends Controller
             if (!$isTransform) return response()->json([ 'status' => true, 'data' => ['asset'=>$asset]], 200);
             $asset = Asset::transform($asset);
             $history = AssetHistory::with(['historyable','historyable.user'])->where('asset_id', $id)->orderBy('asset_history_id', 'asc')->get();
-            return response()->json([ 'status' => true, 'data' => ['asset'=>$asset, 'history'=>$history]], 200);
+            $peminjaman = Peminjaman::where('asset_id', $id)->orderBy('asset_peminjaman_id', 'asc')->get();
+            return response()->json([ 'status' => true, 'data' => ['asset'=>$asset, 'history'=>$history, 'peminjaman'=>$peminjaman]], 200);
         }
     }
 
@@ -170,6 +171,32 @@ class AssetController extends Controller
             return response()->json([
                 'status' => true,
             ], 500);
+        }
+    }
+    public function ajax(Request $request)
+    {
+        try {
+            $asset = Asset::select('asset_id', 'asset_name')
+                ->when($request->search, function($query, $keyword) {
+                    $keyword = strtolower($keyword);
+                    $query->whereRaw('LOWER(asset_name) LIKE ? ',['%'.$keyword.'%']);
+
+                })
+                ->limit(10)
+                ->get();
+            if($asset->isNotEmpty()) {
+
+                return response()->json([
+                    'results' => $asset
+                ], 200);
+            }
+
+
+            return response()->json([], 200);
+
+        } catch (\Exception $e) {
+
+            Log::error($e->getMessage());
         }
     }
 }

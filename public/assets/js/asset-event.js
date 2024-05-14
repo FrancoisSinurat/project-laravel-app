@@ -3,12 +3,12 @@ const hideLoadingDetail = (id) => $(`#loading-${id}`).addClass('d-none');
 
 const generateDescription = (data) => {
     let description = '';
-    if (data.historyable_type == 'App\\Models\\AssetUsed') description = `Digunakan oleh ${data.historyable.user.user_fullname} (${data.historyable.user.user_nrk})`;
+    if (data.historyable_type == 'App\\Models\\AssetUsed') description = `Digunakan Oleh ${data.historyable.user.user_fullname} (${data.historyable.user.user_nrk})`;
     return description;
 }
 
 const showAssetOnModal = (data) => {
-    const { asset, history } = data;
+    const { asset, history, peminjaman } = data;
     hideLoadingDetail(asset.asset_code);
     let detailTitle = `${asset.asset_name}`;
     $(`#${data.modal}`).modal('show');
@@ -34,6 +34,17 @@ const showAssetOnModal = (data) => {
             </td>
             <td>
                 ${description}
+            </td>
+        </tr>`)
+    });
+    $('#asset-peminjaman tr:not(:first)').remove();
+    peminjaman.forEach(v => {
+        $('#asset-peminjaman').append(`<tr>
+            <td>
+                ${new Date(v.created_at).getDate()}/${new Date(v.created_at).getMonth() + 1}/${new Date(v.created_at).getFullYear()}
+            </td>
+            <td>
+                ${v.asset_peminjaman_status}
             </td>
         </tr>`)
     });
@@ -106,4 +117,108 @@ const EDIT_ASSET_ON_MODAL = (options) => {
     showLoadingDetail(newOptions.assetCode);
     if (options.modal) newOptions.callbackModal = () => editAssetOnModal
     GET_DATA(newOptions);
+}
+
+const APPROVED_ASET = (options) => {
+    console.log('UPDATE_DATA', options);
+    Swal.fire({
+        title: "Persetujuan peminjaman aset",
+        html: `Konfirmasi persetujuam peminjaman aset <span class="fw-bold">${options.dataTitle} </span>`,
+        showCancelButton: true,
+        icon: 'question',
+        confirmButtonText: "Setujui",
+        confirmButtonColor: "#0d6efd",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            PATCH_DATA({
+                    ...options, data: {status: true},
+                // beforeSend: () => {
+                //     LOADING_ALERT('Sedang merubah data');
+                // },
+                // success: (data) => {
+                //     SUCCESS_ALERT('Berhasil merubah data');
+                //     reloadTable(options.dataTable);
+                // },
+                // error: (err) => {
+                //     console.log(err);
+                // }
+            });
+            $.ajax({
+                // url: options.url + '/' + options.id,
+                // type: 'PATCH',
+                // headers: {
+                //     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
+                // },
+                // data: {status: true},
+                beforeSend: () => {
+                    LOADING_ALERT('Sedang merubah data');
+                },
+                success: () => {
+                    SUCCESS_ALERT('Berhasil merubah data');
+                    reloadTable(options.dataTable);
+                },
+                error: (err) => {
+                    console.log(err);
+                }
+            });
+            options.id = null;
+        } else if (result.isDenied) {
+            options.id = null;
+        }
+    });
+}
+
+const REJECTED_ASET = (options) => {
+    console.log('UPDATE_DATA', options);
+    Swal.fire({
+        title: "Penolakan peminjaman aset",
+        html: `Konfirmasi penolakan peminjaman aset <span class="fw-bold">${options.dataTitle} </span>`,
+        showCancelButton: true,
+        icon: 'question',
+        confirmButtonText: "Tolak",
+        confirmButtonColor: "red",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            PATCH_DATA({
+                ...options, data: {status: false},
+                // beforeSend: () => {
+                //     LOADING_ALERT('Sedang merubah data');
+                // },
+                // success: (data) => {
+                //     SUCCESS_ALERT('Berhasil merubah data');
+                //     reloadTable(options.dataTable);
+                // },
+                // error: (err) => {
+                //     console.log(err);
+                // }
+            });
+            $.ajax({
+                // url: options.url + '/' + options.id,
+                // type: 'PATCH',
+                // headers: {
+                //     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
+                // },
+                // data: {status: false},
+                beforeSend: () => {
+                    LOADING_ALERT('Sedang merubah data');
+                },
+                success: () => {
+                    SUCCESS_ALERT('Berhasil merubah data');
+                    reloadTable(options.dataTable);
+                },
+                error: (err) => {
+                    console.log(err);
+                }
+            });
+            options.id = null;
+        } else if (result.isDenied) {
+            options.id = null;
+        }
+    });
 }

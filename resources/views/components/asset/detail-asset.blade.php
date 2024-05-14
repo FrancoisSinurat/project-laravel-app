@@ -111,6 +111,15 @@
                     </tr>
                 </table>
             </div>
+            <div class="asset-peminjaman">
+                <p><b>Riwayat Peminjaman</b></p>
+                <table id="asset-peminjaman" class="table table-responsive table-striped">
+                    <tr>
+                        <td>Tanggal</td>
+                        <td>Status</td>
+                    </tr>
+                </table>
+            </div>
             <div class="d-flex justify-content-end">
                 <button type="button" class="btn btn-outline-secondary me-2"
                 data-bs-dismiss="modal">Tutup</button>

@@ -5,6 +5,7 @@ let selectAsset = {
     init: function () {
         // selectAsset.assetCategories();
         // selectAsset.itemCategories();
+        selectAsset.assets();
         selectAsset.items();
         selectAsset.brands();
         selectAsset.types();
@@ -142,6 +143,40 @@ let selectAsset = {
             selectAsset.types(null);
         })
 
+    },
+
+    assets: function () {
+
+        let urlAssets = $('.select2assets').attr('data-action');
+
+        $('.select2assets').select2({
+            dropdownParent: $('#peminjaman-modal .modal-content'),
+            theme: 'bootstrap-5',
+            width: '100%',
+            allowClear: true,
+            placeholder: 'Pilih Asset',
+            ajax: {
+                url: urlAssets,
+                type: 'GET',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        search: params.term || ''
+                    }
+                },
+                processResults: function (data) {
+                    return {
+                        results: $.map(data.results, function (item) {
+                            return {
+                                text: item.asset_name,
+                                id: item.asset_id,
+                            }
+                        })
+                    };
+                }
+            }
+        });
     },
 
     items: function (itemCategory) {
