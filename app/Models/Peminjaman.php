@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-
+ 
 class Peminjaman extends Model
 {
     use SoftDeletes, UuidTrait;
@@ -84,9 +84,8 @@ class Peminjaman extends Model
         Log::info($input);
         $user = Auth::user();
         $Userpeminjaman = $user->user_nrk;
-        // $status = $input['status'];
-        // if ($status == true)
-        // {
+        if ($input['status'] == 'true') {
+            // @dd('status true');
             if ($Userpeminjaman == '187792')
             {
 
@@ -110,34 +109,23 @@ class Peminjaman extends Model
                     ->where('sort', 2)
                     ->update(['asset_peminjaman_approval_status' => 'DISETUJUI']);
             }
-        // }
-        // else if ($status == false)
-        // {
-            // if ($Userpeminjaman == '187792')
-            // {
+        }
+        else if ($input['status'] == 'false') {
+            // @dd('status false');
 
-            //     PeminjamanApproval::where('asset_peminjaman_id', $input['asset_peminjaman_id'])
-            //     ->where('sort', 1)
-            //     ->update(['asset_peminjaman_approval_status' => 'DITOLAK']);
+                Peminjaman::where('asset_peminjaman_id', $input['asset_peminjaman_id'])
+                    ->where('asset_peminjaman_status', 'MENUNGGU PERSETUJUAN')
+                    ->update(['asset_peminjaman_status' => 'DITOLAK']);
 
-            //     PeminjamanApproval::where('asset_peminjaman_id', $input['asset_peminjaman_id'])
-            //                 ->where('sort', 2)
-            //                 ->update(['asset_peminjaman_approval_status' => 'DITOLAK']);
+                PeminjamanApproval::where('asset_peminjaman_id', $input['asset_peminjaman_id'])
+                    ->where('sort', 1)
+                    ->update(['asset_peminjaman_approval_status' => 'DITOLAK']);
 
-            // }
-            // else if ($Userpeminjaman == '124842')
-            // {
-            //     Peminjaman::where('asset_peminjaman_id', $input['asset_peminjaman_id'])
-            //         ->where('asset_peminjaman_status', 'MENUNGGU PERSETUJUAN')
-            //         ->update(['asset_peminjaman_status' => 'DITOLAK']);
+                PeminjamanApproval::where('asset_peminjaman_id', $input['asset_peminjaman_id'])
+                    ->where('sort', 2)
+                    ->update(['asset_peminjaman_approval_status' => 'DITOLAK']);
 
-            //     PeminjamanApproval::where('asset_peminjaman_id', $input['asset_peminjaman_id'])
-            //         ->where('asset_peminjaman_approval_status', 'DITOLAK')
-            //         ->where('sort', 2)
-            //         ->update(['asset_peminjaman_approval_status' => 'DITOLAK']);
-            // }
-
-        // }
+        }
 
     }
 

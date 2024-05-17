@@ -134,35 +134,7 @@ const APPROVED_ASET = (options) => {
     }).then((result) => {
         if (result.isConfirmed) {
             PATCH_DATA({
-                    ...options, data: {status: true},
-                // beforeSend: () => {
-                //     LOADING_ALERT('Sedang merubah data');
-                // },
-                // success: (data) => {
-                //     SUCCESS_ALERT('Berhasil merubah data');
-                //     reloadTable(options.dataTable);
-                // },
-                // error: (err) => {
-                //     console.log(err);
-                // }
-            });
-            $.ajax({
-                // url: options.url + '/' + options.id,
-                // type: 'PATCH',
-                // headers: {
-                //     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
-                // },
-                // data: {status: true},
-                beforeSend: () => {
-                    LOADING_ALERT('Sedang merubah data');
-                },
-                success: () => {
-                    SUCCESS_ALERT('Berhasil merubah data');
-                    reloadTable(options.dataTable);
-                },
-                error: (err) => {
-                    console.log(err);
-                }
+                ...options, data: {status: true}, isNotModal: true
             });
             options.id = null;
         } else if (result.isDenied) {
@@ -186,35 +158,7 @@ const REJECTED_ASET = (options) => {
     }).then((result) => {
         if (result.isConfirmed) {
             PATCH_DATA({
-                ...options, data: {status: false},
-                // beforeSend: () => {
-                //     LOADING_ALERT('Sedang merubah data');
-                // },
-                // success: (data) => {
-                //     SUCCESS_ALERT('Berhasil merubah data');
-                //     reloadTable(options.dataTable);
-                // },
-                // error: (err) => {
-                //     console.log(err);
-                // }
-            });
-            $.ajax({
-                // url: options.url + '/' + options.id,
-                // type: 'PATCH',
-                // headers: {
-                //     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
-                // },
-                // data: {status: false},
-                beforeSend: () => {
-                    LOADING_ALERT('Sedang merubah data');
-                },
-                success: () => {
-                    SUCCESS_ALERT('Berhasil merubah data');
-                    reloadTable(options.dataTable);
-                },
-                error: (err) => {
-                    console.log(err);
-                }
+                ...options, data: {status: false}, isNotModal: true
             });
             options.id = null;
         } else if (result.isDenied) {

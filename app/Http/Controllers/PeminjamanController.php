@@ -94,15 +94,15 @@ class PeminjamanController extends Controller
     {
         $input = $request->all();
         try {
-            DB::beginTransaction();
+            // DB::beginTransaction();
                 $input['asset_peminjaman_id'] = $id;
                 Peminjaman::updatePeminjaman($input);
-            DB::commit();
+            // DB::commit();
             return response()->json([
                 'status' => true,
             ], 200);
         } catch (\Throwable $th) {
-            DB::rollBack();
+            // DB::rollBack();
             Log::error($th->getMessage());
             return response()->json([
                 'status' => false,

@@ -25,7 +25,6 @@
                             <div class="mb-3">
                                 <label for="user_id" class="col-form-label">Nama Pengguna</label>
                                 <input type="text" class="form-control" value="{{ Session::get('user.user_fullname')}}" readonly>
-                                <!-- <input type="text" name="user_id" id="user_id"> -->
                                 <input type="hidden" name="user_id" id="user_id" value="{{ Session::get('user.user_id')}}">
                                 <input type="hidden" name="asset_peminjaman_status" id="asset_peminjaman_status" value="MENUNGGU PERSETUJUAN">
                             </div>

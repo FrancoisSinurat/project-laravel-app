@@ -1,6 +1,6 @@
 function reloadTable (dataTable) {
     if (dataTable) dataTable.ajax.reload();
-}
+} 
 
 function successEvent(modalId, dataTable = null) {
     const modalEl  = document.querySelector('#'+modalId);
@@ -97,15 +97,27 @@ const PATCH_DATA = (options) => {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
         },
         data: options.data,
+        beforeSend: () => {
+            LOADING_ALERT('Sedang merubah data');
+        },
         success: (data) => {
-            if (modal) successEvent(options.modal, options.dataTable);
+            if (modal && !options.isNotModal) successEvent(options.modal, options.dataTable);
+            if (options.isNotModal) {
+                    SUCCESS_ALERT('Berhasil merubah data');
+                     reloadTable(options.dataTable);
+            }
         },
         error: (err) => {
             console.log(err);
             const resErr = err?.responseJSON;
             validation(resErr);
-            if (resErr.message) ERROR_ALERT(resErr.message);
-            options.enabledButton();
+            if (resErr?.message && !options.isNotModal) {
+                ERROR_ALERT(resErr?.message);
+                options.enabledButton();
+            }
+            else {
+                ERROR_ALERT('Gagal');
+            }
         }
     });
 }

@@ -177,6 +177,7 @@ class AssetController extends Controller
     {
         try {
             $asset = Asset::select('asset_id', 'asset_name')
+                ->where('asset_status', 'TERSEDIA')
                 ->when($request->search, function($query, $keyword) {
                     $keyword = strtolower($keyword);
                     $query->whereRaw('LOWER(asset_name) LIKE ? ',['%'.$keyword.'%']);
