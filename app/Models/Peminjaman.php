@@ -29,10 +29,8 @@ class Peminjaman extends Model
         'asset_peminjaman_id',
         'asset_id',
         'user_id',
-        'asset_peminjaman_date',
-        'asset_peminjaman_time',
-        'asset_pengembalian_date',
-        'asset_pengembalian_time',
+        'asset_peminjaman_datetime',
+        'asset_pengembalian_datetime',
         'asset_peminjaman_status'
     ];
     public function user()
@@ -54,29 +52,55 @@ class Peminjaman extends Model
         Log::info('normalize asset');
         Log::info($input);
         $result = $input;
-        $result['asset_peminjaman_date'] = Carbon::createFromFormat('d-m-Y', $input['asset_peminjaman_date'])->toDateString();
-        $result['asset_pengembalian_date'] = Carbon::createFromFormat('d-m-Y', $input['asset_pengembalian_date'])->toDateString();
+        $result['asset_peminjaman_datetime'] = Carbon::createFromFormat('d-m-Y H:i', $input['asset_peminjaman_datetime'])->toDateTimeString();
+        $result['asset_pengembalian_datetime'] = Carbon::createFromFormat('d-m-Y H:i', $input['asset_pengembalian_datetime'])->toDateTimeString();
         return $result;
     }
 
     public static function createPeminjaman($input) {
         Log::info('create asset');
         Log::info($input);
-        $createPeminjaman = Peminjaman::create($input);
-        $historyId = $createPeminjaman->asset_peminjaman_id;
-        $approver = User::whereIn('user_nrk', User::PEJABAT_ASET)->orderBy('user_nrk', 'DESC')->get();
-        foreach ($approver as $key => $value) {
-            Log::info($value);
-            $sort = '1';
-            $statusPeminjaman = Peminjaman::STATUS_ASSET_MENUNGGU;
-            if ($key == 1) $statusPeminjaman = Peminjaman::STATUS_ASSET_MENUNGGU_PROSES AND $sort = '2';
-            PeminjamanApproval::create([
-                'asset_peminjaman_id' => $historyId,
-                'user_id' => $value->user_id,
-                'asset_peminjaman_approval_status' => $statusPeminjaman,
-                'sort' => $sort
-            ]);
-        }
+
+        // Ambil tanggal peminjaman dan tanggal pengembalian dari input
+        $peminjaman     = $input['asset_peminjaman_datetime'];
+        $pengembalian   = $input['asset_pengembalian_datetime'];
+        $assetID        = $input['asset_id'];
+
+        // Periksa apakah rentang tanggal yang diinput bertabrakan dengan rentang tanggal yang sudah ada di database
+        $existingPeminjaman = Peminjaman::select('asset_peminjamans.asset_id', 'assets.asset_name')
+                ->join('assets', 'asset_peminjamans.asset_id', '=', 'assets.asset_id')
+                ->where('assets.asset_status', '!=', 'DIGUNAKAN')
+                ->where('asset_peminjamans.asset_peminjaman_status', '!=', 'DISETUJUI')
+                ->where('asset_peminjamans.asset_id', '=', $assetID)
+                ->where(function ($query) use ($peminjaman, $pengembalian) {
+                    $query->whereBetween('asset_peminjamans.asset_peminjaman_datetime', [$peminjaman, $pengembalian])
+                    ->orWhereBetween('asset_peminjamans.asset_pengembalian_datetime', [$peminjaman, $pengembalian])
+                    ->orWhereRaw("'$peminjaman' BETWEEN asset_peminjamans.asset_peminjaman_datetime AND asset_peminjamans.asset_pengembalian_datetime")
+                    ->orWhereRaw("'$pengembalian' BETWEEN asset_peminjamans.asset_peminjaman_datetime AND asset_peminjamans.asset_pengembalian_datetime");
+                })
+                ->exists();
+
+        if (!$existingPeminjaman) {
+            $createPeminjaman = Peminjaman::create($input);
+            $historyId = $createPeminjaman->asset_peminjaman_id;
+            $approver = User::whereIn('user_nrk', User::PEJABAT_ASET)->orderBy('user_nrk', 'DESC')->get();
+            foreach ($approver as $key => $value) {
+                Log::info($value);
+                $sort = '1';
+                $statusPeminjaman = Peminjaman::STATUS_ASSET_MENUNGGU;
+                if ($key == 1) $statusPeminjaman = Peminjaman::STATUS_ASSET_MENUNGGU_PROSES AND $sort = '2';
+                PeminjamanApproval::create([
+                    'asset_peminjaman_id' => $historyId,
+                    'user_id' => $value->user_id,
+                    'asset_peminjaman_approval_status' => $statusPeminjaman,
+                    'sort' => $sort
+                ]);
+            }
+            
+            return $createPeminjaman;
+
+        } 
+            throw new \Exception("Asset tidak tersedia dipinjam diwaktu yang dipilih");
     }
 
     public static function updatePeminjaman($input) {
@@ -90,12 +114,12 @@ class Peminjaman extends Model
             {
 
                 PeminjamanApproval::where('asset_peminjaman_id', $input['asset_peminjaman_id'])
-                ->where('sort', 1)
-                ->update(['asset_peminjaman_approval_status' => 'DISETUJUI']);
+                    ->where('sort', 1)
+                    ->update(['asset_peminjaman_approval_status' => 'DISETUJUI']);
 
                 PeminjamanApproval::where('asset_peminjaman_id', $input['asset_peminjaman_id'])
-                            ->where('sort', 2)
-                            ->update(['asset_peminjaman_approval_status' => 'MENUNGGU PERSETUJUAN']);
+                    ->where('sort', 2)
+                    ->update(['asset_peminjaman_approval_status' => 'MENUNGGU PERSETUJUAN']);
 
             }
             else if ($Userpeminjaman == '124842')
@@ -110,25 +134,23 @@ class Peminjaman extends Model
                     ->update(['asset_peminjaman_approval_status' => 'DISETUJUI']);
             }
         }
-        else if ($input['status'] == 'false') {
+        else if ($input['status'] == 'false') 
+        {
             // @dd('status false');
+            Peminjaman::where('asset_peminjaman_id', $input['asset_peminjaman_id'])
+                ->where('asset_peminjaman_status', 'MENUNGGU PERSETUJUAN')
+                ->update(['asset_peminjaman_status' => 'DITOLAK']);
 
-                Peminjaman::where('asset_peminjaman_id', $input['asset_peminjaman_id'])
-                    ->where('asset_peminjaman_status', 'MENUNGGU PERSETUJUAN')
-                    ->update(['asset_peminjaman_status' => 'DITOLAK']);
+            PeminjamanApproval::where('asset_peminjaman_id', $input['asset_peminjaman_id'])
+                ->where('sort', 1)
+                ->update(['asset_peminjaman_approval_status' => 'DITOLAK']);
 
-                PeminjamanApproval::where('asset_peminjaman_id', $input['asset_peminjaman_id'])
-                    ->where('sort', 1)
-                    ->update(['asset_peminjaman_approval_status' => 'DITOLAK']);
-
-                PeminjamanApproval::where('asset_peminjaman_id', $input['asset_peminjaman_id'])
-                    ->where('sort', 2)
-                    ->update(['asset_peminjaman_approval_status' => 'DITOLAK']);
-
+            PeminjamanApproval::where('asset_peminjaman_id', $input['asset_peminjaman_id'])
+                ->where('sort', 2)
+                ->update(['asset_peminjaman_approval_status' => 'DITOLAK']);
         }
 
     }
-
 
     public static function transform($data) {
         return [

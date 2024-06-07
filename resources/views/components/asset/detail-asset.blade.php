@@ -117,6 +117,7 @@
                     <tr>
                         <td>Tanggal</td>
                         <td>Status</td>
+                        <td>Keterangan</td>
                     </tr>
                 </table>
             </div>

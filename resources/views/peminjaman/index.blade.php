@@ -16,7 +16,7 @@
     @endpush
     @section('title', 'Peminjaman')
     <section class="section">
-    <x-modal id="peminjaman-modal" size="modal-xl">
+    <x-modal id="peminjaman-modal" size="modal-lg">
             <x-slot name="title">Form @yield('title')</x-slot>
             <x-slot name="body">
                 <form id="peminjaman-type-form" class="form needs-validation" novalidate>
@@ -41,38 +41,20 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="asset_peminjaman_date" class="col-form-label mandatory">Tanggal Peminjaman </label>
-                                <input type="text" name="asset_peminjaman_date" id="asset_peminjaman_date" class="form-control" required>
-                                <div id="asset_peminjaman_date_feedback" class="invalid-feedback">
+                                <label for="asset_peminjaman_datetime" class="col-form-label mandatory">Tanggal Waktu Peminjaman </label>
+                                <input type="text" name="asset_peminjaman_datetime" id="asset_peminjaman_datetime" class="form-control" required>
+                                <div id="asset_peminjaman_datetime_feedback" class="invalid-feedback">
                                     Wajib diisi.
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="asset_peminjaman_time" class="col-form-label mandatory">Waktu Peminjaman</label>
-                                <input type="text" name="asset_peminjaman_time" id="asset_peminjaman_time" class="form-control" required>
-                                <div id="asset_peminjaman_time_feedback" class="invalid-feedback">
-                                    Wajib diisi.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="asset_pengembalian_date" class="col-form-label mandatory">Tanggal Pengembalian</label>
-                                <input type="text" name="asset_pengembalian_date" id="asset_pengembalian_date" class="form-control" required>
-                                <div id="asset_pengembalian_date" class="invalid-feedback">
-                                    Wajib diisi.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="asset_pengembalian_time" class="col-form-label mandatory">Waktu Pengembalian</label>
-                                <input type="text" name="asset_pengembalian_time" id="asset_pengembalian_time" class="form-control" required>
-                                <div id="asset_pengembalian_time" class="invalid-feedback">
+                                <label for="asset_pengembalian_datetime" class="col-form-label mandatory">Tanggal Waktu Pengembalian</label>
+                                <input type="text" name="asset_pengembalian_datetime" id="asset_pengembalian_datetime" class="form-control" required>
+                                <div id="asset_pengembalian_datetime_feedback" class="invalid-feedback">
                                     Wajib diisi.
                                 </div>
                             </div>
@@ -115,10 +97,8 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Nama</th>
-                                        <th>Tanggal Peminjaman</th>
-                                        <th>Waktu Peminjaman</th>
-                                        <th>Tanggal Pengembalian</th>
-                                        <th>Waktu Pengembalian</th>
+                                        <th>Tanggal Waktu Peminjaman</th>
+                                        <th>Tanggal Waktu Pengembalian</th>
                                         <th>Status</th>
                                         <th>Aset</th>
                                         <th></th>
@@ -165,24 +145,14 @@
             }
 
             $(document).ready(function() {
-                $('#asset_peminjaman_date').datepicker({
+                $('#asset_peminjaman_datetime').datetimepicker({
                     uiLibrary: 'bootstrap5',
-                    format: 'dd-mm-yyyy'
+                    format: 'dd-mm-yyyy HH:MM'
                 });
 
-                $('#asset_pengembalian_date').datepicker({
+                $('#asset_pengembalian_datetime').datetimepicker({
                     uiLibrary: 'bootstrap5',
-                    format: 'dd-mm-yyyy'
-                });
-
-                $('#asset_peminjaman_time').timepicker({
-                    uiLibrary: 'bootstrap5',
-                    format: 'HH:MM'
-                });
-
-                $('#asset_pengembalian_time').timepicker({
-                    uiLibrary: 'bootstrap5',
-                    format: 'HH:MM'
+                    format: 'dd-mm-yyyy HH:MM'
                 });
 
                 dataTableList = $('#peminjaman-table').DataTable({
@@ -203,20 +173,12 @@
                             name: 'user.user_fullname',
                         },
                         {
-                            data: 'asset_peminjaman_date',
-                            name: 'asset_peminjaman_date',
+                            data: 'asset_peminjaman_datetime',
+                            name: 'asset_peminjaman_datetime',
                         },
                         {
-                            data: 'asset_peminjaman_time',
-                            name: 'asset_peminjaman_time',
-                        },
-                        {
-                            data: 'asset_pengembalian_date',
-                            name: 'asset_pengembalian_date',
-                        },
-                        {
-                            data: 'asset_pengembalian_time',
-                            name: 'asset_pengembalian_time',
+                            data: 'asset_pengembalian_datetime',
+                            name: 'asset_pengembalian_datetime',
                         },
                         {
                             data: 'asset_peminjaman_status',

@@ -46,6 +46,9 @@ const showAssetOnModal = (data) => {
             <td>
                 ${v.asset_peminjaman_status}
             </td>
+            <td>
+                Dipinjam Oleh ${v.user.user_fullname}
+            </td>
         </tr>`)
     });
 }

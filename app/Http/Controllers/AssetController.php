@@ -101,7 +101,7 @@ class AssetController extends Controller
             if (!$isTransform) return response()->json([ 'status' => true, 'data' => ['asset'=>$asset]], 200);
             $asset = Asset::transform($asset);
             $history = AssetHistory::with(['historyable','historyable.user'])->where('asset_id', $id)->orderBy('asset_history_id', 'asc')->get();
-            $peminjaman = Peminjaman::where('asset_id', $id)->orderBy('asset_peminjaman_id', 'asc')->get();
+            $peminjaman = Peminjaman::with(['user'])->where('asset_id', $id)->orderBy('asset_peminjaman_id', 'asc')->get();
             return response()->json([ 'status' => true, 'data' => ['asset'=>$asset, 'history'=>$history, 'peminjaman'=>$peminjaman]], 200);
         }
     }
@@ -176,15 +176,17 @@ class AssetController extends Controller
     public function ajax(Request $request)
     {
         try {
-            $asset = Asset::select('asset_id', 'asset_name')
-                ->where('asset_status', 'TERSEDIA')
-                ->when($request->search, function($query, $keyword) {
-                    $keyword = strtolower($keyword);
-                    $query->whereRaw('LOWER(asset_name) LIKE ? ',['%'.$keyword.'%']);
+            
+            $asset = Asset::select('asset_id', 'asset_name')          
+            ->where('asset_status', '!=', 'DIGUNAKAN')
+            ->when($request->search, function($query, $keyword) {
+                $keyword = strtolower($keyword);
+                $query->whereRaw('LOWER(asset_name) LIKE ? ',['%'.$keyword.'%']);
 
-                })
-                ->limit(10)
-                ->get();
+            })
+            ->limit(10)
+            ->get();
+
             if($asset->isNotEmpty()) {
 
                 return response()->json([
