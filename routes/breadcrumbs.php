@@ -91,8 +91,14 @@ Breadcrumbs::for('admin.brand.index', function (BreadcrumbTrail $trail) {
     $trail->push('Merk', route('admin.brand.index'));
 });
 
-// Dashboard > Brand
+// Dashboard > Item Type
 Breadcrumbs::for('admin.item-type.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.dashboard');
     $trail->push('Tipe Barang', route('admin.item-type.index'));
+});
+
+// Dashboard > Lokasi
+Breadcrumbs::for('admin.lokasi.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Lokasi', route('admin.lokasi.index'));
 });
