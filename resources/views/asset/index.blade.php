@@ -642,76 +642,91 @@
 
                 $(`#${modal}`).on('shown.bs.modal', function(e) {
                     if (!options.id) $('#form-aset-title').html(`Form Aset`);
-                    if (dataTableTempList !== undefined) {
-                        $('#code-table').DataTable().destroy();
-                        dataTableTempList = null;
-                        // $('#code-table').DataTable().ajax.reload();
-                    }
-                    setTimeout(() => {
-                        dataTableTempList = $('#code-table').dataTable({
-                        processing: true,
-                        serverSide: true,
-                        responsive: true,
-                        order: [
-                            [0, 'desc']
-                        ],
-                        ajax: {
-                            url: urlPostTemp,
-                        },
-                        columns: [{
-                                data: 'asset_temporary_id',
-                                name: 'asset_temporary_id',
-                                render: function(data, type, row, meta) {
-                                    return meta.row + meta.settings._iDisplayStart + 1;
-                                }
-                            },
-                            {
-                                data: 'asset_temporary_bpad_code',
-                                name: 'asset_temporary_bpad_code',
-                            },
-                            {
-                                data: 'asset_temporary_serial_number',
-                                name: 'asset_temporary_serial_number',
-                            },
-                            {
-                                data: 'asset_temporary_machine_number',
-                                name: 'asset_temporary_machine_number',
-                            },
-                            {
-                                data: 'asset_temporary_frame_number',
-                                name: 'asset_temporary_frame_number',
-                            },
-                            {
-                                data: 'asset_temporary_police_number',
-                                name: 'asset_temporary_police_number',
-                            },
-                            {
-                                name: 'action',
-                                data: 'asset_temporary_id',
-                                orderable: false,
-                                searchable: false,
-                                render: function(data, type, row, meta) {
-                                    let button = `
-                                    @if (auth()->user()->hasPermissionTo('aset-edit') || auth()->user()->hasPermissionTo('aset-delete'))
-                                        <div class="d-flex justify-content-start">
-                                            <div class="btn-group" role="group">
-                                                @if (auth()->user()->hasPermissionTo('aset-delete'))
-                                                    <button type="button" data-id="${data}" data-bpad="${row.asset_temporary_bpad_code}" data class="btn btn-sm btn-delete-temp btn-danger"><i class="bi bi-trash-fill"></i></button>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    @endif`;
-                                    return button;
-                                }
-                            },
-
-                        ]
-                    });
-                    }, 100);
                 })
 
                 $(document).on('click', '.btn-add', function() {
                     formTitle = `Form ${assetCategoryName} ${categoryName}`;
+                    if (dataTableTempList !== undefined) {
+                        // reinit datatable after re open
+                        $('#code-table').DataTable().destroy();
+                        $('#code-table').html(`<table id="code-table" class="table display nowrap table-hover" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Kode BPAD</th>
+                                            <th>Nomor Seri</th>
+                                            <th>Nomor Mesin</th>
+                                            <th>Nomor Rangka</th>
+                                            <th>Nomor Plat</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="unique-container" class="text-center">
+                                    </tbody>
+                                </table>`);
+                        dataTableTempList = null;
+                    }
+                    setTimeout(() => {
+                        dataTableTempList = $('#code-table').dataTable({
+                            processing: true,
+                            serverSide: true,
+                            responsive: true,
+                            order: [
+                                [0, 'desc']
+                            ],
+                            ajax: {
+                                url: urlPostTemp,
+                            },
+                            columns: [{
+                                    data: 'asset_temporary_id',
+                                    name: 'asset_temporary_id',
+                                    render: function(data, type, row, meta) {
+                                        return meta.row + meta.settings._iDisplayStart + 1;
+                                    }
+                                },
+                                {
+                                    data: 'asset_temporary_bpad_code',
+                                    name: 'asset_temporary_bpad_code',
+                                },
+                                {
+                                    data: 'asset_temporary_serial_number',
+                                    name: 'asset_temporary_serial_number',
+                                },
+                                {
+                                    data: 'asset_temporary_machine_number',
+                                    name: 'asset_temporary_machine_number',
+                                },
+                                {
+                                    data: 'asset_temporary_frame_number',
+                                    name: 'asset_temporary_frame_number',
+                                },
+                                {
+                                    data: 'asset_temporary_police_number',
+                                    name: 'asset_temporary_police_number',
+                                },
+                                {
+                                    name: 'action',
+                                    data: 'asset_temporary_id',
+                                    orderable: false,
+                                    searchable: false,
+                                    render: function(data, type, row, meta) {
+                                        let button = `
+                                        @if (auth()->user()->hasPermissionTo('aset-edit') || auth()->user()->hasPermissionTo('aset-delete'))
+                                            <div class="d-flex justify-content-start">
+                                                <div class="btn-group" role="group">
+                                                    @if (auth()->user()->hasPermissionTo('aset-delete'))
+                                                        <button type="button" data-id="${data}" data-bpad="${row.asset_temporary_bpad_code}" data class="btn btn-sm btn-delete-temp btn-danger"><i class="bi bi-trash-fill"></i></button>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        @endif`;
+                                        return button;
+                                    }
+                                },
+
+                            ]
+                        });
+                    }, 100);
                     $('#asset_category_id').val(assetCategoryId);
                     $('#item_category_id').val(categoryId);
                     $('#asset_bpad_code_group').hide()
@@ -779,10 +794,10 @@
                             asset_temporary_machine_number: $('#asset_machine_number_input').val(),
                             asset_temporary_police_number: $('#asset_police_number_input').val(),
                         },
-                        url: urlPostTemp
+                        url: urlPostTemp,
+                        dataTableId: '#code-table',
                     }
                     POST_DATA(newOptions);
-                    $('#code-table').DataTable().ajax.reload();
                     disabledForm(categoryId);
                 });
                 $(document).on('click', '.btn-delete-temp', function(e) {
