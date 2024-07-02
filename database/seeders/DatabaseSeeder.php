@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
              BahanSeeder::class,
              SatuanSeeder::class,
              RoleAsetSeeder::class,
-             ItemSeeder::class
+             ItemSeeder::class,
+             LokasiSeeder::class
         ]);
     }
 }

@@ -1,17 +1,22 @@
 function reloadTable (dataTable) {
+    console.log('reload event');
     if (dataTable) dataTable.ajax.reload();
 }
 
-function successEvent(modalId, dataTable = null) {
-    const modalEl  = document.querySelector('#'+modalId);
-    const modalObj = bootstrap.Modal.getInstance(modalEl);
-    if (modalObj ==  null){
-       return;
+function successEvent(modalId = null, dataTable = null) {
+    console.log(modalId, 'succes event', dataTable);
+    if (modalId) {
+        console.log('hehe');
+        const modalEl  = document.querySelector('#'+modalId);
+        const modalObj = bootstrap.Modal.getInstance(modalEl);
+        if (modalObj ==  null){
+           return;
+        }
+        modalObj.hide();
     }
     SUCCESS_ALERT();
     if (dataTable) reloadTable(dataTable);
     options.enabledButton();
-    modalObj.hide();
 }
 
 function errorEvent() {
@@ -63,6 +68,9 @@ const GET_DATA = (options) => {
             result.modal = options.modal;
             options.callbackModal()(result);
         }
+    }).catch((err)=> {
+        ERROR_ALERT(err?.message || 'Terjadi Kendala');
+        if (options.dataTable) reloadTable(options.dataTable);
     });
 
 }
@@ -76,13 +84,18 @@ const POST_DATA = (options) => {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
         },
         data: options.data,
+        beforeSend: () => {
+            // LOADING_ALERT('Sedang menyimpan data');
+        },
         success: () => {
             if (modal) successEvent(options.modal, options.dataTable);
         },
         error: (err) => {
             const resErr = err?.responseJSON;
             validation(resErr);
-            if (resErr.message) ERROR_ALERT(resErr.message);
+            if (resErr.message) {
+                ERROR_ALERT(resErr.message);
+            }
             options.enabledButton();
         }
     });
@@ -97,15 +110,27 @@ const PATCH_DATA = (options) => {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
         },
         data: options.data,
+        beforeSend: () => {
+            // LOADING_ALERT('Sedang merubah data');
+        },
         success: (data) => {
-            if (modal) successEvent(options.modal, options.dataTable);
+            if (modal && !options.isNotModal) successEvent(options.modal, options.dataTable);
+            if (options.isNotModal) {
+                SUCCESS_ALERT('Berhasil merubah data');
+                reloadTable(options.dataTable);
+            }
         },
         error: (err) => {
             console.log(err);
             const resErr = err?.responseJSON;
             validation(resErr);
-            if (resErr.message) ERROR_ALERT(resErr.message);
-            options.enabledButton();
+            if (resErr?.message && !options.isNotModal) {
+                ERROR_ALERT(resErr?.message);
+                options.enabledButton();
+            }
+            else {
+                ERROR_ALERT('Gagal merubah data');
+            }
         }
     });
 }
@@ -125,7 +150,7 @@ const DELETE_DATA = (options) => {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: options.url + '/' + options.id,
+                url: options.id ? options.url + '/' + options.id : options.url,
                 type: 'POST',
                 headers: {
                     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
@@ -137,11 +162,17 @@ const DELETE_DATA = (options) => {
                     LOADING_ALERT('Sedang menghapus data');
                 },
                 success: () => {
-                    SUCCESS_ALERT('Berhasil menghapus data');
+                    setTimeout(() => {
+                        SUCCESS_ALERT('Berhasil menghapus data');
+                        if (options.dataTableId) $(`${options.dataTableId}`).DataTable().ajax.reload();
+                    }, 100);
                     reloadTable(options.dataTable);
                 },
                 error: (err) => {
                     console.log(err);
+                    setTimeout(() => {
+                        ERROR_ALERT('Gagal menghapus data');
+                    }, 100);
                 }
             });
             options.id = null;

@@ -72,6 +72,16 @@ class User extends Authenticatable
         return $this->hasMany(Asset::class, 'user_id', 'asset_used_by');
     }
 
+    public function peminjaman()
+    {
+        return $this->hasMany(Peminjaman::class, 'user_id', 'user_id');
+    }
+
+    public function peminjamanApproval()
+    {
+        return $this->hasMany(PeminjamanApproval::class, 'user_id', 'user_id');
+    }
+
     public function asset_history()
     {
         return $this->hasMany(AssetHistory::class, 'user_id', 'asset_history_user_id');

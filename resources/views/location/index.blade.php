@@ -1,23 +1,20 @@
 <x-layout>
-    @section('title', 'Jenis Aset')
+    @section('title', 'Lokasi')
     <section class="section">
-        <x-modal id="asset-type-modal">
+        <x-modal id="lokasi-type-modal">
             <x-slot name="title">Form @yield('title')</x-slot>
             <x-slot name="body">
-                <form id="asset-type-form" class="form needs-validation" novalidate>
+                <form id="lokasi-form" class="form needs-validation" novalidate>
                     <div class="mb-3">
-                        <label for="asset_category_name" class="col-form-label mandatory">Nama @yield('title')</label>
-                        <input type="text" name="asset_category_name" class="form-control" id="asset_category_name" required>
-                        <div id="asset_category_name_feedback" class="invalid-feedback">
+                        <label for="location_name" class="col-form-label">Nama Lokasi:</label>
+                        <input type="text" name="location_name" class="form-control" id="location_name" required>
+                        <div id="location_name_feedback" class="invalid-feedback">
                             Wajib diisi.
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="asset_category_code" class="col-form-label mandatory">Kode @yield('title')</label>
-                        <input type="text" name="asset_category_code" class="form-control text-uppercase" id="asset_category_code" required>
-                        <div id="asset_category_code_feedback" class="invalid-feedback">
-                            Wajib diisi.
-                        </div>
+                        <label for="address" class="col-form-label">Alamat:</label>
+                        <textarea class="form-control" id="address" name="address" rows="3"></textarea>
                     </div>
                     <div class="d-flex justify-content-end">
                         <button type="button" class="btn btn-outline-secondary me-2"
@@ -36,27 +33,27 @@
                     <div class="card-body">
                         <div class="card-title d-flex justify-content-between">
                             <div>@yield('title')</div>
-                            @if(auth()->user()->hasPermissionTo('jenis-aset-create'))
+                            @if(auth()->user()->hasPermissionTo('lokasi-create'))
                             <div>
-                                <a data-bs-toggle="modal" data-bs-target="#asset-type-modal" href="javascript:void(0)"
+                                <a data-bs-toggle="modal" data-bs-target="#lokasi-type-modal" href="javascript:void(0)"
                                     class="btn btn-sm btn-primary mb-2">Tambah Data</a>
                             </div>
                             @endif
                         </div>
                         <div class="table-responsive">
-                            <table id="asset-category-table" class="table table-hover"
+                            <table id="lokasi-table" class="table table-hover"
                             width="100%">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama Jenis Aset</th>
-                                        <th>Kode Jenis Aset</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Lokasi</th>
+                                    <th>Alamat</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                         </div>
                     </div>
                 </div>
@@ -66,9 +63,9 @@
     @push('scripts')
         <script src="{{ asset('assets/js/ajax.js') }}"></script>
         <script type="text/javascript">
-            let modal = 'asset-type-modal';
-            let urlPost = "{{ route('admin.asset-category.store') }}";
-            let formMain = 'asset-type-form';
+            let modal = 'lokasi-type-modal';
+            let urlPost = "{{ route('admin.location.store') }}";
+            let formMain = 'lokasi-form';
             var dataTableList;
             let options = {
                 modal: modal,
@@ -88,40 +85,40 @@
             }
 
             $(document).ready(function() {
-                dataTableList = $('#asset-category-table').DataTable({
+                dataTableList = $('#lokasi-table').DataTable({
                     processing: true,
                     serverSide: true,
                     order: [[0, 'desc']],
                     ajax: '{{ url()->current() }}',
                     columns: [{
-                            data: 'asset_category_id',
-                            name: 'asset_category_id',
+                            data: 'location_id',
+                            name: 'location_id',
                             render: function(data, type, row, meta) {
                                 return meta.row + meta.settings._iDisplayStart + 1;
                             }
                         },
                         {
-                            data: 'asset_category_name',
-                            name: 'asset_category_name'
+                            data: 'location_name',
+                            name: 'location_name',
                         },
                         {
-                            data: 'asset_category_code',
-                            name: 'asset_category_code'
+                            data: 'address',
+                            name: 'address',
                         },
                         {
                             name: 'action',
-                            data: 'asset_category_id',
+                            data: 'location_id',
                             orderable: false,
                             searchable: false,
                             render: function(data) {
                                 let button = `
-                                @if(auth()->user()->hasPermissionTo('jenis-aset-edit') || auth()->user()->hasPermissionTo('jenis-aset-delete'))
+                                @if(auth()->user()->hasPermissionTo('lokasi-edit') ||auth()->user()->hasPermissionTo('lokasi-delete'))
                                     <div class="d-flex justify-content-end">
                                         <div class="btn-group" role="group">
-                                            @if(auth()->user()->hasPermissionTo('jenis-aset-edit'))
+                                            @if(auth()->user()->hasPermissionTo('lokasi-edit'))
                                                 <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-primary"><i class="bi bi-pencil-fill"></i></button>
                                             @endif
-                                            @if(auth()->user()->hasPermissionTo('jenis-aset-delete'))
+                                            @if(auth()->user()->hasPermissionTo('lokasi-delete'))
                                                 <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-danger"><i class="bi bi-trash-fill"></i></button>
                                             @endif
                                         </div>
@@ -151,7 +148,6 @@
                     options.dataTable = dataTableList;
                     DELETE_DATA(options);
                 }
-
                 Array.prototype.filter.call($(`#${options.formMain}`), function(form) {
                     form.addEventListener('submit', function(event) {
                         if (form.checkValidity() === false) {
@@ -173,17 +169,18 @@
 
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    $(`#${options.formMain}`).find('input[name="asset_category_name"]').val(rowData.asset_category_name);
-                    $(`#${options.formMain}`).find('input[name="asset_category_code"]').val(rowData.asset_category_code);
+                    $(`#${options.formMain}`).find('textarea[name="address"]').val(rowData.address);
+                    $(`#${options.formMain}`).find('input[name="location_name"]').val(rowData.location_name);
+                    $(`#${options.formMain}`).find('input[name="location_id"]').val(rowData.location_id);
                     $(`#${options.modal}`).modal('show');
                     $(`#${options.modal}`).find('.btn-name').text('Ubah');
-                    options.id = rowData.asset_category_id;
+                    options.id = rowData.location_id;
                 })
 
                 $(document).on('click','.btn-delete',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    options.dataTitle = rowData.asset_category_name;
-                    deleteData(rowData.asset_category_id);
+                    options.dataTitle = rowData.location_name;
+                    deleteData(rowData.location_id);
                 })
             });
         </script>

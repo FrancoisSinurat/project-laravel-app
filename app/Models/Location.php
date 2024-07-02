@@ -6,7 +6,7 @@ use App\Trait\UuidTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class AsalolehCategory extends Model
+class Location extends Model
 {
     use SoftDeletes, UuidTrait;
 
@@ -15,12 +15,13 @@ class AsalolehCategory extends Model
      *
      * @var array<int, string>
      */
-    protected $primaryKey = 'asaloleh_category_id';
 
-    protected $fillable = ['asaloleh_category_name'];
+    protected $primaryKey = 'location_id';
 
-    public function asset_group()
+    protected $fillable = ['location_name', 'address'];
+
+    public function asset()
     {
-        return $this->hasMany(AssetGroup::class, 'asaloleh_category_id', 'asaloleh_category_id');
+        return $this->hasMany(Asset::class, 'location_id', 'location_id');
     }
 }
