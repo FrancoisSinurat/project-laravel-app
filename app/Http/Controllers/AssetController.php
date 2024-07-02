@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Asset;
 use App\Models\AssetCategory;
+use App\Models\AssetGroup;
 use App\Models\AssetHistory;
+use App\Models\AssetTemporary;
 use App\Models\Peminjaman;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -31,10 +33,10 @@ class AssetController extends Controller
     {
         if($request->ajax()) {
 
-            $asset = Asset::query()->with('item', 'satuan', 'user')->where('item_category_id', $request->categoryId);
+            $asset = Asset::query()->with('asset_group', 'item', 'satuan', 'user')->where('assets.item_category_id', $request->categoryId);
             $user = Auth::user();
             if (!$user->hasPermissionTo('aset-create')) {
-                $asset = $asset->where('asset_used_by', $user->user_id);
+                $asset = $asset->where('assets.asset_used_by', $user->user_id);
             }
             return DataTables::of($asset)->make();
         }
@@ -56,23 +58,51 @@ class AssetController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'asset_serial_number' => 'nullable|unique:assets,asset_serial_number,NULL,NULL,deleted_at,NULL',
+            // 'asset_serial_number' => 'nullable|unique:assets,asset_serial_number,NULL,NULL,deleted_at,NULL',
+            'asset_document_number' => 'required',
         ],
         [
-            'asset_serial_number.unique' => 'Serial number sudah digunakan',
+            // 'asset_serial_number.unique' => 'Serial number sudah digunakan',
+            'asset_document_number' => 'Nomor dokumen wajib diisi'
         ]);
         $input = $request->all();
+        $newInput = [];
         try {
+            $user = Auth::user();
+            $checkDocNumber = AssetGroup::where('asset_document_number', $input['asset_document_number'])->first();
+            if ($checkDocNumber) $input['asset_group_id'] = $checkDocNumber->asset_group_id;
+            $getListCode = AssetTemporary::where('asset_temporary_user_id', $user->user_id)->get();
+            if (count($getListCode) == 0) throw new \Exception('Minimal 1 item');
+            foreach ($getListCode as $k => $v) {
+                $input['asset_id'][] = $v->asset_temporary_id;
+                $input['asset_bpad_code'][] = $v->asset_temporary_bpad_code;
+                $input['asset_serial_number'][] = $v->asset_temporary_serial_number;
+                $input['asset_machine_number'][] = $v->asset_temporary_machine_number;
+                $input['asset_frame_number'][] = $v->asset_temporary_frame_number;
+                $input['asset_police_number'][] = $v->asset_temporary_police_number;
+            }
+            if (count($input['asset_serial_number']) >= 0) {
+                $newInput = Asset::populateAsset($input);
+            }
             DB::beginTransaction();
-                $data = Asset::normalize($input);
-                Asset::createAsset($data);
+                if (count($newInput) > 0) {
+                    for ($i=0; $i < count($newInput['asset']); $i++) {
+                        $newInput['asset'][$i] = Asset::normalize($newInput['asset'][$i]);
+                    }
+                    Asset::createBulkAsset($newInput);
+                }
+                AssetTemporary::where('asset_temporary_user_id', $user->user_id)->delete();
+                // else {
+                //     $data = Asset::normalize($input);
+                //     Asset::createAsset($data);
+                // }
             DB::commit();
             return response()->json([
                 'status' => true,
             ], 200);
         } catch (\Throwable $th) {
             DB::rollBack();
-            Log::error($th->getMessage());
+            Log::error($th);
             return response()->json([
                 'status' => false,
                 'message' => $th->getMessage()
@@ -88,15 +118,17 @@ class AssetController extends Controller
         if($request->ajax()) {
             $isTransform = $request->query('transform') ?? false;
             $asset = Asset::query()->with(
+            'asset_group',
             'asset_category',
             'item_category',
             'item',
             'item_type',
             'item_brand',
-            'asal_pengadaan',
+            'asset_group.asal_pengadaan',
             'bahan',
             'satuan',
-            'asal_oleh',
+            'location',
+            'asset_group.asal_oleh',
             'user')->where('asset_id', $id)->first();
             if (!$isTransform) return response()->json([ 'status' => true, 'data' => ['asset'=>$asset]], 200);
             $asset = Asset::transform($asset);
@@ -159,8 +191,7 @@ class AssetController extends Controller
                 ], 500);
             }
             DB::beginTransaction();
-                Asset::find($id)->delete();
-                AssetHistory::where('asset_id', $id)->delete();
+                Asset::deleteAsset($id);
             DB::commit();
             return response()->json([
                 'status' => true,
@@ -176,8 +207,8 @@ class AssetController extends Controller
     public function ajax(Request $request)
     {
         try {
-            
-            $asset = Asset::select('asset_id', 'asset_name')          
+
+            $asset = Asset::select('asset_id', 'asset_name')
             ->where('asset_status', '!=', 'DIGUNAKAN')
             ->when($request->search, function($query, $keyword) {
                 $keyword = strtolower($keyword);

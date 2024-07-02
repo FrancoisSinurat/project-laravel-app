@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lokasi', function (Blueprint $table) {
-            $table->uuid('id_lokasi')->primary();
-            $table->string('nama_lokasi');
-            $table->text('alamat')->nullable(); 
+        Schema::create('locations', function (Blueprint $table) {
+            $table->uuid('location_id')->primary();
+            $table->string('location_name');
+            $table->text('address')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lokasi');
+        Schema::dropIfExists('locations');
     }
 };

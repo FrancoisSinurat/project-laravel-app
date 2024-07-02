@@ -12,6 +12,7 @@ class AssetHistory extends Model
 
     protected $primaryKey = 'asset_history_id';
     protected $fillable = [
+        'asset_history_id',
         'asset_history_status',
         'asset_id',
         'historyable_id',

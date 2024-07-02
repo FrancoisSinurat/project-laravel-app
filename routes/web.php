@@ -34,7 +34,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.'], fu
     Route::resource('satuan-category', App\Http\Controllers\SatuanCategoryController::class);
     Route::resource('brand', App\Http\Controllers\ItemBrandController::class);
     Route::resource('item-type', App\Http\Controllers\ItemTypeController::class);
-    Route::resource('lokasi', App\Http\Controllers\LokasiController::class);
+    Route::resource('location', App\Http\Controllers\LocationController::class);
+    Route::resource('asset-temporary', App\Http\Controllers\AssetTemporaryController::class);
 
     Route::resource('user', App\Http\Controllers\UserController::class);
     Route::resource('role', App\Http\Controllers\RoleController::class);
@@ -51,5 +52,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.'], fu
     Route::get('/bahan-ajax', [App\Http\Controllers\BahanCategoryController::class, 'ajax'])->name('bahan.ajax');
     Route::get('/satuan-ajax', [App\Http\Controllers\SatuanCategoryController::class, 'ajax'])->name('satuan.ajax');
     Route::get('/user-ajax', [App\Http\Controllers\UserController::class, 'ajax'])->name('user.ajax');
-    Route::get('/lokasi-ajax', [App\Http\Controllers\LokasiController::class, 'ajax'])->name('lokasi.ajax');
+    Route::get('/location-ajax', [App\Http\Controllers\LocationController::class, 'ajax'])->name('location.ajax');
+    Route::get('/asset-group-ajax', [App\Http\Controllers\AssetGroupController::class, 'ajax'])->name('asset-group.ajax');
+    Route::delete('/asset-temporary-delete', [App\Http\Controllers\AssetTemporaryController::class, 'destroyAll'])->name('asset-temporary-delete.destroyAll');
+
 });

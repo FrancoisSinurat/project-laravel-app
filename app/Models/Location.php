@@ -6,7 +6,7 @@ use App\Trait\UuidTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Lokasi extends Model
+class Location extends Model
 {
     use SoftDeletes, UuidTrait;
 
@@ -15,14 +15,13 @@ class Lokasi extends Model
      *
      * @var array<int, string>
      */
-    protected $table = 'lokasi';
 
-    protected $primaryKey = 'id_lokasi';
+    protected $primaryKey = 'location_id';
 
-    protected $fillable = ['nama_lokasi','alamat'];
+    protected $fillable = ['location_name', 'address'];
 
     public function asset()
     {
-        return $this->hasMany(Asset::class, 'id_lokasi', 'id_lokasi');
+        return $this->hasMany(Asset::class, 'location_id', 'location_id');
     }
 }

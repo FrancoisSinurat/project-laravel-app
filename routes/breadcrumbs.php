@@ -98,7 +98,7 @@ Breadcrumbs::for('admin.item-type.index', function (BreadcrumbTrail $trail) {
 });
 
 // Dashboard > Lokasi
-Breadcrumbs::for('admin.lokasi.index', function (BreadcrumbTrail $trail) {
+Breadcrumbs::for('admin.location.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.dashboard');
-    $trail->push('Lokasi', route('admin.lokasi.index'));
+    $trail->push('Lokasi', route('admin.location.index'));
 });

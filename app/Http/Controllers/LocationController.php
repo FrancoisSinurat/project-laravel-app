@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Lokasi;
+use App\Models\Location;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Log;
 
-class LokasiController extends Controller
+class LocationController extends Controller
 {
     public function __construct()
     {
@@ -23,10 +23,10 @@ class LokasiController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()) {
-            $lokasi = Lokasi::query();
+            $lokasi = Location::query();
             return DataTables::of($lokasi)->make();
         }
-        return view('lokasi.index');
+        return view('location.index');
     }
 
     /**
@@ -43,12 +43,12 @@ class LokasiController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'nama_lokasi' => 'required|unique:lokasi,nama_lokasi,NULL,NULL,deleted_at,NULL',
+            'location_name' => 'required|unique:locations,location_name,NULL,NULL,deleted_at,NULL',
         ],
         [
-            'nama_lokasi.unique' => 'Nama Lokasi sudah digunakan',
+            'location_name.unique' => 'Nama Lokasi sudah digunakan',
         ]);
-        Lokasi::create($request->all());
+        Location::create($request->all());
         return response()->json([
             'status' => true,
         ], 200);
@@ -76,12 +76,12 @@ class LokasiController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validate($request, [
-            'nama_lokasi' => "required|unique:lokasi,nama_lokasi,$id,id_lokasi,deleted_at,NULL",
+            'location_name' => "required|unique:locations,location_name,$id,location_id,deleted_at,NULL",
         ],
         [
-            'nama_lokasi.unique' => 'Nama Lokasi sudah digunakan',
+            'location_name.unique' => 'Nama Lokasi sudah digunakan',
         ]);
-        Lokasi::where('id_lokasi', $id)->update($request->all());
+        Location::where('location_id', $id)->update($request->all());
         return response()->json([
             'status' => true,
         ], 200);
@@ -92,7 +92,7 @@ class LokasiController extends Controller
      */
     public function destroy(string $id)
     {
-        Lokasi::where('id_lokasi', $id)->delete();
+        Location::where('location_id', $id)->delete();
         return response()->json([
             'status' => true,
         ], 200);
@@ -101,10 +101,10 @@ class LokasiController extends Controller
     public function ajax(Request $request)
     {
         try {
-            $bahan = Lokasi::select('id_lokasi', 'nama_lokasi')
+            $bahan = Location::select('location_id', 'location_name', 'address')
                 ->when($request->search, function($query, $keyword) {
                     $keyword = strtolower($keyword);
-                    $query->whereRaw('LOWER(nama_lokasi) LIKE ? ',['%'.$keyword.'%']);
+                    $query->whereRaw('LOWER(location_name) LIKE ? ',['%'.$keyword.'%']);
 
                 })
                 ->limit(10)

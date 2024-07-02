@@ -1,5 +1,13 @@
 const showLoadingDetail = (id) => $(`#loading-${id}`).removeClass('d-none');
 const hideLoadingDetail = (id) => $(`#loading-${id}`).addClass('d-none');
+const formatDateDMY = (inputDate) => {
+    let date = new Date(inputDate);
+    let day = date.getDate().toString().padStart(2, '0');
+    let month = (date.getMonth() + 1).toString().padStart(2, '0');
+    let year = date.getFullYear();
+    let formattedDate = day + '-' + month + '-' + year;
+    return formattedDate;
+}
 
 const generateDescription = (data) => {
     let description = '';
@@ -56,7 +64,8 @@ const editAssetOnModal = (data) => {
     const { asset } = data;
     hideLoadingDetail(asset.asset_code);
     $(`#${data.modal}`).modal('show');
-    if (asset.asset_procurement_year) $(`#${data.modal}`).find('input[name="asset_procurement_year"]').val(asset.asset_procurement_year);
+    if (asset?.asset_group?.asset_procurement_year) $(`#${data.modal}`).find('input[name="asset_procurement_year"]').val(asset.asset_group.asset_procurement_year);
+    if (asset.asset_bpad_code) $(`#${data.modal}`).find('input[name="asset_bpad_code"]').val(asset.asset_bpad_code);
     if (asset.asset_serial_number) $(`#${data.modal}`).find('input[name="asset_serial_number"]').val(asset.asset_serial_number);
     if (asset.asset_police_number) $(`#${data.modal}`).find('input[name="asset_police_number"]').val(asset.asset_police_number);
     if (asset.asset_frame_number) $(`#${data.modal}`).find('input[name="asset_frame_number"]').val(asset.asset_frame_number);
@@ -65,14 +74,17 @@ const editAssetOnModal = (data) => {
     if (asset.asset_shrinkage) $(`#${data.modal}`).find('input[name="asset_shrinkage"]').val(asset.asset_shrinkage);
     if (asset.asset_category_id) $(`#${data.modal}`).find('input[name="asset_category_id"]').val(asset.asset_category_id);
     if (asset.item_category_id) $(`#${data.modal}`).find('input[name="item_category_id"]').val(asset.item_category_id);
-    if (asset.asset_used_by) {
-        $(".select2users").empty().append(`<option value="${asset.asset_used_by}">${asset.user.user_fullname} - ${asset.user.user_nrk}</option>`).val(asset.asset_used_by).trigger('change');
+    // if (asset.asset_used_by) {
+    //     $(".select2users").empty().append(`<option value="${asset.asset_used_by}">${asset.user.user_fullname} - ${asset.user.user_nrk}</option>`).val(asset.asset_used_by).trigger('change');
+    // }
+    if (asset?.asset_group?.asset_document_number) {
+        $(".select2groups").empty().append(`<option value="${asset?.asset_group?.asset_document_number}">${asset?.asset_group?.asset_document_number}</option>`).val(asset?.asset_group?.asset_document_number).trigger('change');
     }
-    if (asset.asalpengadaan_category_id) {
-        $(".select2asalpengadaans").empty().append(`<option value="${asset.asalpengadaan_category_id}">${asset.asal_pengadaan.asalpengadaan_category_name}</option>`).val(asset.asalpengadaan_category_id).trigger('change');
+    if (asset?.asset_group?.asalpengadaan_category_id) {
+        $(".select2asalpengadaans").empty().append(`<option value="${asset.asset_group.asalpengadaan_category_id}">${asset.asset_group.asal_pengadaan.asalpengadaan_category_name}</option>`).val(asset.asset_group.asalpengadaan_category_id).trigger('change');
     }
-    if (asset.asaloleh_category_id) {
-        $(".select2asalolehs").empty().append(`<option value="${asset.asal_oleh.asaloleh_category_id}">${asset.asal_oleh.asaloleh_category_name}</option>`).val(asset.asaloleh_category_id).trigger('change');
+    if (asset?.asset_group?.asaloleh_category_id) {
+        $(".select2asalolehs").empty().append(`<option value="${asset.asset_group.asal_oleh.asaloleh_category_id}">${asset.asset_group.asal_oleh.asaloleh_category_name}</option>`).val(asset.asset_group.asaloleh_category_id).trigger('change');
     }
     if (asset.item_id) {
         $(".select2items").empty().append(`<option value="${asset.item_id}">${asset.item.item_name}</option>`).val(asset.item_id).trigger('change');
@@ -89,13 +101,16 @@ const editAssetOnModal = (data) => {
     if (asset.satuan_category_id) {
         $(".select2satuans").empty().append(`<option value="${asset.satuan_category_id}">${asset.satuan.satuan_category_name}</option>`).val(asset.satuan_category_id).trigger('change');
     }
+    if (asset?.location?.location_id) {
+        $(".select2locations").empty().append(`<option value="${asset.location_id}">${asset.location.location_name}</option>`).val(asset.location_id).trigger('change');
+    }
     if (asset.asset_price) {
         $(`#${data.modal}`).find('input[name="asset_price"]').val(asset.asset_price);
         $(`#${data.modal}`).find('input[name="asset_price"]').keyup();
     }
 
-    if (asset.asset_asaloleh_date) {
-        const asalOlehDate = new Date(asset.asset_asaloleh_date).getDate() + '-' + (new Date(asset.asset_asaloleh_date).getMonth() + 1) + '-' + new Date(asset.asset_asaloleh_date).getFullYear();
+    if (asset?.asset_group?.asset_asaloleh_date) {
+        const asalOlehDate = new Date(asset.asset_group.asset_asaloleh_date).getDate() + '-' + (new Date(asset.asset_group.asset_asaloleh_date).getMonth() + 1) + '-' + new Date(asset.asset_group.asset_asaloleh_date).getFullYear();
         $(`#${data.modal}`).find('input[name="asset_asaloleh_date"]').val(asalOlehDate);
     }
 }

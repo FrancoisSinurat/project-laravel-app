@@ -29,12 +29,12 @@
             auth()->user()->hasPermissionTo('lokasi-list') ||
             auth()->user()->hasPermissionTo('satuan-list'))
         <li class="nav-item">
-            <a class="nav-link {{in_array(Route::current()->getName(), ['admin.item-category.index', 'admin.asaloleh-category.index', 'admin.asalpengadaan-category.index', 'admin.satuan-category.index', 'admin.bahan-category.index', 'admin.item-type.index',  'admin.brand.index', 'admin.lokasi.index', 'admin.asset-category.index']) ? '' : 'collapsed'}}" data-bs-target="#master-data-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link {{in_array(Route::current()->getName(), ['admin.item-category.index', 'admin.asaloleh-category.index', 'admin.asalpengadaan-category.index', 'admin.satuan-category.index', 'admin.bahan-category.index', 'admin.item-type.index',  'admin.brand.index', 'admin.location.index', 'admin.asset-category.index']) ? '' : 'collapsed'}}" data-bs-target="#master-data-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-layout-text-window-reverse"></i><span>Master Data</span><i
                     class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="master-data-nav"
-                class="nav-content collapse {{in_array(Route::current()->getName(), ['admin.item-category.index', 'admin.asaloleh-category.index', 'admin.asalpengadaan-category.index', 'admin.satuan-category.index', 'admin.bahan-category.index', 'admin.item.index', 'admin.item-type.index',  'admin.brand.index', 'admin.lokasi.index', 'admin.asset-category.index']) ? 'show' : ''}}"
+                class="nav-content collapse {{in_array(Route::current()->getName(), ['admin.item-category.index', 'admin.asaloleh-category.index', 'admin.asalpengadaan-category.index', 'admin.satuan-category.index', 'admin.bahan-category.index', 'admin.item.index', 'admin.item-type.index',  'admin.brand.index', 'admin.location.index', 'admin.asset-category.index']) ? 'show' : ''}}"
                 data-bs-parent="#sidebar-nav">
                 @if(auth()->user()->hasPermissionTo('kategori-barang-list') || auth()->user()->hasPermissionTo('barang-list'))
                     <li class="nav-heading">Master Barang</li>
@@ -89,7 +89,7 @@
                 @endif
                 @if(auth()->user()->hasPermissionTo('lokasi-list'))
                 <li>
-                    <a href="{{route('admin.lokasi.index')}}" class="{{Route::current()->getName() == 'admin.lokasi.index' ? 'active' : ''}}">
+                    <a href="{{route('admin.location.index')}}" class="{{Route::current()->getName() == 'admin.location.index' ? 'active' : ''}}">
                         <i class="bi bi-chevron-double-right"></i><span>Lokasi</span>
                     </a>
                 </li>

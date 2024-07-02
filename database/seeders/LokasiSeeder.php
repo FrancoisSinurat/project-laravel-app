@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Lokasi;
+use App\Models\Location;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 class LokasiSeeder extends Seeder
@@ -14,17 +14,17 @@ class LokasiSeeder extends Seeder
     {
         $lokasi = [
             [
-                'nama_lokasi' => 'Sekertariat Pusdatin',
-                'alamat' => 'Jl. Jatibaru'
-            ], 
+                'location_name' => 'Sekertariat Pusdatin',
+                'address' => 'Jl. Jatibaru'
+            ],
             [
-                'nama_lokasi' => 'Lantai 1 Pusdatin',
-                'alamat' => 'Jl. Jatibaru'
+                'location_name' => 'Lantai 1 Pusdatin',
+                'address' => 'Jl. Jatibaru'
             ]
         ];
 
         foreach ($lokasi as $value) {
-            Lokasi::updateOrCreate(['nama_lokasi' => $value['nama_lokasi']], ['alamat' => $value['alamat']]);
+            Location::updateOrCreate(['location_name' => $value['location_name']], ['address' => $value['address']]);
         }
     }
 }

@@ -19,8 +19,8 @@ class AsalolehCategory extends Model
 
     protected $fillable = ['asaloleh_category_name'];
 
-    public function asset()
+    public function asset_group()
     {
-        return $this->hasMany(Asset::class, 'asaloleh_category_id', 'asaloleh_category_id');
+        return $this->hasMany(AssetGroup::class, 'asaloleh_category_id', 'asaloleh_category_id');
     }
 }

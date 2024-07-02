@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->uuid('asset_id')->primary();
+            $table->foreignUuid('asset_group_id')
+                ->nullable()
+                ->references('asset_group_id')
+                ->on('asset_groups');
             $table->foreignUuid('asset_category_id')
                 ->references('asset_category_id')
                 ->on('asset_categories');
@@ -30,10 +34,6 @@ return new class extends Migration
                 ->nullable()
                 ->references('item_brand_id')
                 ->on('item_brands');
-            $table->foreignUuid('asalpengadaan_category_id')
-                ->nullable()
-                ->references('asalpengadaan_category_id')
-                ->on('asalpengadaan_categories');
             $table->foreignUuid('bahan_category_id')
                 ->nullable()
                 ->references('bahan_category_id')
@@ -42,13 +42,11 @@ return new class extends Migration
                 ->nullable()
                 ->references('satuan_category_id')
                 ->on('satuan_categories');
-            $table->foreignUuid('asaloleh_category_id')
-                ->nullable()
-                ->references('asaloleh_category_id')
-                ->on('asaloleh_categories');
-            $table->date('asset_asaloleh_date')->nullable();
-            $table->integer('asset_procurement_year')->nullable();
             $table->string('asset_status')->nullable();
+            $table->foreignUuid('location_id')
+                ->nullable()
+                ->references('location_id')
+                ->on('locations');
             $table->foreignUuid('asset_used_by')
                 ->nullable()
                 ->references('user_id')
@@ -57,6 +55,7 @@ return new class extends Migration
             $table->string('asset_name')->nullable();
             $table->text('asset_note')->nullable();
             $table->text('asset_specification')->nullable();
+            $table->string('asset_bpad_code')->nullable();
             $table->string('asset_serial_number')->nullable();
             $table->string('asset_frame_number')->nullable();
             $table->string('asset_machine_number')->nullable();

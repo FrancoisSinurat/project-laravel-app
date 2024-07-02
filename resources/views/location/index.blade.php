@@ -6,15 +6,15 @@
             <x-slot name="body">
                 <form id="lokasi-form" class="form needs-validation" novalidate>
                     <div class="mb-3">
-                        <label for="nama_lokasi" class="col-form-label">Nama Lokasi:</label>
-                        <input type="text" name="nama_lokasi" class="form-control" id="nama_lokasi" required>
-                        <div id="nama_lokasi_feedback" class="invalid-feedback">
+                        <label for="location_name" class="col-form-label">Nama Lokasi:</label>
+                        <input type="text" name="location_name" class="form-control" id="location_name" required>
+                        <div id="location_name_feedback" class="invalid-feedback">
                             Wajib diisi.
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="alamat" class="col-form-label">Alamat:</label>
-                        <textarea class="form-control" id="alamat" name="alamat" rows="3"></textarea>
+                        <label for="address" class="col-form-label">Alamat:</label>
+                        <textarea class="form-control" id="address" name="address" rows="3"></textarea>
                     </div>
                     <div class="d-flex justify-content-end">
                         <button type="button" class="btn btn-outline-secondary me-2"
@@ -33,7 +33,7 @@
                     <div class="card-body">
                         <div class="card-title d-flex justify-content-between">
                             <div>@yield('title')</div>
-                            @if(auth()->user()->hasPermissionTo('lokasi-create')) 
+                            @if(auth()->user()->hasPermissionTo('lokasi-create'))
                             <div>
                                 <a data-bs-toggle="modal" data-bs-target="#lokasi-type-modal" href="javascript:void(0)"
                                     class="btn btn-sm btn-primary mb-2">Tambah Data</a>
@@ -64,7 +64,7 @@
         <script src="{{ asset('assets/js/ajax.js') }}"></script>
         <script type="text/javascript">
             let modal = 'lokasi-type-modal';
-            let urlPost = "{{ route('admin.lokasi.store') }}";
+            let urlPost = "{{ route('admin.location.store') }}";
             let formMain = 'lokasi-form';
             var dataTableList;
             let options = {
@@ -91,23 +91,23 @@
                     order: [[0, 'desc']],
                     ajax: '{{ url()->current() }}',
                     columns: [{
-                            data: 'id_lokasi',
-                            name: 'id_lokasi',
+                            data: 'location_id',
+                            name: 'location_id',
                             render: function(data, type, row, meta) {
                                 return meta.row + meta.settings._iDisplayStart + 1;
                             }
                         },
                         {
-                            data: 'nama_lokasi',
-                            name: 'nama_lokasi',
+                            data: 'location_name',
+                            name: 'location_name',
                         },
                         {
-                            data: 'alamat',
-                            name: 'alamat',
+                            data: 'address',
+                            name: 'address',
                         },
                         {
                             name: 'action',
-                            data: 'id_lokasi',
+                            data: 'location_id',
                             orderable: false,
                             searchable: false,
                             render: function(data) {
@@ -115,10 +115,10 @@
                                 @if(auth()->user()->hasPermissionTo('lokasi-edit') ||auth()->user()->hasPermissionTo('lokasi-delete'))
                                     <div class="d-flex justify-content-end">
                                         <div class="btn-group" role="group">
-                                            @if(auth()->user()->hasPermissionTo('lokasi-edit')) 
+                                            @if(auth()->user()->hasPermissionTo('lokasi-edit'))
                                                 <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-primary"><i class="bi bi-pencil-fill"></i></button>
                                             @endif
-                                            @if(auth()->user()->hasPermissionTo('lokasi-delete')) 
+                                            @if(auth()->user()->hasPermissionTo('lokasi-delete'))
                                                 <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-danger"><i class="bi bi-trash-fill"></i></button>
                                             @endif
                                         </div>
@@ -169,18 +169,18 @@
 
                 $(document).on('click','.btn-edit',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    $(`#${options.formMain}`).find('textarea[name="alamat"]').val(rowData.alamat);
-                    $(`#${options.formMain}`).find('input[name="nama_lokasi"]').val(rowData.nama_lokasi);
-                    $(`#${options.formMain}`).find('input[name="id_lokasi"]').val(rowData.id_lokasi);
+                    $(`#${options.formMain}`).find('textarea[name="address"]').val(rowData.address);
+                    $(`#${options.formMain}`).find('input[name="location_name"]').val(rowData.location_name);
+                    $(`#${options.formMain}`).find('input[name="location_id"]').val(rowData.location_id);
                     $(`#${options.modal}`).modal('show');
                     $(`#${options.modal}`).find('.btn-name').text('Ubah');
-                    options.id = rowData.id_lokasi;
+                    options.id = rowData.location_id;
                 })
 
                 $(document).on('click','.btn-delete',function(){
                     let rowData = dataTableList.row($(this).parents('tr')).data()
-                    options.dataTitle = rowData.nama_lokasi;
-                    deleteData(rowData.id_lokasi);
+                    options.dataTitle = rowData.location_name;
+                    deleteData(rowData.location_id);
                 })
             });
         </script>

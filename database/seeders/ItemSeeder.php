@@ -27,7 +27,7 @@ class ItemSeeder extends Seeder
             $item = Item::updateOrCreate($createItem, $createItem);
             $createItemBrand = [
                 'item_brand_id' => $item->item_brand_id,
-                'item_brand_name' => 'HP',
+                'item_brand_name' => 'DELL',
             ];
             $itemBrand = ItemBrand::updateOrCreate($createItemBrand, $createItemBrand);
             $createItemType = [
