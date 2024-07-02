@@ -4,6 +4,11 @@
             <p><b>Informasi Aset</b></p>
             <table class="table table-detail-asset table-responsive table-striped">
                 <tr>
+                    <td style="width: 20%;">Nomor Dokumen</td>
+                    <td style="width:3%;">:</td>
+                    <td><span id="asset_document_number"></span></td>
+                </tr>
+                <tr>
                     <td style="width: 20%;">Jenis Asset</td>
                     <td style="width:3%;">:</td>
                     <td><span id="asset_category_name"></span></td>

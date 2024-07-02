@@ -92,10 +92,6 @@ class AssetController extends Controller
                     Asset::createBulkAsset($newInput);
                 }
                 AssetTemporary::where('asset_temporary_user_id', $user->user_id)->delete();
-                // else {
-                //     $data = Asset::normalize($input);
-                //     Asset::createAsset($data);
-                // }
             DB::commit();
             return response()->json([
                 'status' => true,
@@ -154,15 +150,25 @@ class AssetController extends Controller
         // 'item_type_name' => "required|unique:item_types,item_type_name,$id,item_type_id,item_brand_id,$request->item_brand_id,deleted_at,NULL",
 
         $this->validate($request, [
+            'asset_document_number' => 'required',
+            'asset_bpad_code' => "required|unique:assets,asset_bpad_code,$id,asset_id,deleted_at,NULL",
             'asset_serial_number' => "nullable|unique:assets,asset_serial_number,$id,asset_id,deleted_at,NULL",
+            'asset_machine_number' => "nullable|unique:assets,asset_machine_number,$id,asset_id,deleted_at,NULL",
+            'asset_frame_number' => "nullable|unique:assets,asset_frame_number,$id,asset_id,deleted_at,NULL",
+            'asset_police_number' => "nullable|unique:assets,asset_police_number,$id,asset_id,deleted_at,NULL",
         ],
         [
+            'asset_document_number.required' => 'Nomor dokumen wajib diisi',
+            'asset_bpad_code.unique' => 'Kode BPAD sudah digunakan',
             'asset_serial_number.unique' => 'Serial number sudah digunakan',
+            'asset_machine_number.unique' => 'Nomor mesin sudah digunakan',
+            'asset_frame_number.unique' => 'Nomor rangka sudah digunakan',
+            'asset_police_number.unique' => 'Nomor polisi sudah digunakan',
         ]);
         $input = $request->all();
+        $input['asset_id'] = $id;
         try {
             DB::beginTransaction();
-                $input['asset_id'] = $id;
                 $data = Asset::normalize($input);
                 Asset::updateAsset($data);
             DB::commit();
@@ -171,7 +177,7 @@ class AssetController extends Controller
             ], 200);
         } catch (\Throwable $th) {
             DB::rollBack();
-            Log::error($th->getMessage());
+            Log::error($th);
             return response()->json([
                 'status' => false,
                 'message' => $th->getMessage()

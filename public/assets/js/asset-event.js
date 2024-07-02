@@ -78,7 +78,7 @@ const editAssetOnModal = (data) => {
     //     $(".select2users").empty().append(`<option value="${asset.asset_used_by}">${asset.user.user_fullname} - ${asset.user.user_nrk}</option>`).val(asset.asset_used_by).trigger('change');
     // }
     if (asset?.asset_group?.asset_document_number) {
-        $(".select2groups").empty().append(`<option value="${asset?.asset_group?.asset_document_number}">${asset?.asset_group?.asset_document_number}</option>`).val(asset?.asset_group?.asset_document_number).trigger('change');
+        $(".select2groups").empty().append(`<option value="${asset?.asset_group?.asset_document_number}">${asset?.asset_group?.asset_document_number} (${asset?.asset_group?.asal_oleh?.asaloleh_category_name})</option>`).val(asset?.asset_group?.asset_document_number).trigger('change');
     }
     if (asset?.asset_group?.asalpengadaan_category_id) {
         $(".select2asalpengadaans").empty().append(`<option value="${asset.asset_group.asalpengadaan_category_id}">${asset.asset_group.asal_pengadaan.asalpengadaan_category_name}</option>`).val(asset.asset_group.asalpengadaan_category_id).trigger('change');
