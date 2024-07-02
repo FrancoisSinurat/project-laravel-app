@@ -5,14 +5,17 @@ let selectAsset = {
     init: function () {
         // selectAsset.assetCategories();
         // selectAsset.itemCategories();
+        selectAsset.assets();
         selectAsset.items();
         selectAsset.brands();
         selectAsset.types();
+        selectAsset.groups();
         selectAsset.asalolehs();
         selectAsset.asalpengadaans();
         selectAsset.bahans();
         selectAsset.satuans();
         selectAsset.users();
+        selectAsset.locations();
     },
 
     assetCategories: function () {
@@ -142,6 +145,40 @@ let selectAsset = {
             selectAsset.types(null);
         })
 
+    },
+
+    assets: function () {
+
+        let urlAssets = $('.select2assets').attr('data-action');
+
+        $('.select2assets').select2({
+            dropdownParent: $('#peminjaman-modal .modal-content'),
+            theme: 'bootstrap-5',
+            width: '100%',
+            allowClear: true,
+            placeholder: 'Pilih Asset',
+            ajax: {
+                url: urlAssets,
+                type: 'GET',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        search: params.term || ''
+                    }
+                },
+                processResults: function (data) {
+                    return {
+                        results: $.map(data.results, function (item) {
+                            return {
+                                text: item.asset_name,
+                                id: item.asset_id,
+                            }
+                        })
+                    };
+                }
+            }
+        });
     },
 
     items: function (itemCategory) {
@@ -281,8 +318,7 @@ let selectAsset = {
         });
     },
 
-    asalolehs: function () {
-
+    asalolehs: function (asalOlehCategoryName = null) {
         let urlBrand = $('.select2asalolehs').attr('data-action');
 
         $('.select2asalolehs').select2({
@@ -298,7 +334,7 @@ let selectAsset = {
                 delay: 250,
                 data: function (params) {
                     return {
-                        search: params.term || ''
+                        search: asalOlehCategoryName || params.term || ''
                     }
                 },
                 processResults: function (data) {
@@ -315,7 +351,7 @@ let selectAsset = {
         });
     },
 
-    asalpengadaans: function () {
+    asalpengadaans: function (asalPengadaanCategoryName = null) {
 
         let urlBrand = $('.select2asalpengadaans').attr('data-action');
 
@@ -332,7 +368,7 @@ let selectAsset = {
                 delay: 250,
                 data: function (params) {
                     return {
-                        search: params.term || ''
+                        search: asalPengadaanCategoryName || params.term || ''
                     }
                 },
                 processResults: function (data) {
@@ -451,7 +487,102 @@ let selectAsset = {
                 }
             }
         });
-    }
+    },
+
+    groups: function () {
+        let urlGroups = $('.select2groups').attr('data-action');
+
+        $('.select2groups').select2({
+            dropdownParent: $('#asset-modal .modal-content'),
+            theme: 'bootstrap-5',
+            width: '100%',
+            tags: true,
+            allowClear: true,
+            minimumInputLength: 3,
+            placeholder: 'Cari Nomor Dokumen',
+            ajax: {
+                url: urlGroups,
+                type: 'GET',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        search: params.term || ''
+                    }
+                },
+                processResults: function (data) {
+                    return {
+                        results: $.map(data.results, function (item) {
+                            let text = item.asset_document_number;
+                            if (item?.asal_oleh?.asaloleh_category_name) text += ` (${item.asal_oleh.asaloleh_category_name})`;
+                            return {
+                                text: text,
+                                id: item.asset_document_number,
+                                asaloleh_category_id: item?.asal_oleh?.asaloleh_category_id,
+                                asaloleh_category_name: item?.asal_oleh?.asaloleh_category_name,
+                                asalpengadaan_category_id: item?.asal_pengadaan?.asalpengadaan_category_id,
+                                asalpengadaan_category_name: item?.asal_pengadaan?.asalpengadaan_category_name,
+                                asset_asaloleh_date: formatDateDMY(item?.asset_asaloleh_date),
+                                asset_procurement_year: item?.asset_procurement_year,
+                            }
+                        })
+                    };
+                }
+            }
+        });
+
+        $('.select2groups').on('select2:select', function (item) {
+            console.log(`select`, item);
+            var optAsalPengadaan = $("<option selected='selected'></option>").val(item?.params?.data?.asalpengadaan_category_id).text(item?.params?.data?.asalpengadaan_category_name);
+            $(".select2asalpengadaans").append(optAsalPengadaan).trigger('change');
+            var optAsalOleh = $("<option selected='selected'></option>").val(item?.params?.data?.asaloleh_category_id).text(item?.params?.data?.asaloleh_category_name);
+            $(".select2asalolehs").append(optAsalOleh).trigger('change');
+            if (item?.params?.data?.asset_procurement_year) $("#asset_procurement_year").val(Number(item?.params?.data?.asset_procurement_year));
+            if (item?.params?.data?.asset_asaloleh_date) $("#asset_asaloleh_date").val(item?.params?.data?.asset_asaloleh_date);
+        })
+
+        $('.select2groups').on('select2:clear', function (item) {
+            console.log(`clear`, item);
+            $(".select2asalpengadaans").val(null).trigger('change');
+            $(".select2asalolehs").val(null).trigger('change');
+            $("#asset_procurement_year").val(null);
+            $("#asset_asaloleh_date").val(null);
+        })
+    },
+
+    locations: function () {
+
+        let urlBrand = $('.select2locations').attr('data-action');
+
+        $('.select2locations').select2({
+            dropdownParent: $('#asset-modal .modal-content'),
+            theme: 'bootstrap-5',
+            width: '100%',
+            allowClear: true,
+            placeholder: 'Pilih Lokasi',
+            ajax: {
+                url: urlBrand,
+                type: 'GET',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        search: params.term || ''
+                    }
+                },
+                processResults: function (data) {
+                    return {
+                        results: $.map(data.results, function (item) {
+                            return {
+                                text: `${item.location_name} (${item.address})`  ,
+                                id: item.location_id,
+                            }
+                        })
+                    };
+                }
+            }
+        });
+    },
 }
 
 $(document).ready(function () {

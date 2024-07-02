@@ -14,23 +14,32 @@ class AssetUsed extends Model
     protected $primaryKey = 'asset_used_id';
     protected $fillable = [
         'asset_id',
-        'user_id',
-        'asset_used_date'
+        'asset_handover_date',
+        'asset_used_start',
+        'asset_used_end',
+        'asset_used_status',
+        'asset_used_by',
+        'asset_handover_by',
+        'asset_handover_file'
     ];
 
     public function histories()
     {
-        // return $this->morphMany(AssetHistory::class, 'historyable', AssetUsed::class, 'asset_used_id', 'asset_historyable_id');
         return $this->morphMany(AssetHistory::class, 'historyable');
     }
 
-    /**
-     * Get the user that owns the AssetUsed
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
+    public function asset()
     {
-        return $this->belongsTo(User::class, 'user_id', 'user_id');
+        return $this->belongsTo(Asset::class, 'asset_id', 'asset_id');
+    }
+
+    public function user_recipient()
+    {
+        return $this->belongsTo(User::class, 'asset_used_by', 'asset_id');
+    }
+
+    public function user_officer()
+    {
+        return $this->belongsTo(User::class, 'asset_handover_by', 'asset_id');
     }
 }

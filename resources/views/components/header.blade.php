@@ -109,7 +109,7 @@
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-                <h6>{{ Session::get('user.user_name')}}</h6>
+                <h6>{{ Session::get('user.user_fullname')}}</h6>
             </li>
             <li>
               <hr class="dropdown-divider">

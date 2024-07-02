@@ -26,14 +26,15 @@
             auth()->user()->hasPermissionTo('bahan-list') ||
             auth()->user()->hasPermissionTo('brand-list') ||
             auth()->user()->hasPermissionTo('tipe-list') ||
+            auth()->user()->hasPermissionTo('lokasi-list') ||
             auth()->user()->hasPermissionTo('satuan-list'))
         <li class="nav-item">
-            <a class="nav-link {{in_array(Route::current()->getName(), ['admin.item-category.index', 'admin.asaloleh-category.index', 'admin.asalpengadaan-category.index', 'admin.satuan-category.index', 'admin.bahan-category.index', 'admin.item-type.index',  'admin.brand.index', 'admin.asset-category.index']) ? '' : 'collapsed'}}" data-bs-target="#master-data-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link {{in_array(Route::current()->getName(), ['admin.item-category.index', 'admin.asaloleh-category.index', 'admin.asalpengadaan-category.index', 'admin.satuan-category.index', 'admin.bahan-category.index', 'admin.item-type.index',  'admin.brand.index', 'admin.location.index', 'admin.asset-category.index']) ? '' : 'collapsed'}}" data-bs-target="#master-data-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-layout-text-window-reverse"></i><span>Master Data</span><i
                     class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="master-data-nav"
-                class="nav-content collapse {{in_array(Route::current()->getName(), ['admin.item-category.index', 'admin.asaloleh-category.index', 'admin.asalpengadaan-category.index', 'admin.satuan-category.index', 'admin.bahan-category.index', 'admin.item.index', 'admin.item-type.index',  'admin.brand.index', 'admin.asset-category.index']) ? 'show' : ''}}"
+                class="nav-content collapse {{in_array(Route::current()->getName(), ['admin.item-category.index', 'admin.asaloleh-category.index', 'admin.asalpengadaan-category.index', 'admin.satuan-category.index', 'admin.bahan-category.index', 'admin.item.index', 'admin.item-type.index',  'admin.brand.index', 'admin.location.index', 'admin.asset-category.index']) ? 'show' : ''}}"
                 data-bs-parent="#sidebar-nav">
                 @if(auth()->user()->hasPermissionTo('kategori-barang-list') || auth()->user()->hasPermissionTo('barang-list'))
                     <li class="nav-heading">Master Barang</li>
@@ -59,6 +60,7 @@
                 @if(auth()->user()->hasPermissionTo('asal-oleh-list') ||
                     auth()->user()->hasPermissionTo('jenis-aset-list') ||
                     auth()->user()->hasPermissionTo('asal-pengadaan-list') ||
+                    auth()->user()->hasPermissionTo('lokasi-list') ||
                     auth()->user()->hasPermissionTo('brand-list') ||
                     auth()->user()->hasPermissionTo('tipe-list') ||
                     auth()->user()->hasPermissionTo('bahan-list')
@@ -82,6 +84,13 @@
                 <li>
                     <a href="{{route('admin.asset-category.index')}}" class="{{Route::current()->getName() == 'admin.asset-category.index' ? 'active' : ''}}">
                         <i class="bi bi-chevron-double-right"></i><span>Jenis Aset</span>
+                    </a>
+                </li>
+                @endif
+                @if(auth()->user()->hasPermissionTo('lokasi-list'))
+                <li>
+                    <a href="{{route('admin.location.index')}}" class="{{Route::current()->getName() == 'admin.location.index' ? 'active' : ''}}">
+                        <i class="bi bi-chevron-double-right"></i><span>Lokasi</span>
                     </a>
                 </li>
                 @endif
@@ -116,23 +125,27 @@
             </ul>
         </li>
         @endif
-        @if(auth()->user()->hasPermissionTo('aset-list'))
-
+        @if(auth()->user()->hasPermissionTo('aset-list') ||
+            auth()->user()->hasPermissionTo('peminjaman-list'))
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#aset-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link {{in_array(Route::current()->getName(), ['admin.asset.index', 'admin.peminjaman.index']) ? '' : 'collapsed'}}" data-bs-target="#asset-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-box-seam"></i><span>Transaksi</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="aset-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <ul id="asset-nav" class="nav-content collapse {{in_array(Route::current()->getName(), ['admin.asset.index', 'admin.peminjaman.index']) ? 'show' : ''}}" data-bs-parent="#sidebar-nav">
+                @if(auth()->user()->hasPermissionTo('aset-list'))
                 <li>
                     <a href="{{route('admin.asset.index')}}" class="{{Route::current()->getName() == 'admin.asset.index' ? 'active' : ''}}">
                         <i class="bi bi-chevron-double-right"></i><span>Aset</span>
                     </a>
                 </li>
+                @endif
+                @if(auth()->user()->hasPermissionTo('peminjaman-list'))
                 <li>
                     <a href="{{route('admin.peminjaman.index')}}" class="{{Route::current()->getName() == 'admin.peminjaman.index' ? 'active' : ''}}">
                         <i class="bi bi-chevron-double-right"></i><span>Peminjaman</span>
                     </a>
                 </li>
+                @endif
             </ul>
         </li>
         @endif

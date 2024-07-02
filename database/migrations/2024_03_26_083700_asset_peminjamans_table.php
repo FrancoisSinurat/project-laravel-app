@@ -20,7 +20,8 @@ return new class extends Migration
                 ->nullable()
                 ->references('user_id')
                 ->on('users');
-            $table->date('asset_peminjaman_date')->nullable();
+            $table->dateTime('asset_peminjaman_datetime')->nullable();
+            $table->dateTime('asset_pengembalian_datetime')->nullable();
             $table->string('asset_peminjaman_status')->nullable();
             $table->timestamps();
             $table->softDeletes();
