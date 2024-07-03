@@ -89,6 +89,10 @@ const POST_DATA = (options) => {
         },
         success: () => {
             if (modal) successEvent(options.modal, options.dataTable);
+            if (options.dataTableId) {
+                $(`${options.dataTableId}`).DataTable().ajax.reload();
+                options.dataTableId = null;
+            }
         },
         error: (err) => {
             const resErr = err?.responseJSON;
@@ -164,7 +168,10 @@ const DELETE_DATA = (options) => {
                 success: () => {
                     setTimeout(() => {
                         SUCCESS_ALERT('Berhasil menghapus data');
-                        if (options.dataTableId) $(`${options.dataTableId}`).DataTable().ajax.reload();
+                        if (options.dataTableId) {
+                            $(`${options.dataTableId}`).DataTable().ajax.reload();
+                            options.dataTableId = null;
+                        }
                     }, 100);
                     reloadTable(options.dataTable);
                 },
