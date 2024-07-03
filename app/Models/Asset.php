@@ -343,14 +343,16 @@ class Asset extends Model
     public static function createBulkAsset($input) {
         $getAssetGroup = self::createAssetGroupBulkAsset($input);
         foreach ($input['asset'] as $k => $v) {
+            $uuidAssetGroup = (string) Str::orderedUuid();
+            $uuidAsset = (string) Str::orderedUuid();
             $input['asset'][$k]['asset_group_id'] = $getAssetGroup->asset_group_id;
-            $input['asset'][$k]['asset_id'] = Str::orderedUuid();
-            $input['asset'][$k]['created_at'] = date('Y-m-d H:i:s');
-            $input['asset'][$k]['updated_at'] = $input['asset'][$k]['created_at'];
+            $input['asset'][$k]['asset_id'] = $uuidAsset;
+            $input['asset'][$k]['created_at'] = now();
+            $input['asset'][$k]['updated_at'] = now();
             $input['asset_history'][$k]['asset_id'] = $input['asset'][$k]['asset_id'];
-            $input['asset_history'][$k]['asset_history_id'] = Str::orderedUuid();
-            $input['asset_history'][$k]['created_at'] = $input['asset'][$k]['created_at'];
-            $input['asset_history'][$k]['updated_at'] = $input['asset'][$k]['created_at'];
+            $input['asset_history'][$k]['asset_history_id'] = $uuidAssetGroup;
+            $input['asset_history'][$k]['created_at'] = now();
+            $input['asset_history'][$k]['updated_at'] = now();
         }
         Asset::insert($input['asset']);
         return AssetHistory::insert($input['asset_history']);
