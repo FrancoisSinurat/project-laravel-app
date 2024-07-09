@@ -28,7 +28,7 @@ class RoleController extends Controller
             $item = Role::query()->with('permissions');
             return DataTables::of($item)->make();
         }
-        $permission = Permission::get();
+        $permission = Permission::orderBy('name')->get();
         $populatePermission = [];
         foreach ($permission as $key => $val) {
             $permissionArr = explode('-', $val->name);

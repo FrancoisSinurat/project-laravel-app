@@ -22,13 +22,17 @@ class PermissionTableSeeder extends Seeder
             'aset-create',
             'aset-edit',
             'aset-delete',
-            'aset-alokasi',
-            'aset-penarikan',
-            'aset-persetujuan_peminjaman',
-            'peminjaman-list',
-            'peminjaman-create',
-            'peminjaman-edit',
-            'peminjaman-delete',
+            'aset-penyerahan-list',
+            'aset-penyerahan-create',
+            'aset-penyerahan-edit',
+            'aset-penyerahan-delete',
+            'aset-penyerahan-confirmation',
+            'aset-peminjaman-list',
+            'aset-peminjaman-create',
+            'aset-peminjaman-edit',
+            'aset-peminjaman-delete',
+            'aset-peminjaman-approval',
+            'aset-peminjaman-confirmation',
             'barang-list',
             'barang-create',
             'barang-edit',
@@ -72,7 +76,7 @@ class PermissionTableSeeder extends Seeder
             'tipe-list',
             'tipe-create',
             'tipe-edit',
-            'tipe-delete'
+            'tipe-delete',
         ];
         foreach ($permissions as $permission) {
             Permission::updateOrCreate(['name' => $permission], ['name' => $permission]);

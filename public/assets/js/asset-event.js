@@ -45,9 +45,9 @@ const showAssetOnModal = (data) => {
             </td>
         </tr>`)
     });
-    $('#asset-peminjaman tr:not(:first)').remove();
+    $('#aset-peminjaman tr:not(:first)').remove();
     peminjaman.forEach(v => {
-        $('#asset-peminjaman').append(`<tr>
+        $('#aset-peminjaman').append(`<tr>
             <td>
                 ${new Date(v.created_at).getDate()}/${new Date(v.created_at).getMonth() + 1}/${new Date(v.created_at).getFullYear()}
             </td>

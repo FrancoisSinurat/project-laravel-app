@@ -116,9 +116,9 @@
                     </tr>
                 </table>
             </div>
-            <div class="asset-peminjaman">
+            <div class="aset-peminjaman">
                 <p><b>Riwayat Peminjaman</b></p>
-                <table id="asset-peminjaman" class="table table-responsive table-striped">
+                <table id="aset-peminjaman" class="table table-responsive table-striped">
                     <tr>
                         <td>Tanggal</td>
                         <td>Status</td>

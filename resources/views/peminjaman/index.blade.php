@@ -16,10 +16,10 @@
     @endpush
     @section('title', 'Peminjaman')
     <section class="section">
-    <x-modal id="peminjaman-modal" size="modal-lg">
+    <x-modal id="aset-peminjaman-modal" size="modal-lg">
             <x-slot name="title">Form @yield('title')</x-slot>
             <x-slot name="body">
-                <form id="peminjaman-type-form" class="form needs-validation" novalidate>
+                <form id="aset-peminjaman-type-form" class="form needs-validation" novalidate>
                 <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
@@ -83,16 +83,16 @@
                     <div class="card-body">
                         <div class="card-title d-flex justify-content-between">
                             <div>@yield('title')</div>
-                            @if(auth()->user()->hasPermissionTo('peminjaman-create'))
+                            @if(auth()->user()->hasPermissionTo('aset-peminjaman-create'))
                             <div>
-                                <a data-bs-toggle="modal" data-bs-target="#peminjaman-modal" href="javascript:void(0)"
+                                <a data-bs-toggle="modal" data-bs-target="#aset-peminjaman-modal" href="javascript:void(0)"
                                     class="btn btn-sm btn-primary mb-2">Tambah Data</a>
                             </div>
                             @endif
                         </div>
-                        {{-- @if(auth()->user()->hasPermissionTo('aset-persetujuan_peminjaman')) --}}
+                        {{-- @if(auth()->user()->hasPermissionTo('aset-peminjaman-approval')) --}}
                         <div class="table-responsive">
-                            <table id="peminjaman-table" class="table display nowrap table-hover" width="100%">
+                            <table id="aset-peminjaman-table" class="table display nowrap table-hover" width="100%">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -122,9 +122,9 @@
         <script src="{{ asset('assets/js/asset-event.js') }}"></script>
         <script src="{{ asset('assets/js/simple.money.format.js') }}"></script>
         <script type="text/javascript">
-            let modal = 'peminjaman-modal';
+            let modal = 'aset-peminjaman-modal';
             let urlPost = "{{ route('admin.peminjaman.store') }}";
-            let formMain = 'peminjaman-type-form';
+            let formMain = 'aset-peminjaman-type-form';
             let loginUserId = "{{auth()->user()->user_id}}";
             var dataTableList;
             let options = {
@@ -155,7 +155,7 @@
                     format: 'dd-mm-yyyy HH:MM'
                 });
 
-                dataTableList = $('#peminjaman-table').DataTable({
+                dataTableList = $('#aset-peminjaman-table').DataTable({
                     processing: true,
                     serverSide: true,
                     responsive: true,
@@ -203,16 +203,16 @@
                                     }
                                 });
                                 let button = `
-                                @if(auth()->user()->hasPermissionTo('aset-persetujuan_peminjaman') || auth()->user()->hasPermissionTo('peminjaman-delete') || auth()->user()->hasPermissionTo('peminjaman-list'))
+                                @if(auth()->user()->hasPermissionTo('aset-peminjaman-approval') || auth()->user()->hasPermissionTo('aset-peminjaman-delete') || auth()->user()->hasPermissionTo('aset-peminjaman-list'))
                                     <div class="d-flex justify-content-start">
                                         <div class="btn-group" role="group">
-                                            @if(auth()->user()->hasPermissionTo('aset-persetujuan_peminjaman'))
+                                            @if(auth()->user()->hasPermissionTo('aset-peminjaman-approval'))
                                                 ${buttonApprove}
                                             @endif
-                                            @if(auth()->user()->hasPermissionTo('peminjaman-list'))
+                                            @if(auth()->user()->hasPermissionTo('aset-peminjaman-list'))
                                                 <button type="button" data-id="${data}" class="btn btn-sm btn-show btn-success"><i class="bi bi-eye-fill"></i></button>
                                             @endif
-                                            @if(auth()->user()->hasPermissionTo('peminjaman-delete'))
+                                            @if(auth()->user()->hasPermissionTo('aset-peminjaman-delete'))
                                                 <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-danger"><i class="bi bi-trash-fill"></i></button>
                                             @endif
                                         </div>
