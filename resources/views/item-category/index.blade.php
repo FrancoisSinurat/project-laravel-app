@@ -1,7 +1,11 @@
 <x-layout>
+    @push('styles')
+    <link href="{{asset('assets/vendor/select2/css/select2.min.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/vendor/select2/css/select2-bootstrap-5-theme.min.css')}}" rel="stylesheet">
+    @endpush
     @section('title', 'Kategori')
     <section class="section">
-        <x-modal id="item-type-modal">
+        <x-modal id="item-type-modal" size="modal-lg">
             <x-slot name="title">Form @yield('title')</x-slot>
             <x-slot name="body">
                 <form id="item-type-form" class="form needs-validation" novalidate>
@@ -17,17 +21,76 @@
                             Wajib diisi.
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="item_category_name" class="col-form-label mandatory">Nama @yield('title')</label>
+                                <input type="text" name="item_category_name" class="form-control" id="item_category_name" required>
+                                <div id="item_category_name_feedback" class="invalid-feedback">
+                                    Wajib diisi.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="item_category_code" class="col-form-label mandatory">Kode @yield('title')</label>
+                                <input type="text" name="item_category_code" class="form-control text-uppercase" id="item_category_code" required>
+                                <div id="item_category_code_feedback" class="invalid-feedback">
+                                    Wajib diisi.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="item_category_icon" class="col-form-label mandatory">Ikon @yield('title')</label>
+                                <select class="form-control select2" name="item_category_icon" id="item_category_icon" required>
+                                    @foreach($icons as $icon)
+                                        <option value="{{ $icon }}">{{ $icon }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="invalid-feedback">
+                                    Wajib diisi.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="item_category_text" class="col-form-label mandatory">Text @yield('title')</label>
+                                <select class="form-control" name="item_category_text" id="item_category_text" required>
+                                    <option value="">Pilih Text</option>
+                                    @foreach($texts as $text)
+                                        <option value="{{ $text }}">{{ $text }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="invalid-feedback">
+                                    Wajib diisi.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="mb-3">
-                        <label for="item_category_name" class="col-form-label mandatory">Nama @yield('title')</label>
-                        <input type="text" name="item_category_name" class="form-control" id="item_category_name" required>
-                        <div id="item_category_name_feedback" class="invalid-feedback">
+                        <label for="item_category_color" class="col-form-label mandatory">Warna @yield('title')</label>
+                        <select class="form-control" name="item_category_color" id="item_category_color" required>
+                            <option value="">Pilih Warna</option>
+                            @foreach($colors as $color)
+                                <option value="{{ $color }}">{{ $color }}</option>
+                            @endforeach
+                        </select>
+                        <div class="invalid-feedback">
                             Wajib diisi.
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="item_category_code" class="col-form-label mandatory">Kode @yield('title')</label>
-                        <input type="text" name="item_category_code" class="form-control text-uppercase" id="item_category_code" required>
-                        <div id="item_category_code_feedback" class="invalid-feedback">
+                        <label for="item_category_color_bg" class="col-form-label mandatory">Background @yield('title')</label>
+                        <select class="form-control" name="item_category_color_bg" id="item_category_color_bg" required>
+                            <option value="">Pilih Background</option>
+                            @foreach($colorsBg as $colorBg)
+                                <option value="{{ $colorBg }}">{{ $colorBg }}</option>
+                            @endforeach
+                        </select>
+                        <div class="invalid-feedback">
                             Wajib diisi.
                         </div>
                     </div>
@@ -63,6 +126,7 @@
                                         <th>Jenis Aset</th>
                                         <th>Kategori</th>
                                         <th>Kode Kategori</th>
+                                        <th>Warna Kategori</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -76,6 +140,18 @@
         </div>
     </section>
     @push('scripts')
+        <script src="{{ asset('assets/vendor/select2/js/select2.min.js')}}"></script>
+        <script>
+            $(document).ready(function() {
+                $('.select2').select2({
+                    placeholder: "Pilih",
+                    dropdownParent: $('#item-type-modal .modal-content'),
+                    theme: 'bootstrap-5',
+                    width: '100%',
+                    allowClear: true,
+                });
+            });
+        </script>
         <script src="{{ asset('assets/js/ajax.js') }}"></script>
         <script type="text/javascript">
             let modal = 'item-type-modal';
@@ -122,6 +198,10 @@
                         {
                             data: 'item_category_code',
                             name: 'item_category_code'
+                        },
+                        {
+                            data: 'item_category_color',
+                            name: 'item_category_color'
                         },
                         {
                             name: 'action',
@@ -190,6 +270,10 @@
                     let rowData = dataTableList.row($(this).parents('tr')).data()
                     $(`#${options.formMain}`).find('input[name="item_category_name"]').val(rowData.item_category_name);
                     $(`#${options.formMain}`).find('input[name="item_category_code"]').val(rowData.item_category_code);
+                    $(`#${options.formMain}`).find('select[name="item_category_icon"]').val(rowData.item_category_icon).trigger('change');
+                    $(`#${options.formMain}`).find('select[name="item_category_color"]').val(rowData.item_category_color).trigger('change');
+                    $(`#${options.formMain}`).find('select[name="item_category_text"]').val(rowData.item_category_text).trigger('change');
+                    $(`#${options.formMain}`).find('select[name="item_category_color_bg"]').val(rowData.item_category_color_bg).trigger('change');
                     $("#asset_category_id").val(rowData.asset_category?.asset_category_id).change();
                     $(`#${options.modal}`).modal('show');
                     $(`#${options.modal}`).find('.btn-name').text('Ubah');

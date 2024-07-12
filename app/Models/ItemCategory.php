@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ItemCategory extends Model
 {
     use SoftDeletes, UuidTrait;
-
+ 
     /**
      * The attributes that are mass assignable.
      *
@@ -18,7 +18,7 @@ class ItemCategory extends Model
      */
     protected $primaryKey = 'item_category_id';
 
-    protected $fillable = ['asset_category_id','item_category_name','item_category_code'];
+    protected $fillable = ['asset_category_id','item_category_name','item_category_code','item_category_icon','item_category_color','item_category_text', 'item_category_color_bg'];
 
     public function asset_category()
     {
