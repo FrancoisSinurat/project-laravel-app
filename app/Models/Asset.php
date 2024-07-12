@@ -171,6 +171,11 @@ class Asset extends Model
             $find = AssetGroup::where('asset_group_id', $input['group']['asset_group_id'])->first();
             if (!$find) throw new \Exception("not found asset group");
             AssetGroup::find($find->asset_group_id)->increment('asset_group_items', count($input['asset']));
+            if (isset($input['group']['asset_documents'])) {
+                AssetGroup::where('asset_group_id', $find->asset_group_id)->update([
+                    'asset_documents' => $input['group']['asset_documents']
+                ]);
+            }
             return $find;
         } else {
             $create = AssetGroup::create([
@@ -300,6 +305,11 @@ class Asset extends Model
         $result['group']['asaloleh_category_id'] = $input['asaloleh_category_id'];
         $result['group']['asset_documents'] = $input['asset_documents'] ?? null;
         $result['group']['asset_asaloleh_date'] = Carbon::createFromFormat('d-m-Y', $input['asset_asaloleh_date'])->toDateString();
+        $file = [];
+        if (isset($input['dokumen-penyedia'])) $file['dokumen_penyedia'] = json_decode($input['dokumen-penyedia'], true);
+        if (isset($input['dokumen-barang'])) $file['dokumen_barang'] = json_decode($input['dokumen-barang'], true);
+        if (isset($input['dokumen-spj'])) $file['dokumen_spj'] = json_decode($input['dokumen-spj'], true);
+        $result['group']['asset_documents'] = json_encode($file);
         $getLastNumber = Asset::where('item_id', $input['item_id'])->latest('asset_id')->first();
         $lastNumber = 1;
         if ($getLastNumber) {

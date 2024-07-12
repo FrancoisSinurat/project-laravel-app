@@ -105,10 +105,41 @@
                                                 class="col-form-label mandatory">Lokasi</label>
                                             <select class="form-control select2locations"
                                                 data-action="{{ route('admin.location.ajax') }}"
-                                                name="asset_location_id" id="asset_location_id"
-                                                required>
+                                                name="asset_location_id" id="asset_location_id" required>
                                             </select>
                                             <div id="asset_location_id_feedback" class="invalid-feedback">
+                                                Wajib diisi.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" id="upload-container" data-form="asset-form"
+                                        data-upload-url="{{ route('admin.upload-file') }}">
+                                        <div class="mb-2">
+                                            <label for="dokumen_penyedia" class="col-form-label">Dokumen
+                                                Penyedia</label>
+                                            <input type="file" class="form-control" name="file[]"
+                                                data-name="dokumen_penyedia" id="dokumen_penyedia">
+                                            <div id="dokumen_penyedia_feedback" class="invalid-feedback">
+                                                Wajib diisi.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <label for="dokumen_barang" class="col-form-label">Dokumen Barang</label>
+                                            <input type="file" class="form-control" name="file[]"
+                                                data-name="dokumen_barang" id="dokumen_barang">
+                                            <div id="dokumen_barang_feedback" class="invalid-feedback">
+                                                Wajib diisi.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <label for="dokumen_spj" class="col-form-label">Dokumen SPJ</label>
+                                            <input type="file" class="form-control" name="file[]"
+                                                data-name="dokumen_spj" id="dokumen_spj">
+                                            <div id="dokumen_spj_feedback" class="invalid-feedback">
                                                 Wajib diisi.
                                             </div>
                                         </div>
@@ -178,8 +209,8 @@
                                         <div class="mb-2">
                                             <label for="bahan_category_id" class="col-form-label">Bahan</label>
                                             <select class="form-control select2bahans"
-                                                data-action="{{ route('admin.bahan.ajax') }}" name="bahan_category_id"
-                                                id="bahan_category_id">
+                                                data-action="{{ route('admin.bahan.ajax') }}"
+                                                name="bahan_category_id" id="bahan_category_id">
                                             </select>
                                             <div id="bahan_category_id_feedback" class="invalid-feedback">
                                                 Wajib diisi.
@@ -202,35 +233,42 @@
                                     <div class="col-md-12">
                                         <div class="mb-2" id="asset_bpad_code_group">
                                             <label for="asset_bpad_code" class="col-form-label">Kode BPAD</label>
-                                            <input type="text" class="form-control" id="asset_bpad_code" name="asset_bpad_code">
+                                            <input type="text" class="form-control" id="asset_bpad_code"
+                                                name="asset_bpad_code">
                                             <div id="asset_bpad_code_feedback" class="invalid-feedback">
                                                 Wajib diisi.
                                             </div>
                                         </div>
                                         <div class="mb-2" id="asset_serial_number_group">
                                             <label for="asset_serial_number" class="col-form-label">Nomor Seri</label>
-                                            <input type="text" class="form-control" id="asset_serial_number" name="asset_serial_number">
+                                            <input type="text" class="form-control" id="asset_serial_number"
+                                                name="asset_serial_number">
                                             <div id="asset_serial_number_feedback" class="invalid-feedback">
                                                 Wajib diisi.
                                             </div>
                                         </div>
                                         <div class="mb-2" id="asset_frame_number_group">
-                                            <label for="asset_frame_number" class="col-form-label">Nomor Rangka</label>
-                                            <input type="text" class="form-control" id="asset_frame_number" name="asset_frame_number">
+                                            <label for="asset_frame_number" class="col-form-label">Nomor
+                                                Rangka</label>
+                                            <input type="text" class="form-control" id="asset_frame_number"
+                                                name="asset_frame_number">
                                             <div id="asset_frame_number_feedback" class="invalid-feedback">
                                                 Wajib diisi.
                                             </div>
                                         </div>
                                         <div class="mb-2" id="asset_machine_number_group">
-                                            <label for="asset_machine_number" class="col-form-label">Nomor Mesin</label>
-                                            <input type="text" class="form-control" id="asset_machine_number" name="asset_machine_number">
+                                            <label for="asset_machine_number" class="col-form-label">Nomor
+                                                Mesin</label>
+                                            <input type="text" class="form-control" id="asset_machine_number"
+                                                name="asset_machine_number">
                                             <div id="asset_machine_number_feedback" class="invalid-feedback">
                                                 Wajib diisi.
                                             </div>
                                         </div>
                                         <div class="mb-2" id="asset_police_number_group">
                                             <label for="asset_police_number" class="col-form-label">Nomor Plat</label>
-                                            <input type="text" class="form-control" id="asset_police_number" name="asset_police_number">
+                                            <input type="text" class="form-control" id="asset_police_number"
+                                                name="asset_police_number">
                                             <div id="asset_police_number_feedback" class="invalid-feedback">
                                                 Wajib diisi.
                                             </div>
@@ -262,29 +300,36 @@
                             </div>
                             {{-- </div> --}}
                         </div>
-                        <div class="col-md-12 mb-5 unique-col">
+                        <div class="col-md-12 mb-5 mt-5 unique-col">
                             <div class="row">
                                 <div class="col-md-10">
                                     <div class="row">
                                         <div class="col">
                                             <label for="asset_serial_number" class="col-form-label">Kode BPAD</label>
-                                            <input type="text" class="form-control asset_bpad_code" name="asset_bpad_code_input" id="asset_bpad_code_input">
+                                            <input type="text" class="form-control asset_bpad_code"
+                                                name="asset_bpad_code_input" id="asset_bpad_code_input">
                                         </div>
                                         <div class="col">
                                             <label for="asset_serial_number" class="col-form-label">Nomor Seri</label>
-                                            <input type="text" class="form-control asset_serial_number" name="asset_serial_number_input" id="asset_serial_number_input">
+                                            <input type="text" class="form-control asset_serial_number"
+                                                name="asset_serial_number_input" id="asset_serial_number_input">
                                         </div>
                                         <div class="col">
-                                            <label for="asset_frame_number" class="col-form-label">Nomor Rangka</label>
-                                            <input type="text" class="form-control asset_frame_number" name="asset_frame_number_input" id="asset_frame_number_input">
+                                            <label for="asset_frame_number" class="col-form-label">Nomor
+                                                Rangka</label>
+                                            <input type="text" class="form-control asset_frame_number"
+                                                name="asset_frame_number_input" id="asset_frame_number_input">
                                         </div>
                                         <div class="col">
-                                            <label for="asset_machine_number" class="col-form-label">Nomor Mesin</label>
-                                            <input type="text" class="form-control asset_machine_number" name="asset_machine_number" id="asset_machine_number_input">
+                                            <label for="asset_machine_number" class="col-form-label">Nomor
+                                                Mesin</label>
+                                            <input type="text" class="form-control asset_machine_number"
+                                                name="asset_machine_number" id="asset_machine_number_input">
                                         </div>
                                         <div class="col">
                                             <label for="asset_police_number" class="col-form-label">Nomor Plat</label>
-                                            <input type="text" class="form-control asset_police_number" name="asset_police_number_input" id="asset_police_number_input">
+                                            <input type="text" class="form-control asset_police_number"
+                                                name="asset_police_number_input" id="asset_police_number_input">
                                         </div>
                                     </div>
                                 </div>
@@ -400,7 +445,13 @@
         <script src="{{ asset('assets/js/ajax.js') }}"></script>
         <script src="{{ asset('assets/js/asset-event.js') }}"></script>
         <script src="{{ asset('assets/js/simple.money.format.js') }}"></script>
+        <script src="{{ asset('assets/js/file.js') }}"></script>
         <script type="text/javascript">
+            /**
+             * for request(POST,PATCH,DELETE) function see ajax.js
+             * for event function see asset-event.js
+             * for upload see file.js
+             */
             let modal = 'asset-modal';
             let urlPost = "{{ route('admin.asset.store') }}";
             let urlPostTemp = "{{ route('admin.asset-temporary.store') }}";
@@ -574,10 +625,10 @@
                         $('#asset_frame_number_input').prop('disabled', false);
                         $('#asset_police_number_input').prop('disabled', false);
                     } else {
-                        $('#asset_serial_number_input').prop('disabled',false);
-                        $('#asset_machine_number_input').prop('disabled',true);
-                        $('#asset_frame_number_input').prop('disabled',true);
-                        $('#asset_police_number_input').prop('disabled',true);
+                        $('#asset_serial_number_input').prop('disabled', false);
+                        $('#asset_machine_number_input').prop('disabled', true);
+                        $('#asset_frame_number_input').prop('disabled', true);
+                        $('#asset_police_number_input').prop('disabled', true);
                     }
                     tabHandle();
                 }
@@ -617,34 +668,66 @@
                     DELETE_DATA(options);
                 }
                 Array.prototype.filter.call($(`#${options.formMain}`), function(form) {
-                    form.addEventListener('submit', function(event) {
-                        console.log(this);
+                    form.addEventListener('submit', async function(event) {
                         if (form.checkValidity() === false) {
-                        console.log(2);
-
                             event.preventDefault();
                             event.stopPropagation();
                             form.classList.add('was-validated');
-
                         } else {
-                        console.log(3);
-
-                            let formData = $(`#${options.formMain}`).serialize();
                             event.preventDefault();
                             event.stopPropagation();
                             options.disabledButton();
                             form.classList.remove('was-validated');
-                            if (options.id == null) saveData(formData);
-                            if (options.id) updateData(formData);
+                            // from file.js
+                            await populateFile(options.formMain);
+                            if (fileInputs.length > 0) {
+                                showLoading();
+                                await uploadFile(fileInputs, fileInputs.length);
+                                let formData = $(`#${options.formMain}`).serialize();
+                                if (options.id == null) saveData(formData);
+                                if (options.id) updateData(formData);
+                            }
                         }
                     });
+                });
+
+                $('input[type="file"]').on('change', function() {
+                    const file = this.files[0];
+                    const maxSize = 2 * 1024 * 1024; // 2 MB dalam bytes
+                    const allowedTypes = ['application/pdf', 'image/png', 'image/jpeg'];
+                    const $errorMessage = $(`#${$(this).attr('id')}_feedback`);
+                    console.log($errorMessage);
+                    if (file) {
+                        const fileType = file.type;
+                        const fileSize = file.size;
+                        $(`#${formMain}`).addClass('was-validated');
+                        // Validasi tipe file
+                        if (!allowedTypes.includes(fileType)) {
+                            $errorMessage.text('Tipe file tidak valid. Harus berupa PDF, PNG, JPEG, atau JPG.');
+                            $(this).val(''); // Kosongkan input file
+                            return;
+                        }
+
+                        // Validasi ukuran file
+                        if (fileSize > maxSize) {
+                            $errorMessage.text('Ukuran file terlalu besar. Maksimal 2 MB.');
+                            $(this).val(''); // Kosongkan input file
+                            return;
+                        }
+
+                        // Jika validasi lolos
+                        $errorMessage.text('');
+                        $(`#${formMain}`).removeClass('was-validated');
+                    }
                 });
 
                 $(`#${modal}`).on('shown.bs.modal', function(e) {
                     if (!options.id) $('#form-aset-title').html(`Form Aset`);
                 })
 
+
                 $(document).on('click', '.btn-add', function() {
+                    newUpload();
                     formTitle = `Form ${assetCategoryName} ${categoryName}`;
                     if (dataTableTempList !== undefined) {
                         // reinit datatable after re open
@@ -681,7 +764,8 @@
                                     data: 'asset_temporary_id',
                                     name: 'asset_temporary_id',
                                     render: function(data, type, row, meta) {
-                                        return meta.row + meta.settings._iDisplayStart + 1;
+                                        return meta.row + meta.settings._iDisplayStart +
+                                            1;
                                     }
                                 },
                                 {
@@ -738,6 +822,7 @@
                 })
 
                 $(document).on('click', '.btn-edit', function() {
+                    $(`input[type=file]`).prop('disabled', true);
                     let rowData = dataTableList.row($(this).parents('tr')).data();
                     formTitle = `Form ${assetCategoryName} ${categoryName}` + '<p>' + rowData.asset_name +
                         '</p>';
