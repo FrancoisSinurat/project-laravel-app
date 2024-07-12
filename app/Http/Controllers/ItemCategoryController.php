@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
-
 class ItemCategoryController extends Controller
 {
     public function __construct()
@@ -25,12 +24,17 @@ class ItemCategoryController extends Controller
      */
     public function index(Request $request)
     {
+        $icons = config('app.icons');
+        $colors = config('app.colors');
+        $texts = config('app.texts');
+        $colorsBg = config('app.colorsBg');
+
         if($request->ajax()) {
             $item = ItemCategory::query()->with('asset_category');
             return DataTables::of($item)->make();
         }
         $assetCategory = AssetCategory::get();
-        return view('item-category.index', compact('assetCategory'));
+        return view('item-category.index', compact('assetCategory','icons','colors','texts','colorsBg'));
     }
 
     /**
@@ -49,11 +53,20 @@ class ItemCategoryController extends Controller
         $this->validate($request, [
             'item_category_name' => 'required|unique:item_categories,item_category_name,NULL,NULL,deleted_at,NULL',
             'item_category_code' => 'required|unique:item_categories,item_category_code,NULL,NULL,deleted_at,NULL',
+            'item_category_icon' => 'required|unique:item_categories,item_category_icon,NULL,NULL,deleted_at,NULL',
+            'item_category_color' => 'required|unique:item_categories,item_category_color,NULL,NULL,deleted_at,NULL',
+            'item_category_text' => 'required|unique:item_categories,item_category_text,NULL,NULL,deleted_at,NULL',
+            'item_category_color_bg' => 'required|unique:item_categories,item_category_color_bg,NULL,NULL,deleted_at,NULL',
             'asset_category_id' => 'required',
         ],
         [
             'item_category_name.unique' => 'Nama barang sudah digunakan',
-            'item_category_code.unique' => 'Kode barang sudah digunakan'
+            'item_category_code.unique' => 'Kode barang sudah digunakan',
+            'item_category_icon.unique' => 'Ikon sudah digunakan',
+            'item_category_color.unique' => 'Warna sudah digunakan',
+            'item_category_text.unique' => 'Text sudah digunakan',
+            'item_category_color_bg.unique' => 'Warna Background sudah digunakan',
+
         ]);
         try {
             $input = $request->all();
@@ -97,11 +110,20 @@ class ItemCategoryController extends Controller
         $this->validate($request, [
             'item_category_name' => "required|unique:item_categories,item_category_name,$id,item_category_id,deleted_at,NULL",
             'item_category_code' => "required|unique:item_categories,item_category_code,$id,item_category_id,deleted_at,NULL",
+            'item_category_icon' => "required|unique:item_categories,item_category_icon,$id,item_category_id,deleted_at,NULL",
+            'item_category_color' => "required|unique:item_categories,item_category_color,$id,item_category_id,deleted_at,NULL",
+            'item_category_text' => "required|unique:item_categories,item_category_text,$id,item_category_id,deleted_at,NULL",
+            'item_category_color_bg' => "required|unique:item_categories,item_category_color_bg,$id,item_category_id,deleted_at,NULL",
             'asset_category_id' => 'required',
         ],
         [
             'item_category_name.unique' => 'Nama barang sudah digunakan',
-            'item_category_code.unique' => 'Kode barang sudah digunakan'
+            'item_category_code.unique' => 'Kode barang sudah digunakan',
+            'item_category_icon.unique' => 'Ikon sudah digunakan',
+            'item_category_color.unique' => 'Warna sudah digunakan',
+            'item_category_text.unique' => 'Text sudah digunakan',
+            'item_category_color_bg.unique' => 'Warna Background sudah digunakan',
+
         ]);
         $input = $request->all();
         $input['item_category_code'] = strtoupper($input['item_category_code']);

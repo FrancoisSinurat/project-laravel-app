@@ -18,6 +18,10 @@ return new class extends Migration
                 ->on('asset_categories');
             $table->string('item_category_name');
             $table->string('item_category_code');
+            $table->string('item_category_icon');
+            $table->string('item_category_color');
+            $table->string('item_category_text');
+            $table->string('item_category_color_bg');
             $table->timestamps();
             $table->softDeletes();
         });
