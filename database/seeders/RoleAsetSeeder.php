@@ -22,12 +22,17 @@ class RoleAsetSeeder extends Seeder
             'aset-create',
             'aset-edit',
             'aset-delete',
-            'aset-alokasi',
-            'aset-penarikan',
-            'aset-persetujuan_peminjaman',
-            'peminjaman-list',
-            'peminjaman-create',
-            'peminjaman-edit',
+            'aset-penyerahan-list',
+            'aset-penyerahan-create',
+            'aset-penyerahan-edit',
+            'aset-penyerahan-delete',
+            'aset-penyerahan-confirmation',
+            'aset-peminjaman-list',
+            'aset-peminjaman-create',
+            'aset-peminjaman-edit',
+            'aset-peminjaman-delete',
+            'aset-peminjaman-approval',
+            'aset-peminjaman-confirmation',
             'barang-list',
             'barang-create',
             'barang-edit',
@@ -45,14 +50,14 @@ class RoleAsetSeeder extends Seeder
             'satuan-create',
             'satuan-edit',
             'brand-list',
-            'tipe-list'
+            'tipe-list',
         ];
 
         $permissionPegawai = [
             'aset-list', // aset
-            'peminjaman-list', // peminjaman
-            'peminjaman-create',
-            'peminjaman-edit',
+            'aset-peminjaman-list', // peminjaman
+            'aset-peminjaman-create',
+            'aset-peminjaman-edit',
         ];
 
         $permissionsOperator = [
@@ -60,7 +65,8 @@ class RoleAsetSeeder extends Seeder
             'asal-oleh-create',
             'asal-oleh-edit',
             'aset-list', // aset
-            'peminjaman-list', // peminjaman
+            'aset-penyerahan-list', // penyerahan
+            'aset-peminjaman-list', // peminjaman
             'barang-list', // barang
             'barang-create',
             'barang-edit',

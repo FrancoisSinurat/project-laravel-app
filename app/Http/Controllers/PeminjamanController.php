@@ -16,10 +16,10 @@ class PeminjamanController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('permission:peminjaman-list', ['only' => ['index']]);
-        $this->middleware('permission:peminjaman-create', ['only' => ['store']]);
-        $this->middleware('permission:peminjaman-edit', ['only' => ['update']]);
-        $this->middleware('permission:peminjaman-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:aset-peminjaman-list', ['only' => ['index']]);
+        $this->middleware('permission:aset-peminjaman-create', ['only' => ['store']]);
+        $this->middleware('permission:aset-peminjaman-edit', ['only' => ['update']]);
+        $this->middleware('permission:aset-peminjaman-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
@@ -30,7 +30,7 @@ class PeminjamanController extends Controller
         if($request->ajax()) {
             $peminjaman = Peminjaman::query()->with('asset','user', 'peminjamanApproval', 'peminjamanApproval.user');
             $user = Auth::user();
-            if (!$user->hasPermissionTo('aset-persetujuan_peminjaman') && !$user->hasRole('Super Admin')) {
+            if (!$user->hasPermissionTo('aset-peminjaman-approval') && !$user->hasRole('Super Admin')) {
                 $peminjaman = $peminjaman->where('user_id', $user->user_id);
             }
             return DataTables::of($peminjaman)->make();

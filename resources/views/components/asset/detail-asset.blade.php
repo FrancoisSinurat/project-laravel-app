@@ -9,7 +9,12 @@
                     <td><span id="asset_document_number"></span></td>
                 </tr>
                 <tr>
-                    <td style="width: 20%;">Jenis Asset</td>
+                    <td style="width: 20%;">Dokumen Aset</td>
+                    <td style="width:3%;">:</td>
+                    <td><span id="asset_documents"></span></td>
+                </tr>
+                <tr>
+                    <td style="width: 20%;">Jenis Aset</td>
                     <td style="width:3%;">:</td>
                     <td><span id="asset_category_name"></span></td>
                 </tr>
@@ -19,7 +24,7 @@
                     <td><span id="asset_code"></span></td>
                 </tr>
                 <tr>
-                    <td style="width: 20%;">Status Asset</td>
+                    <td style="width: 20%;">Status Aset</td>
                     <td style="width:3%;">:</td>
                     <td><span id="asset_status"></span></td>
                 </tr>
@@ -116,9 +121,9 @@
                     </tr>
                 </table>
             </div>
-            <div class="asset-peminjaman">
+            <div class="aset-peminjaman">
                 <p><b>Riwayat Peminjaman</b></p>
-                <table id="asset-peminjaman" class="table table-responsive table-striped">
+                <table id="aset-peminjaman" class="table table-responsive table-striped">
                     <tr>
                         <td>Tanggal</td>
                         <td>Status</td>
@@ -133,3 +138,14 @@
         </div>
     </div>
 </div>
+{{-- @push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('.colorbox').colorbox({
+                iframe: true,
+                width: '80%',
+                height: '80%'
+            });
+        });
+    </script>
+@endpush --}}
