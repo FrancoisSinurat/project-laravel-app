@@ -55,5 +55,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.'], fu
     Route::get('/location-ajax', [App\Http\Controllers\LocationController::class, 'ajax'])->name('location.ajax');
     Route::get('/asset-group-ajax', [App\Http\Controllers\AssetGroupController::class, 'ajax'])->name('asset-group.ajax');
     Route::delete('/asset-temporary-delete', [App\Http\Controllers\AssetTemporaryController::class, 'destroyAll'])->name('asset-temporary-delete.destroyAll');
-
+    Route::post('/upload', [App\Http\Controllers\MediaController::class, 'uploadSingleFile'])->name('upload-file');
 });
+// public
+Route::get('/upload/{doc}', [App\Http\Controllers\MediaController::class, 'getSingleFile'])->name('get-file');

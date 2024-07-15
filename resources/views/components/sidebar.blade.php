@@ -126,7 +126,7 @@
         </li>
         @endif
         @if(auth()->user()->hasPermissionTo('aset-list') ||
-            auth()->user()->hasPermissionTo('peminjaman-list'))
+            auth()->user()->hasPermissionTo('aset-peminjaman-list'))
         <li class="nav-item">
             <a class="nav-link {{in_array(Route::current()->getName(), ['admin.asset.index', 'admin.peminjaman.index']) ? '' : 'collapsed'}}" data-bs-target="#asset-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-box-seam"></i><span>Transaksi</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -139,7 +139,7 @@
                     </a>
                 </li>
                 @endif
-                @if(auth()->user()->hasPermissionTo('peminjaman-list'))
+                @if(auth()->user()->hasPermissionTo('aset-peminjaman-list'))
                 <li>
                     <a href="{{route('admin.peminjaman.index')}}" class="{{Route::current()->getName() == 'admin.peminjaman.index' ? 'active' : ''}}">
                         <i class="bi bi-chevron-double-right"></i><span>Peminjaman</span>

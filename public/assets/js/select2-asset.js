@@ -152,7 +152,7 @@ let selectAsset = {
         let urlAssets = $('.select2assets').attr('data-action');
 
         $('.select2assets').select2({
-            dropdownParent: $('#peminjaman-modal .modal-content'),
+            dropdownParent: $('#aset-peminjaman-modal .modal-content'),
             theme: 'bootstrap-5',
             width: '100%',
             allowClear: true,

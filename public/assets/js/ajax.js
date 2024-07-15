@@ -101,6 +101,7 @@ const POST_DATA = (options) => {
                 ERROR_ALERT(resErr.message);
             }
             options.enabledButton();
+            if (options.file) $(`input[type=file]`).prop('disabled', false);
         }
     });
 }
