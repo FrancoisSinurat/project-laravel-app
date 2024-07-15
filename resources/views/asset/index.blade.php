@@ -10,6 +10,11 @@
                 font-style: italic;
                 font-weight: lighter;
             }
+            .button-container {
+                /* position: absolute; */
+                bottom: 10px;
+                left: 10px;
+            }
         </style>
         <link href="{{ asset('assets/vendor/select2/css/select2.min.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/vendor/select2/css/select2-bootstrap-5-theme.min.css') }}" rel="stylesheet">
@@ -34,68 +39,56 @@
 
                                     </div> --}}
                                 <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="mb-2">
-                                            <label for="asset_document_number" class="col-form-label mandatory">Pilih
-                                                atau masukan nomor dokumen baru</label>
-                                            <select class="form-control select2groups"
-                                                data-action="{{ route('admin.asset-group.ajax') }}"
-                                                name="asset_document_number" id="asset_document_number" required>
-                                                <option></option>
-                                            </select>
-                                            <div id="asset_document_number_feedback" class="invalid-feedback">
-                                                Wajib diisi.
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-2">
+                                                <label for="asalpengadaan_category_id"
+                                                    class="col-form-label mandatory">Pilih Asal Pengadaan</label>
+                                                <select class="form-control select2asalpengadaans"
+                                                    data-action="{{ route('admin.asalpengadaan.ajax') }}"
+                                                    name="asalpengadaan_category_id" id="asalpengadaan_category_id"
+                                                    required>
+                                                </select>
+                                                <div id="asalpengadaan_category_id_feedback" class="invalid-feedback">
+                                                    Wajib diisi.
+                                                </div>
                                             </div>
-                                            <input type="hidden" name="asset_category_id" id="asset_category_id">
-                                            <input type="hidden" name="item_category_id" id="item_category_id">
                                         </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="mb-2">
-                                            <label for="asalpengadaan_category_id"
-                                                class="col-form-label mandatory">Pilih Asal Pengadaan</label>
-                                            <select class="form-control select2asalpengadaans"
-                                                data-action="{{ route('admin.asalpengadaan.ajax') }}"
-                                                name="asalpengadaan_category_id" id="asalpengadaan_category_id"
-                                                required>
-                                            </select>
-                                            <div id="asalpengadaan_category_id_feedback" class="invalid-feedback">
-                                                Wajib diisi.
+                                        <div class="col-md-6">
+                                            <div class="mb-2">
+                                                <label for="asset_procurement_year"
+                                                    class="col-form-label mandatory">Pengadaan Tahun</label>
+                                                <input type="number" class="form-control mandatory"
+                                                    name="asset_procurement_year" id="asset_procurement_year" required>
+                                                <div id="asset_procurement_year_feedback" class="invalid-feedback">
+                                                    Wajib diisi.
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <div class="mb-2">
-                                            <label for="asset_procurement_year"
-                                                class="col-form-label mandatory">Pengadaan Tahun</label>
-                                            <input type="number" class="form-control mandatory"
-                                                name="asset_procurement_year" id="asset_procurement_year" required>
-                                            <div id="asset_procurement_year_feedback" class="invalid-feedback">
-                                                Wajib diisi.
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-2">
+                                                <label for="asaloleh_category_id" class="col-form-label mandatory">Pilih
+                                                    Asal Oleh</label>
+                                                <select class="form-control select2asalolehs"
+                                                    data-action="{{ route('admin.asaloleh.ajax') }}"
+                                                    name="asaloleh_category_id" id="asaloleh_category_id" required>
+                                                </select>
+                                                <div id="asaloleh_category_id_feedback" class="invalid-feedback">
+                                                    Wajib diisi.
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="mb-2">
-                                            <label for="asaloleh_category_id" class="col-form-label mandatory">Pilih
-                                                Asal Oleh</label>
-                                            <select class="form-control select2asalolehs"
-                                                data-action="{{ route('admin.asaloleh.ajax') }}"
-                                                name="asaloleh_category_id" id="asaloleh_category_id" required>
-                                            </select>
-                                            <div id="asaloleh_category_id_feedback" class="invalid-feedback">
-                                                Wajib diisi.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="mb-2">
-                                            <label for="asset_asaloleh_date" class="col-form-label mandatory">Tanggal
-                                                Asal Oleh</label>
-                                            <input type="text" class="form-control mandatory"
-                                                name="asset_asaloleh_date" id="asset_asaloleh_date" required>
-                                            <div id="asset_asaloleh_date_feedback" class="invalid-feedback">
-                                                Wajib diisi.
+                                        <div class="col-md-6">
+                                            <div class="mb-2">
+                                                <label for="asset_asaloleh_date" class="col-form-label mandatory">Tanggal
+                                                    Asal Oleh</label>
+                                                <input type="text" class="form-control mandatory"
+                                                    name="asset_asaloleh_date" id="asset_asaloleh_date" required>
+                                                <div id="asset_asaloleh_date_feedback" class="invalid-feedback">
+                                                    Wajib diisi.
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -105,11 +98,14 @@
                                                 class="col-form-label mandatory">Lokasi</label>
                                             <select class="form-control select2locations"
                                                 data-action="{{ route('admin.location.ajax') }}"
-                                                name="asset_location_id" id="asset_location_id" required>
+                                                name="asset_location_id" id="asset_location_id"
+                                                required>
                                             </select>
-                                            <div id="asset_location_id_feedback" class="invalid-feedback">
+                                            <div id="asset_document_number_feedback" class="invalid-feedback">
                                                 Wajib diisi.
                                             </div>
+                                            <input type="hidden" name="asset_category_id" id="asset_category_id">
+                                            <input type="hidden" name="item_category_id" id="item_category_id">
                                         </div>
                                     </div> --}}
                                     <div class="col-md-4" id="upload-container" data-form="asset-form"
@@ -144,6 +140,11 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="mb-2">
+                                        <label for="asset_specification"
+                                            class="col-form-label">Spesifikasi</label>
+                                        <textarea class="form-control" id="asset_specification" name="asset_specification" rows="4"></textarea>
+                                    </div>
                                 </div>
                                 {{-- </div> --}}
                             </div>
@@ -162,6 +163,20 @@
                                                 </div>
                                             </div>
                                         </div> --}}
+                                    <div class="col-md-12">
+                                        <div class="mb-2">
+                                            <label for="asset_location_id"
+                                                class="col-form-label mandatory">Lokasi</label>
+                                            <select class="form-control select2locations"
+                                                data-action="{{ route('admin.location.ajax') }}"
+                                                name="asset_location_id" id="asset_location_id"
+                                                required>
+                                            </select>
+                                            <div id="asset_location_id_feedback" class="invalid-feedback">
+                                                Wajib diisi.
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="col-md-12">
                                         <div class="mb-2">
                                             <label for="item_id" class="col-form-label mandatory">Pilih Jenis
@@ -295,40 +310,35 @@
                                             </div>
                                         </div>
                                         <div class="mb-2">
-                                            <label for="asset_location_id"
-                                                class="col-form-label mandatory">Lokasi</label>
-                                            <select class="form-control select2locations"
-                                                data-action="{{ route('admin.location.ajax') }}"
-                                                name="asset_location_id" id="asset_location_id" required>
-                                            </select>
-                                            <div id="asset_location_id_feedback" class="invalid-feedback">
-                                                Wajib diisi.
-                                            </div>
-                                        </div>
-                                        <div class="mb-2">
                                             <label for="asset_specification"
                                                 class="col-form-label">Spesifikasi</label>
                                             <textarea class="form-control" id="asset_specification" name="asset_specification" rows="3"></textarea>
                                         </div>
+                                        
                                     </div>
                                 </div>
                             </div>
                             {{-- </div> --}}
                         </div>
-                        <div class="col-md-12 mb-5 mt-5 unique-col">
+                        <div class="col-md-12 mb-5 unique-col">
                             <div class="row">
                                 <div class="col-md-10">
                                     <div class="row">
                                         <div class="col">
                                             <label for="asset_serial_number" class="col-form-label">Kode BPAD</label>
-                                            <input type="text" class="form-control asset_bpad_code"
-                                                name="asset_bpad_code_input" id="asset_bpad_code_input">
+                                            <input type="text" class="form-control asset_bpad_code" name="asset_bpad_code_input" id="asset_bpad_code_input">
                                         </div>
                                         <div class="col">
                                             <label for="asset_serial_number" class="col-form-label">Nomor Seri</label>
                                             <input type="text" class="form-control asset_serial_number"
                                                 name="asset_serial_number_input" id="asset_serial_number_input">
                                         </div>
+                                        <div class="col">
+                                            <label class="col-form-label" style="color: #fff">.</label>
+                                            <input type="button" class="form-control btn btn-md btn-success btn-add-item" value="+ Tambah">
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col">
                                             <label for="asset_frame_number" class="col-form-label">Nomor
                                                 Rangka</label>
@@ -349,30 +359,32 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12 mt-3 mb-5">
-                                <button type="button" class="btn btn-sm btn-success w-100 btn-add-item"><i
-                                        class="bi bi-plus"></i>Tambah</button>
-                            </div>
-                            <div class="table table-responsive">
-                                <table id="code-table" class="table display nowrap table-hover" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Kode BPAD</th>
-                                            <th>Nomor Seri</th>
-                                            <th>Nomor Mesin</th>
-                                            <th>Nomor Rangka</th>
-                                            <th>Nomor Plat</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="unique-container" class="text-center">
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-md-12 mt-3 mb-5">
-                                <button type="button" class="btn btn-sm btn-danger w-100 btn-clear-item"><i
-                                        class="bi bi-trash"></i>Kosongkan Data</button>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="p-2">
+                                <div class="table table-responsive" style="margin-left: 0.20em">
+                                    <table id="code-table" class="table display nowrap table-hover" style="width:100%;">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Kode BPAD</th>
+                                                <th>Nomor Seri</th>
+                                                <th>Nomor Mesin</th>
+                                                <th>Nomor Rangka</th>
+                                                <th>Nomor Plat</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="unique-container" class="text-center">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="button-container">
+                                    <button class="btn btn-danger btn-clear-item">
+                                        <i class="bi bi-trash"></i>
+                                        <span class="btn-name">Kosongkan Data</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -380,10 +392,10 @@
                         <button type="button" class="btn btn-outline-secondary me-2"
                             data-bs-dismiss="modal">Tutup</button>
                         <button class="btn btn-primary" id="save" type="submit">
-                            <span class="loading spinner-border spinner-border-sm d-none" role="status"
+                            <span class="loading spinner-border spinner-border-sm d-none me-2" role="status"
                                 aria-hidden="true"></span>
                             <span class="btn-name">Simpan</span>
-                        </button>
+                        </button> &nbsp;
                     </div>
                 </form>
             </x-slot>
