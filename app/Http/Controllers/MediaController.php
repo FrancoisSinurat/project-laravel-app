@@ -66,6 +66,21 @@ class MediaController extends Controller
             if ($driver == 'local') {
                 $path = storage_path('app/'.$path.'/'. $doc);
                 return response()->file($path);
+            } else {
+                $filesystem = Storage::disk('s3');
+                $path = $path.'/'.$doc;
+                if (!$filesystem->exists($path)) abort(404);
+                $mimeType = $filesystem->mimeType($path);
+                $headers = [
+                    'Content-Type' => $mimeType
+                ];
+                if (preg_match('/bmp|jpg|jpeg|png|gif|pdf/i', $doc) == false) {
+                    $headers['Content-disposition'] = 'attachment; filename="' . $doc . '"';
+                }
+                $file = $filesystem->get($path);
+                return response()->stream(function () use ($file) {
+                    echo $file;
+                }, 200, $headers);
             }
         } catch (\Throwable $th) {
             @dd($th);
