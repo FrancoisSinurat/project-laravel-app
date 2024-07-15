@@ -25,21 +25,43 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // Return w/ foreach
         // $cards = ItemCategory::query()
         //     ->leftJoin('assets', 'assets.item_category_id', '=', 'item_categories.item_category_id')
         //     ->select('item_categories.item_category_id as item_category_id', 'item_categories.item_category_name as category_name', 'item_categories.item_category_icon as category_icon', 'item_categories.item_category_color as category_color', 'item_categories.item_category_text as category_text', 'item_categories.item_category_color_bg as category_colorBg', DB::raw('COUNT(assets.item_category_id) as count'))
         //     ->groupBy('item_categories.item_category_id', 'item_categories.item_category_name')
         //     ->orderBy('item_categories.item_category_name', 'ASC')
         //     ->get();
+        //     $chartLabel = $cards->pluck('category_name');
+        //     $chartColor = $cards->pluck('category_colorBg');
+        //     $chartData = $cards->pluck('count');
+        // return view('dashboard', compact('cards', 'chartData','chartLabel','chartColor'));
 
-            // $chartLabel = $cards->pluck('category_name');
-            // $chartColor = $cards->pluck('category_colorBg');
-            // $chartData = $cards->pluck('count');
-            $cards = [];
-            $chartLabel = [];
-            $chartColor = [];
-            $chartData = [];
+        return view('dashboard');
 
-            return view('dashboard', compact('cards', 'chartData','chartLabel','chartColor'));
+    }
+
+    public function ajax(Request $request)
+    {
+        $cards = ItemCategory::query()
+            ->leftJoin('assets', 'assets.item_category_id', '=', 'item_categories.item_category_id')
+            ->select('item_categories.item_category_id as item_category_id', 'item_categories.item_category_name as category_name', 'item_categories.item_category_icon as category_icon', 'item_categories.item_category_color as category_color', 'item_categories.item_category_text as category_text', 'item_categories.item_category_color_bg as category_colorBg', DB::raw('COUNT(assets.item_category_id) as count'))
+            ->groupBy('item_categories.item_category_id', 'item_categories.item_category_name')
+            ->orderBy('item_categories.item_category_name', 'ASC')
+            ->get();
+
+            $chartLabel = $cards->pluck('category_name');
+            $chartColor = $cards->pluck('category_colorBg');
+            $chartData = $cards->pluck('count');
+
+        // Check if the request is AJAX
+        if ($request->ajax()) {
+            return response()->json([
+                'cards' => $cards,
+                'chartLabel' => $chartLabel,
+                'chartColor' => $chartColor,
+                'chartData' => $chartData,
+            ]);
+        }
     }
 }
