@@ -53,6 +53,8 @@ const uploadFile = async (fileObj, totalFile) =>
             if(data && data.data && data.data.file) {
                 const fsResult = data.data.file;
                 counterUpload++;
+                let existsInput =  $(`#${form} input[name="${fsResult.key}"]`);
+                if (existsInput.length) $(`#${form} input[name="${fsResult.key}"]`).remove();
                 $("<input />").attr("type", "hidden").attr("name", fsResult.key).attr("value", JSON.stringify(fsResult)).appendTo(`#${form}`);
             }
         },
@@ -77,25 +79,6 @@ const populateFile = async (form) =>
     });
 }
 
-// $('#send').click(function(e)
-// {
-//     Swal.fire({
-//         title: "Simpan data",
-//         text: "Anda yakin untuk menyimpan data ini?",
-//         icon: "warning",
-//         showCancelButton: true
-//     }).then((result) => {
-//         if (result.isConfirmed)
-//         {
-//             populateFile();
-//             if (fileInputs.length > 0) {
-//                 showLoading();
-//                 uploadFile(fileInputs, fileInputs.length);
-//             } else {
-//                 $('#form').submit();
-//             }
-//         }
-//     });
+const getFile = async () => {
 
-//     return false;
-// });
+}

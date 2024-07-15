@@ -99,7 +99,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    {{-- <div class="col-md-12">
                                         <div class="mb-2">
                                             <label for="asset_location_id"
                                                 class="col-form-label mandatory">Lokasi</label>
@@ -111,7 +111,7 @@
                                                 Wajib diisi.
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-md-4" id="upload-container" data-form="asset-form"
                                         data-upload-url="{{ route('admin.upload-file') }}">
                                         <div class="mb-2">
@@ -230,7 +230,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <div class="mb-2" id="asset_bpad_code_group">
                                             <label for="asset_bpad_code" class="col-form-label">Kode BPAD</label>
                                             <input type="text" class="form-control" id="asset_bpad_code"
@@ -239,6 +239,8 @@
                                                 Wajib diisi.
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
                                         <div class="mb-2" id="asset_serial_number_group">
                                             <label for="asset_serial_number" class="col-form-label">Nomor Seri</label>
                                             <input type="text" class="form-control" id="asset_serial_number"
@@ -247,6 +249,8 @@
                                                 Wajib diisi.
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="col-md-12">
                                         <div class="mb-2" id="asset_frame_number_group">
                                             <label for="asset_frame_number" class="col-form-label">Nomor
                                                 Rangka</label>
@@ -287,6 +291,17 @@
                                             <input type="number" id="asset_shrinkage" class="form-control"
                                                 name="asset_shrinkage" required>
                                             <div id="asset_shrinkage_feedback" class="invalid-feedback">
+                                                Wajib diisi.
+                                            </div>
+                                        </div>
+                                        <div class="mb-2">
+                                            <label for="asset_location_id"
+                                                class="col-form-label mandatory">Lokasi</label>
+                                            <select class="form-control select2locations"
+                                                data-action="{{ route('admin.location.ajax') }}"
+                                                name="asset_location_id" id="asset_location_id" required>
+                                            </select>
+                                            <div id="asset_location_id_feedback" class="invalid-feedback">
                                                 Wajib diisi.
                                             </div>
                                         </div>
@@ -470,6 +485,7 @@
                 formMain: formMain,
                 data: null,
                 dataTable: null,
+                file: true,
                 disabledButton: () => {
                     $('#save').addClass('disabled');
                     $('.loading').removeClass('d-none');
@@ -686,37 +702,44 @@
                                 let formData = $(`#${options.formMain}`).serialize();
                                 if (options.id == null) saveData(formData);
                                 if (options.id) updateData(formData);
+                            } else {
+                                let formData = $(`#${options.formMain}`).serialize();
+                                if (options.id == null) saveData(formData);
+                                if (options.id) updateData(formData);
                             }
                         }
                     });
                 });
 
                 $('input[type="file"]').on('change', function() {
-                    const file = this.files[0];
-                    const maxSize = 2 * 1024 * 1024; // 2 MB dalam bytes
-                    const allowedTypes = ['application/pdf', 'image/png', 'image/jpeg'];
-                    const $errorMessage = $(`#${$(this).attr('id')}_feedback`);
-                    console.log($errorMessage);
+                    let file = this.files[0];
+                    let fileId = $(this).attr('id');
+                    let maxSize = 2 * 1024 * 1024; // 2 MB dalam bytes
+                    let allowedTypes = ['application/pdf', 'image/png', 'image/jpeg'];
+                    let fileErr = $(`#${fileId}_feedback`);
                     if (file) {
                         const fileType = file.type;
                         const fileSize = file.size;
                         $(`#${formMain}`).addClass('was-validated');
                         // Validasi tipe file
                         if (!allowedTypes.includes(fileType)) {
-                            $errorMessage.text('Tipe file tidak valid. Harus berupa PDF, PNG, JPEG, atau JPG.');
+                            $(`#${fileId}`).prop('required', true);
+                            fileErr.text('Tipe file tidak valid. Harus berupa PDF, PNG, JPEG, atau JPG.');
                             $(this).val(''); // Kosongkan input file
                             return;
                         }
 
                         // Validasi ukuran file
                         if (fileSize > maxSize) {
-                            $errorMessage.text('Ukuran file terlalu besar. Maksimal 2 MB.');
+                            $(`#${fileId}`).prop('required', true);
+                            fileErr.text('Ukuran file terlalu besar. Maksimal 2 MB.');
                             $(this).val(''); // Kosongkan input file
                             return;
                         }
 
                         // Jika validasi lolos
-                        $errorMessage.text('');
+                        $(`#${fileId}`).prop('required', false);
+                        fileErr.text('');
                         $(`#${formMain}`).removeClass('was-validated');
                     }
                 });
@@ -822,6 +845,7 @@
                 })
 
                 $(document).on('click', '.btn-edit', function() {
+                    // newUpload();
                     $(`input[type=file]`).prop('disabled', true);
                     let rowData = dataTableList.row($(this).parents('tr')).data();
                     formTitle = `Form ${assetCategoryName} ${categoryName}` + '<p>' + rowData.asset_name +

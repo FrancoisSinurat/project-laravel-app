@@ -27,7 +27,29 @@ const showAssetOnModal = (data) => {
     }
     for (let [k, v] of Object.entries(asset)) {
         if (!v) v = '';
-        $('.table-detail-asset').find(`#${k}`).html(`${v}`);
+        if (k == 'asset_documents') {
+            let assetDoc = [];
+            let doc = {};
+            if (v) {
+                doc = new Object(JSON.parse(v));
+                if (doc?.dokumen_barang?.filename) {
+                    assetDoc.push(`<a target="_blank" href="${window.location.origin}/upload/${doc.dokumen_barang.filename}?path=${doc.dokumen_barang.filepath}&driver=${doc.dokumen_barang.driver}">Dokumen Barang</a>`)
+                }
+                if (doc?.dokumen_penyedia?.filename) {
+                    assetDoc.push(`<a target="_blank" href="${window.location.origin}/upload/${doc.dokumen_penyedia.filename}?path=${doc.dokumen_penyedia.filepath}&driver=${doc.dokumen_penyedia.driver}">Dokumen Penyedia</a>`)
+                }
+                if (doc?.dokumen_spj?.filename) {
+                    assetDoc.push(`<a target="_blank" href="${window.location.origin}/upload/${doc.dokumen_spj.filename}?path=${doc.dokumen_spj.filepath}&driver=${doc.dokumen_spj.driver}">Dokumen SPJ</a>`)
+                }
+            }
+            if (assetDoc.length) $('.table-detail-asset').find(`#${k}`).html(`${assetDoc.join(', ')}`);
+            // if (v) {
+            //     $('.table-detail-asset').find(`#${k}`).html(`${v}`);
+            // }
+            console.log(doc);
+        } else {
+            $('.table-detail-asset').find(`#${k}`).html(`${v}`);
+        }
         console.log(`${k}: ${v}`);
     }
     $('#asset-history tr:not(:first)').remove();
@@ -63,6 +85,7 @@ const showAssetOnModal = (data) => {
 const editAssetOnModal = (data) => {
     const { asset } = data;
     hideLoadingDetail(asset.asset_code);
+    console.log(asset);
     $(`#${data.modal}`).modal('show');
     if (asset?.asset_group?.asset_procurement_year) $(`#${data.modal}`).find('input[name="asset_procurement_year"]').val(asset.asset_group.asset_procurement_year);
     if (asset.asset_bpad_code) $(`#${data.modal}`).find('input[name="asset_bpad_code"]').val(asset.asset_bpad_code);
@@ -108,10 +131,13 @@ const editAssetOnModal = (data) => {
         $(`#${data.modal}`).find('input[name="asset_price"]').val(asset.asset_price);
         $(`#${data.modal}`).find('input[name="asset_price"]').keyup();
     }
-
     if (asset?.asset_group?.asset_asaloleh_date) {
         const asalOlehDate = new Date(asset.asset_group.asset_asaloleh_date).getDate() + '-' + (new Date(asset.asset_group.asset_asaloleh_date).getMonth() + 1) + '-' + new Date(asset.asset_group.asset_asaloleh_date).getFullYear();
         $(`#${data.modal}`).find('input[name="asset_asaloleh_date"]').val(asalOlehDate);
+    }
+    if (asset?.asset_group?.asset_documents) {
+        let assetDoc = JSON.parse(asset.asset_group.asset_documents);
+        // $(`#${data.modal}`).find('input[name="asset_asaloleh_date"]').val(asalOlehDate);
     }
 }
 const DETAIL_ASSET_ON_MODAL = (options) => {

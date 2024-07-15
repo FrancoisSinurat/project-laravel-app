@@ -135,14 +135,15 @@ class Asset extends Model
 
     public static function updateOrCreateAssetGroup($input) {
         if (isset($input['asset_group_id'])) {
-            AssetGroup::where('asset_group_id', $input['asset_group_id'])->update([
+            $updateGroup = [
                 'asalpengadaan_category_id' => $input['asalpengadaan_category_id'],
                 'asaloleh_category_id' => $input['asaloleh_category_id'],
                 'asset_document_number' => $input['asset_document_number'],
                 'asset_asaloleh_date' => Carbon::createFromFormat('d-m-Y', $input['asset_asaloleh_date'])->toDateString(),
                 'asset_procurement_year' => $input['asset_procurement_year'],
-                'asset_documents' => isset($input['asset_documents']) ? $input['asset_documents'] : null,
-            ]);
+            ];
+            if (isset($input['asset_documents'])) $updateGroup['asset_documents'] = isset($input['asset_documents']);
+            AssetGroup::where('asset_group_id', $input['asset_group_id'])->update($updateGroup);
             // if not same group recalculate
             if (isset($input['old_asset_group_id'])) {
                 if ($input['old_asset_group_id'] != $input['asset_group_id']) {
@@ -280,6 +281,7 @@ class Asset extends Model
             'asset_frame_number' => $data->asset_frame_number ?? null,
             'asset_machine_number' => $data->asset_machine_number ?? null,
             'asset_police_number' => $data->asset_police_number ?? null,
+            'asset_documents' => isset($data->asset_group) && isset($data->asset_group->asset_documents) ? json_encode(json_decode($data->asset_group->asset_documents)) : null
         ];
     }
 
@@ -306,9 +308,9 @@ class Asset extends Model
         $result['group']['asset_documents'] = $input['asset_documents'] ?? null;
         $result['group']['asset_asaloleh_date'] = Carbon::createFromFormat('d-m-Y', $input['asset_asaloleh_date'])->toDateString();
         $file = [];
-        if (isset($input['dokumen-penyedia'])) $file['dokumen_penyedia'] = json_decode($input['dokumen-penyedia'], true);
-        if (isset($input['dokumen-barang'])) $file['dokumen_barang'] = json_decode($input['dokumen-barang'], true);
-        if (isset($input['dokumen-spj'])) $file['dokumen_spj'] = json_decode($input['dokumen-spj'], true);
+        if (isset($input['dokumen_penyedia'])) $file['dokumen_penyedia'] = json_decode($input['dokumen_penyedia'], true);
+        if (isset($input['dokumen_barang'])) $file['dokumen_barang'] = json_decode($input['dokumen_barang'], true);
+        if (isset($input['dokumen_spj'])) $file['dokumen_spj'] = json_decode($input['dokumen_spj'], true);
         $result['group']['asset_documents'] = json_encode($file);
         $getLastNumber = Asset::where('item_id', $input['item_id'])->latest('asset_id')->first();
         $lastNumber = 1;

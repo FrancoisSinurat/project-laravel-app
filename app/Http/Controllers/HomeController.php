@@ -32,9 +32,13 @@ class HomeController extends Controller
             ->orderBy('item_categories.item_category_name', 'ASC')
             ->get();
 
-            $chartLabel = $cards->pluck('category_name');
-            $chartColor = $cards->pluck('category_colorBg');
-            $chartData = $cards->pluck('count');
+            // $chartLabel = $cards->pluck('category_name');
+            // $chartColor = $cards->pluck('category_colorBg');
+            // $chartData = $cards->pluck('count');
+
+            $chartLabel = [];
+            $chartColor = [];
+            $chartData = [];
 
             return view('dashboard', compact('cards', 'chartData','chartLabel','chartColor'));
     }

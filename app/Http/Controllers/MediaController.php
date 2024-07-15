@@ -6,16 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class MediaController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function uploadSingleFile(Request $request) {
         $this->validate($request, [
             'file' => 'required|file|mimes:pdf,png,jpeg,jpg|max:2048', // max ukuran file dalam kilobyte
@@ -63,11 +59,17 @@ class MediaController extends Controller
     }
 
     public function getSingleFile(Request $request) {
-
         try {
-
+            $doc = $request->doc;
+            $path = $request->query('path');
+            $driver = $request->query('driver');
+            if ($driver == 'local') {
+                $path = storage_path('app/'.$path.'/'. $doc);
+                return response()->file($path);
+            }
         } catch (\Throwable $th) {
             @dd($th);
+            abort(404, 'file tidak ditemukan');
         }
     }
 }
