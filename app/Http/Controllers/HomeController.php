@@ -45,8 +45,23 @@ class HomeController extends Controller
     {
         $cards = ItemCategory::query()
             ->leftJoin('assets', 'assets.item_category_id', '=', 'item_categories.item_category_id')
-            ->select('item_categories.item_category_id as item_category_id', 'item_categories.item_category_name as category_name', 'item_categories.item_category_icon as category_icon', 'item_categories.item_category_color as category_color', 'item_categories.item_category_text as category_text', 'item_categories.item_category_color_bg as category_colorBg', DB::raw('COUNT(assets.item_category_id) as count'))
-            ->groupBy('item_categories.item_category_id', 'item_categories.item_category_name')
+            ->select(
+                'item_categories.item_category_id as item_category_id',
+                'item_categories.item_category_name as category_name',
+                'item_categories.item_category_icon as category_icon',
+                'item_categories.item_category_color as category_color',
+                'item_categories.item_category_text as category_text',
+                'item_categories.item_category_color_bg as category_colorBg',
+                DB::raw('COUNT(assets.item_category_id) as count')
+            )
+            ->groupBy(
+                'item_categories.item_category_id',
+                'item_categories.item_category_name',
+                'item_categories.item_category_icon',
+                'item_categories.item_category_color',
+                'item_categories.item_category_text',
+                'item_categories.item_category_color_bg'
+            )
             ->orderBy('item_categories.item_category_name', 'ASC')
             ->get();
 
