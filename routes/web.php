@@ -23,7 +23,6 @@ Auth::routes(['register' => false]);
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.'], function () {
     Route::get('dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
-    Route::get('card-ajax', [App\Http\Controllers\HomeController::class, 'ajax'])->name('card.ajax');
     Route::resource('asaloleh-category', App\Http\Controllers\AsalolehCategoryController::class);
     Route::resource('asset-category', App\Http\Controllers\AssetCategoryController::class);
     Route::resource('asset', App\Http\Controllers\AssetController::class);
@@ -57,6 +56,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.'], fu
     Route::get('/asset-group-ajax', [App\Http\Controllers\AssetGroupController::class, 'ajax'])->name('asset-group.ajax');
     Route::delete('/asset-temporary-delete', [App\Http\Controllers\AssetTemporaryController::class, 'destroyAll'])->name('asset-temporary-delete.destroyAll');
     Route::post('/upload', [App\Http\Controllers\MediaController::class, 'uploadSingleFile'])->name('upload-file');
+    Route::get('card-ajax', [App\Http\Controllers\HomeController::class, 'ajax'])->name('card.ajax');
 });
 // public
 Route::get('/upload/{doc}', [App\Http\Controllers\MediaController::class, 'getSingleFile'])->name('get-file');
