@@ -23,6 +23,7 @@ Auth::routes(['register' => false]);
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.'], function () {
     Route::get('dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+    Route::get('card-ajax', [App\Http\Controllers\HomeController::class, 'ajax'])->name('card.ajax');
     Route::resource('asaloleh-category', App\Http\Controllers\AsalolehCategoryController::class);
     Route::resource('asset-category', App\Http\Controllers\AssetCategoryController::class);
     Route::resource('asset', App\Http\Controllers\AssetController::class);
