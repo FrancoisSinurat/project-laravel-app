@@ -1,12 +1,11 @@
 function reloadTable (dataTable) {
-    console.log('reload event');
+    // console.log('reload event');
     if (dataTable) dataTable.ajax.reload();
 }
 
 function successEvent(modalId = null, dataTable = null) {
-    console.log(modalId, 'succes event', dataTable);
+    // console.log(modalId, 'succes event', dataTable);
     if (modalId) {
-        console.log('hehe');
         const modalEl  = document.querySelector('#'+modalId);
         const modalObj = bootstrap.Modal.getInstance(modalEl);
         if (modalObj ==  null){

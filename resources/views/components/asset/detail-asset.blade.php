@@ -11,7 +11,7 @@
                 <tr>
                     <td style="width: 20%;">Dokumen Aset</td>
                     <td style="width:3%;">:</td>
-                    <td><span id="asset_documents"></span></td>
+                    <td><span id="asset_documents" data-url-file="{{env('APP_URL')}}"></span></td>
                 </tr>
                 <tr>
                     <td style="width: 20%;">Jenis Aset</td>

@@ -697,7 +697,7 @@
                             // from file.js
                             await populateFile(options.formMain);
                             if (fileInputs.length > 0) {
-                                showLoading();
+                                showLoadingFile();
                                 await uploadFile(fileInputs, fileInputs.length);
                                 let formData = $(`#${options.formMain}`).serialize();
                                 if (options.id == null) saveData(formData);
