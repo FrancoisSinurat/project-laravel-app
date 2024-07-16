@@ -32,14 +32,15 @@ const showAssetOnModal = (data) => {
             let doc = {};
             if (v) {
                 doc = new Object(JSON.parse(v));
+                let urlFile = $('.table-detail-asset').find(`#${k}`).data('url-file');
                 if (doc?.dokumen_barang?.filename) {
-                    assetDoc.push(`<a target="_blank" href="${window.location.origin}/upload/${doc.dokumen_barang.filename}?path=${doc.dokumen_barang.filepath}&driver=${doc.dokumen_barang.driver}">Dokumen Barang</a>`)
+                    assetDoc.push(`<a target="_blank" href="${urlFile}/upload/${doc.dokumen_barang.filename}?path=${doc.dokumen_barang.filepath}&driver=${doc.dokumen_barang.driver}">Dokumen Barang</a>`)
                 }
                 if (doc?.dokumen_penyedia?.filename) {
-                    assetDoc.push(`<a target="_blank" href="${window.location.origin}/upload/${doc.dokumen_penyedia.filename}?path=${doc.dokumen_penyedia.filepath}&driver=${doc.dokumen_penyedia.driver}">Dokumen Penyedia</a>`)
+                    assetDoc.push(`<a target="_blank" href="${urlFile}/upload/${doc.dokumen_penyedia.filename}?path=${doc.dokumen_penyedia.filepath}&driver=${doc.dokumen_penyedia.driver}">Dokumen Penyedia</a>`)
                 }
                 if (doc?.dokumen_spj?.filename) {
-                    assetDoc.push(`<a target="_blank" href="${window.location.origin}/upload/${doc.dokumen_spj.filename}?path=${doc.dokumen_spj.filepath}&driver=${doc.dokumen_spj.driver}">Dokumen SPJ</a>`)
+                    assetDoc.push(`<a target="_blank" href="${urlFile}/upload/${doc.dokumen_spj.filename}?path=${doc.dokumen_spj.filepath}&driver=${doc.dokumen_spj.driver}">Dokumen SPJ</a>`)
                 }
             }
             if (assetDoc.length) $('.table-detail-asset').find(`#${k}`).html(`${assetDoc.join(', ')}`);

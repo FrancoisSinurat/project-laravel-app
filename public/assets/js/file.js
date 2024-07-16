@@ -12,7 +12,7 @@ const newUpload = () => {
     $(`input[type=file]`).prop('disabled', false);
 }
 
-function showLoading () {
+function showLoadingFile() {
     Swal.fire({
         title: 'Loading....',
         html: `Mohon menunggu sedang mengunggah dokumen <span id="doc-name-upload">${docNameUpload}</span>`,
