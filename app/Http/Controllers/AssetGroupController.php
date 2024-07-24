@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AssetGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\Facades\DataTables;
 
 class AssetGroupController extends Controller
 {
@@ -19,9 +20,13 @@ class AssetGroupController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $assetgroup = AssetGroup::query();
+            return DataTables::of($assetgroup)->make();
+        }
+        return view('asset-group.index');
     }
 
     /**
@@ -30,6 +35,7 @@ class AssetGroupController extends Controller
     public function create()
     {
         //
+
     }
 
     /**
@@ -37,7 +43,7 @@ class AssetGroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -76,13 +82,13 @@ class AssetGroupController extends Controller
     {
         try {
             $asset = AssetGroup::with('asal_oleh', 'asal_pengadaan')
-            ->when($request->search, function($query, $keyword) {
-                $keyword = strtolower($keyword);
-                $query->whereRaw('LOWER(asset_document_number) LIKE ? ',['%'.$keyword.'%']);
-            })
-            ->limit(10)
-            ->get();
-            if($asset->isNotEmpty()) {
+                ->when($request->search, function ($query, $keyword) {
+                    $keyword = strtolower($keyword);
+                    $query->whereRaw('LOWER(asset_document_number) LIKE ? ', ['%' . $keyword . '%']);
+                })
+                ->limit(10)
+                ->get();
+            if ($asset->isNotEmpty()) {
                 return response()->json([
                     'results' => $asset
                 ], 200);
