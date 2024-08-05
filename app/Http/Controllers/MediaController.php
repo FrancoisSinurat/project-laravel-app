@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
+
 class MediaController extends Controller
 {
     public function uploadSingleFile(Request $request) {
@@ -31,7 +32,7 @@ class MediaController extends Controller
 
             $fileKey = str_pad(rand(0, pow(10, 2)-1), 3, '0', STR_PAD_LEFT);
             $fileExt = $file->getClientOriginalExtension();
-            $fileName = 'app_file_'.Str::slug($name) .'_'. date('Y_m_d_H_i') . $fileKey .'.'. $fileExt;
+            $fileName = 'app_file_'.Str::slug($name) .'_'. date('Y_m_d') . $fileKey .'.'. $fileExt;
             if (env('FILESYSTEM_CLOUD') == 's3') {
                 $upload = Storage::cloud()->putFileAs($filePath, $file, $fileName);
             } else {

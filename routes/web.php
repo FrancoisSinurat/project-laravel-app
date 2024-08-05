@@ -49,7 +49,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.'], fu
     Route::get('/brand-ajax', [App\Http\Controllers\ItemBrandController::class, 'ajax'])->name('brand.ajax');
     Route::get('/type-ajax', [App\Http\Controllers\ItemTypeController::class, 'ajax'])->name('type.ajax');
     Route::get('/asaloleh-ajax', [App\Http\Controllers\AsalolehCategoryController::class, 'ajax'])->name('asaloleh.ajax');
-    Route::get('/asalpendadaan-ajax', [App\Http\Controllers\AsalpengadaanCategoryController::class, 'ajax'])->name('asalpengadaan.ajax');
+    Route::get('/asalpengadaan-ajax', [App\Http\Controllers\AsalpengadaanCategoryController::class, 'ajax'])->name('asalpengadaan.ajax');
     Route::get('/asset-group-ajax', [App\Http\Controllers\AssetGroupController::class, 'ajax'])->name('asset-group.ajax');
     Route::get('/bahan-ajax', [App\Http\Controllers\BahanCategoryController::class, 'ajax'])->name('bahan.ajax');
     Route::get('/satuan-ajax', [App\Http\Controllers\SatuanCategoryController::class, 'ajax'])->name('satuan.ajax');

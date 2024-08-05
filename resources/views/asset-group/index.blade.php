@@ -1,4 +1,9 @@
 <x-layout>
+    @push('styles')
+        
+        <link href="{{ asset('assets/vendor/select2/css/select2.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/vendor/select2/css/select2-bootstrap-5-theme.min.css') }}" rel="stylesheet">
+    @endpush
     @section('title', 'Aset Group')
     <section class="section">
         <x-modal id="asset-group-type-modal" size="modal-fullscreen">
@@ -7,11 +12,11 @@
                 <form id="asset-group-type-form" class="form needs-validation" enctype="multipart/form-data" novalidate>
                     <div class="p-2">
                         <div class="row">
-                            <div class="col-6 col-md-6">
+                            <div class="col-6 col-md-4">
                                 <div class="mb-2">
-                                    <label for="asset_dokumen_number" class="col-form-label mandatory">Nomor Dokumen</label>
-                                    <input type="text" name="asset_dokumen_number" class="form-control" id="asset_dokumen_number" required>
-                                    <div id="asset_dokumen_number_feedback" class="invalid-feedback">
+                                    <label for="asset_document_number" class="col-form-label mandatory">Nomor Dokumen</label>
+                                    <input type="text" name="asset_document_number" class="form-control" id="asset_document_number" required>
+                                    <div id="asset_document_number_feedback" class="invalid-feedback">
                                         Wajib diisi.
                                     </div>
                                 </div>
@@ -22,8 +27,8 @@
                             <div class="col-6 col-md-6">
                                 <div class="mb-2">
                                     <label for="asalpengadaan_category_id" class="col-form-label mandatory">Pilih Asal Pengadaan</label>
-                                    <select class="form-control select2assetgroups"
-                                    data-action="{{ route('admin.asset-group.ajax') }}"
+                                    <select class="form-control selectasalpengadaanGroup"
+                                    data-action="{{ route('admin.asalpengadaan.ajax') }}"
                                     name="asalpengadaan_category_id" id="asalpengadaan_category_id"
                                                 required>
                                             </select>
@@ -32,16 +37,16 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
+                                    
+                                </div>
                                 
-                                
-                        </div>
-
-                        <div class="row">
+                                <div class="row">
                                     <div class="col-6 col-md-6">
                                         <div class="mb-2">
                                             <label for="asaloleh_category_id" class="col-form-label mandatory">Pilih
                                                 Asal Oleh</label>
-                                            <select class="form-control select2asalolehs"
+                                                <select class="form-control selectasalolehGroup"
                                                 data-action="{{ route('admin.asaloleh.ajax') }}"
                                                 name="asaloleh_category_id" id="asaloleh_category_id" required>
                                             </select>
@@ -49,33 +54,22 @@
                                                 Wajib diisi.
                                             </div>
                                         </div>
-                                        {{-- <div class="mb-2">
-                                                <label for="asaloleh_category_id" class="col-form-label mandatory">Pilih Asal Perolehan</label>
-                                                <select class="form-control select2asalolehs"
-                                                    data-action="{{ route('admin.asaloleh.ajax') }}"
-                                                    name="asaloleh_category_id" id="asaloleh_category_id"
-                                                    required>
-                                                </select>
-                                                <div id="asaloleh_category_id_feedback" class="invalid-feedback">
-                                                    Wajib diisi.
-                                                </div>
-                                        </div>  --}}
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-6 col-md-2">
                                         <div class="mb-2">
                                             <label for="asset_asaloleh_date" class="col-form-label mandatory">Tanggal
                                                 Asal Oleh</label>
                                             <input type="text" class="form-control mandatory"
-                                                name="asset_asaloleh_date" id="asset_asaloleh_date" required>
+                                                name="asset_asaloleh_date" id="asset_asaloleh_date" placeholder="dd-mm-yyyy"  required>
                                             <div id="asset_asaloleh_date_feedback" class="invalid-feedback">
                                                 Wajib diisi.
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-6 col-md-3">
+                                    <div class="col-6 col-md-2">
                                         <div class="mb-2">
                                             <label for="asset_procurement_year" class="col-form-label mandatory">Tahun Pengadaan</label>
-                                            <input type="text" name="asset_procurement_year" class="form-control text-uppercase" id="asset_procurement_year" required>
+                                            <input type="number" name="asset_procurement_year" class="form-control mandatory" id="asset_procurement_year" required>
                                             <div id="asset_procurement_year_feedback" class="invalid-feedback">
                                                 Wajib diisi.
                                             </div>
@@ -84,16 +78,17 @@
                         </div>
                         
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-4 col-md-4" id="upload-container" data-form="asset-group-type-form"
+                            data-upload-url="{{ route('admin.upload-file') }}"  >
                                 <div class="mb-2">
                                     <label for="asset_documents" class="col-form-label mandatory">Dokumen Aset</label>
-                                    <input type="file" name="asset_documents" class="form-control" id="file" required>
+                                    <input type="file" name="asset_documents" class="form-control" id="asset_documents"/>
                                     <div id="asset_documents_feedback" class="invalid-feedback">
                                         Wajib diisi.
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-4 col-md-4">
                                 <div class="mb-2">
                                     <label for="asset_group_items" class="col-form-label mandatory">Aset Group Item </label>
                                     <input type="text" name="asset_group_items" class="form-control text-uppercase" id="asset_group_items" required>
@@ -103,6 +98,7 @@
                                 </div>
                             </div>
                         </div>
+                        
 
                         <div class="d-flex justify-content-end">
                             <button type="button" class="btn btn-outline-secondary me-2"
@@ -155,10 +151,15 @@
     @push('scripts')
     <script src="{{ asset('assets/js/ajax.js') }}"></script>
     <script src="{{ asset('assets/vendor/select2/js/select2.min.js') }}"></script>
-    <script src="{{ asset('assets/js/select2-asset.js') }}"></script>
-    <script src="{{ asset('assets/js/asset-event.js') }}"></script>
-    <script src="{{ asset('assets/js/file.js') }}"></script>
+    <script src="{{ asset('assets/js/select2-assetgroup.js') }}"></script>
+    <script src="{{ asset('assets/js/asset-group-event.js') }}"></script>
+    <script src="{{ asset('assets/js/fileassetgroup.js') }}"></script>
     <script type="text/javascript">
+            /**
+             * for request(POST,PATCH,DELETE) function see ajax.js
+             * for event function see asset-event.js
+             * for upload see file.js
+             */
         let modal = 'asset-group-type-modal';
         let urlPost = "{{ route('admin.asset-group.store') }}";
         let formMain = 'asset-group-type-form';
@@ -184,13 +185,15 @@
         $(document).ready(function() {
             $('#asset_asaloleh_date').datepicker({
                     uiLibrary: 'bootstrap5',
-                    format: 'dd-mm-yyyy'
+                    format: 'dd-mm-yyyy'        
                 });
-
+            
+                
             dataTableList = $('#asset-group-table').DataTable({
                 processing: true,
                 serverSide: true,
-                order: [[0, 'desc']],
+                responsive:true,
+                order: [[0, 'desc']],  
                 ajax: '{{ url()->current() }}',
                 columns: [{
                         data: 'asset_group_id',
@@ -203,7 +206,7 @@
                         data: 'asset_document_number',
                         name: 'asset_document_number'
                     },
-                   
+                    
                     {
                         data: 'asset_asaloleh_date',
                         name: 'asset_asaloleh_date'
@@ -214,7 +217,8 @@
                     },
                     {
                         data: 'asset_documents',
-                        name: 'asset_documents'
+                        name: 'asset_documents',
+
                     },
                     {
                         data: 'asset_group_items',
@@ -227,13 +231,13 @@
                         searchable: false,
                         render: function(data) {
                             let button = `
-                            @if(auth()->user()->hasPermissionTo('asal-pengadaan-edit') || auth()->user()->hasPermissionTo('asal-pengadaan-delete'))
+                            @if(auth()->user()->hasPermissionTo('asset-group-edit') || auth()->user()->hasPermissionTo('asset-group-delete'))
                                 <div class="d-flex justify-content-end">
                                     <div class="btn-group" role="group">
-                                        @if(auth()->user()->hasPermissionTo('asal-pengadaan-edit'))
+                                        @if(auth()->user()->hasPermissionTo('asset-group-edit'))
                                             <button type="button" data-id="${data}" class="btn btn-sm btn-edit btn-primary"><i class="bi bi-pencil-fill"></i></button>
                                         @endif
-                                        @if(auth()->user()->hasPermissionTo('asal-pengadaan-delete'))
+                                        @if(auth()->user()->hasPermissionTo('asset-group-delete'))
                                             <button type="button" data-id="${data}" class="btn btn-sm btn-delete btn-danger"><i class="bi bi-trash-fill"></i></button>
                                         @endif
                                     </div>
@@ -245,6 +249,9 @@
 
                 ]
             });
+            
+
+            
 
             const saveData = (formData) => {
                 options.data = formData;
@@ -263,24 +270,67 @@
                 options.dataTable = dataTableList;
                 DELETE_DATA(options);
             }
+            
 
             Array.prototype.filter.call($(`#${options.formMain}`), function(form) {
-                form.addEventListener('submit', function(event) {
-                    if (form.checkValidity() === false) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        form.classList.add('was-validated');
-                    } else {
-                        let formData = $(`#${options.formMain}`).serialize();
-                        event.preventDefault();
-                        event.stopPropagation();
-                        options.disabledButton();
-                        form.classList.remove('was-validated');
-                        if (options.id == null) saveData(formData);
-                        if (options.id) updateData(formData);
+                    form.addEventListener('submit',async function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            form.classList.add('was-validated');
+                        } else {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            options.disabledButton();
+                            form.classList.remove('was-validated');
+                            await populateFile(options.formMain);
+                            if (fileInputs.length > 0) {
+                                showLoadingFile();
+                                await uploadFile(fileInputs);
+                                let formData = $(`#${options.formMain}`).serialize();
+                                if (options.id == null) saveData(formData);
+                                if (options.id) updateData(formData);
+                            } else {
+                                let formData = $(`#${options.formMain}`).serialize();
+                                if (options.id == null) saveData(formData);
+                                if (options.id) updateData(formData);
+                            }
+                        }
+                    });
+                });
+
+                $('input[type="file"]').on('change', function() {
+                    let file = this.files[0];
+                    let fileId = $(this).attr('id');
+                    let maxSize = 2 * 1024 * 1024; // 2 MB dalam bytes
+                    let allowedTypes = ['application/pdf', 'image/png', 'image/jpeg'];
+                    let fileErr = $(`#${fileId}_feedback`);
+                    if (file) {
+                        const fileType = file.type;
+                        const fileSize = file.size;
+                        $(`#${formMain}`).addClass('was-validated');
+                        // Validasi tipe file
+                        if (!allowedTypes.includes(fileType)) {
+                            $(`#${fileId}`).prop('required', true);
+                            fileErr.text('Tipe file tidak valid. Harus berupa PDF, PNG, JPEG, atau JPG.');
+                            $(this).val(''); // Kosongkan input file
+                            return;
+                        }
+
+                        // Validasi ukuran file
+                        if (fileSize > maxSize) {
+                            $(`#${fileId}`).prop('required', true);
+                            fileErr.text('Ukuran file terlalu besar. Maksimal 2 MB.');
+                            $(this).val(''); // Kosongkan input file
+                            return;
+                        }
+
+                        // Jika validasi lolos
+                        $(`#${fileId}`).prop('required', false);
+                        fileErr.text('');
+                        $(`#${formMain}`).removeClass('was-validated');
                     }
                 });
-            });
 
 
             $(document).on('click','.btn-edit',function(){
@@ -294,15 +344,15 @@
                 $(`#${options.formMain}`).find('input[name="asset_group_items"]').val(rowData.asset_group_items);
                 $(`#${options.modal}`).modal('show');
                 $(`#${options.modal}`).find('.btn-name').text('Ubah');
-                options.id = rowData.asalpengadaan_category_id;
+                options.id = rowData.asset_group_id;
             })
 
             $(document).on('click','.btn-delete',function(){
                 let rowData = dataTableList.row($(this).parents('tr')).data()
-                options.dataTitle = rowData.asalpengadaan_category_name;
-                deleteData(rowData.asalpengadaan_category_id);
+                options.dataTitle = rowData.asset_group_id;
+                deleteData(rowData.asset_group_id);
             })
         });
     </script>
-@endpush
+    @endpush
 </x-layout>
