@@ -1,6 +1,6 @@
 <x-layout>
     @push('styles')
-        
+
         <link href="{{ asset('assets/vendor/select2/css/select2.min.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/vendor/select2/css/select2-bootstrap-5-theme.min.css') }}" rel="stylesheet">
     @endpush
@@ -22,7 +22,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-6 col-md-6">
                                 <div class="mb-2">
@@ -37,10 +37,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
-                                    
+
+
                                 </div>
-                                
+
                                 <div class="row">
                                     <div class="col-6 col-md-6">
                                         <div class="mb-2">
@@ -76,10 +76,10 @@
                                         </div>
                                     </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-4 col-md-4" id="upload-container" data-form="asset-group-type-form"
-                            data-upload-url="{{ route('admin.upload-file') }}"  >
+                            data-upload-url="{{ route('admin.upload-file') }}"  enctype="multipart/form-data">
                                 <div class="mb-2">
                                     <label for="asset_documents" class="col-form-label mandatory">Dokumen Aset</label>
                                     <input type="file" name="asset_documents" class="form-control" id="asset_documents"/>
@@ -98,7 +98,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
 
                         <div class="d-flex justify-content-end">
                             <button type="button" class="btn btn-outline-secondary me-2"
@@ -134,7 +134,6 @@
                                         <th>Nomor Dokumen</th>
                                         <th>Tanggal</th>
                                         <th>Tahun Pengadaan</th>
-                                        <th>Dokumen Aset</th>
                                         <th>Item Group</th>
                                         <th></th>
                                     </tr>
@@ -185,15 +184,15 @@
         $(document).ready(function() {
             $('#asset_asaloleh_date').datepicker({
                     uiLibrary: 'bootstrap5',
-                    format: 'dd-mm-yyyy'        
+                    format: 'dd-mm-yyyy'
                 });
-            
-                
+
+
             dataTableList = $('#asset-group-table').DataTable({
                 processing: true,
                 serverSide: true,
                 responsive:true,
-                order: [[0, 'desc']],  
+                order: [[0, 'desc']],
                 ajax: '{{ url()->current() }}',
                 columns: [{
                         data: 'asset_group_id',
@@ -206,7 +205,7 @@
                         data: 'asset_document_number',
                         name: 'asset_document_number'
                     },
-                    
+
                     {
                         data: 'asset_asaloleh_date',
                         name: 'asset_asaloleh_date'
@@ -214,11 +213,6 @@
                     {
                         data: 'asset_procurement_year',
                         name: 'asset_procurement_year'
-                    },
-                    {
-                        data: 'asset_documents',
-                        name: 'asset_documents',
-
                     },
                     {
                         data: 'asset_group_items',
@@ -249,9 +243,9 @@
 
                 ]
             });
-            
 
-            
+
+
 
             const saveData = (formData) => {
                 options.data = formData;
@@ -270,7 +264,7 @@
                 options.dataTable = dataTableList;
                 DELETE_DATA(options);
             }
-            
+
 
             Array.prototype.filter.call($(`#${options.formMain}`), function(form) {
                     form.addEventListener('submit',async function(event) {

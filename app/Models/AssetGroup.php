@@ -59,7 +59,7 @@ class AssetGroup extends Model
     /**
      * Normalize the input data.
      *
-     * @param array 
+     * @param array
      * @return array
      */
     public static function normalize($input)
@@ -87,7 +87,28 @@ class AssetGroup extends Model
                 'asset_asaloleh_date' => Carbon::createFromFormat('d-m-Y', $input['asset_asaloleh_date'])->toDateString(),
                 'asset_procurement_year' => $input['asset_procurement_year'],
             ];
-            if (isset($input['asset_documents'])) $updateGroup['asset_documents'] = isset($input['asset_documents']);
+            if ($request->hasFile('asset_documents')) {
+                $originalName = $file->getClientOriginalName(); // Nama asli file
+                $extension = $file->getClientOriginalExtension(); // Ekstensi file
+                $filename = pathinfo($originalName, PATHINFO_FILENAME); // Nama tanpa ekstensi
+
+                // Cek jika file dengan nama yang sama sudah ada
+                $filePath = 'assets/documents/' . $originalName;
+                $counter = 1;
+
+                // Cek jika file sudah ada dan ubah nama jika perlu
+                while (Storage::disk('public')->exists($filePath)) {
+                    $newFilename = $filename . '_' . $counter . '.' . $extension;
+                    $filePath = 'assets/documents/' . $newFilename;
+                    $counter++;
+                }
+
+                // Menyimpan file ke storage
+                $file->storeAs('assets/documents', $filePath, 'public');
+                $input['asset_documents'] = $filePath; // Menyimpan path file ke database
+            }
+
+
             AssetGroup::where('asset_group_id', $input['asset_group_id'])->update($updateGroup);
             // if not same group recalculate
             if (isset($input['old_asset_group_id'])) {
