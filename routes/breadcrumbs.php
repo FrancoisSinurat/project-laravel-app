@@ -36,6 +36,11 @@ Breadcrumbs::for('admin.asalpengadaan-category.index', function (BreadcrumbTrail
     $trail->parent('admin.dashboard');
     $trail->push('Asal Pengadaan', route('admin.asalpengadaan-category.index'));
 });
+// Dashboard > Asal Pengadaan Category
+Breadcrumbs::for('admin.asset-group.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Aset Group', route('admin.asset-group.index'));
+});
 
 // Dashboard > Satuan Category
 Breadcrumbs::for('admin.satuan-category.index', function (BreadcrumbTrail $trail) {
@@ -55,7 +60,7 @@ Breadcrumbs::for('admin.asaloleh-category.index', function (BreadcrumbTrail $tra
     $trail->push('Asal Perolehan', route('admin.asaloleh-category.index'));
 });
 
-// Dashboard > Asaloleh Category
+// Dashboard > Asset Category
 Breadcrumbs::for('admin.asset-category.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.dashboard');
     $trail->push('Jenis Asset', route('admin.asset-category.index'));
